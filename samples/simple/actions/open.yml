@@ -1,0 +1,4 @@
+templates:
+  - open
+  - open @entity
+state: open

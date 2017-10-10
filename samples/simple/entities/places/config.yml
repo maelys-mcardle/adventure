@@ -1,0 +1,12 @@
+location:
+  - default: bedroom
+  - actions: go
+  - rules:
+    - entrance -- lawn: 
+      - require entrance.door: open
+      - message: door_not_open
+  - entities:
+    - entrance:
+      - objects.door
+    - lawn:
+      - people.ada

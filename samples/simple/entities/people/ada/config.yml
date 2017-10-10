@@ -1,0 +1,10 @@
+conversation:
+  - default: hello
+  - actions: say
+  - rules:
+    - hello:
+      - set conversation: listening
+    - who_are_you_really:
+      - set conversation: listening
+    - where_am_i:
+      - set conversation: listening

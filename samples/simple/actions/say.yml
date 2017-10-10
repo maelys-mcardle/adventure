@@ -1,0 +1,9 @@
+templates:
+  - say @state
+  - say @entity @state
+  - say to @entity @state
+synonyms:
+  - say:
+    - tell
+    - speak
+match-state: closest

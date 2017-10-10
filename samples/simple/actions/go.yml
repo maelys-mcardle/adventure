@@ -1,0 +1,13 @@
+templates:
+  - go @state
+  - go to @state
+synonyms:
+  - go:
+    - travel
+    - walk
+    - head
+    - enter
+help: |
+  go [location]
+  run list places to get a list of destinations
+

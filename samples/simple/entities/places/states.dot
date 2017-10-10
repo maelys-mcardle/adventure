@@ -1,0 +1,12 @@
+graph location {
+
+    subgraph house {
+        bedroom -- upstairs_hallway -- bathroom
+        stairs -- upstairs_hallway
+        living_room -- entrance -- stairs
+        entrance -- kitchen -- living_room
+    }
+
+    shed -- lawn -- entrance
+    lawn -- street
+}
