@@ -1,4 +1,5 @@
 templates:
   - open
   - open @entity
-state: open
+default:
+  - state: open

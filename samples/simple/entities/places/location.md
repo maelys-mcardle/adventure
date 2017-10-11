@@ -61,3 +61,6 @@ You are on the street. A dense white fog blocks out the view of the other
 homes. The air gets thick walking in any direction; you only seem to be
 able to go back to the home.
 
+# door_not_open
+
+The door must be open in order to go in or out of the house.

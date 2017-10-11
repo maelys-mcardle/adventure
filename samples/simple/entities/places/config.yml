@@ -3,7 +3,7 @@ location:
   - actions: go
   - rules:
     - entrance -- lawn: 
-      - require entrance.door: open
+      - require state entrance.door: open
       - message: door_not_open
   - entities:
     - entrance:

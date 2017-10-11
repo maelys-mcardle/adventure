@@ -1,4 +1,6 @@
 graph conversation {
-    hello -> listening -> who_are_you -> who_are_you_really
-    listening -> where_am_i
+    hello -> idle
+    idle -> who_are_you
+    idle -> who_are_you_really
+    idle -> where_am_i
 }

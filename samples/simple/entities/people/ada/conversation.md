@@ -2,11 +2,11 @@
 
 Hello, friend.
 
-# listening
+# idle
 
 The presence looks at you.
 
-# listening (#2)
+# idle (#2)
 
 The presence looks to the distance.
 
