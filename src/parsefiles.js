@@ -1,7 +1,8 @@
 "use strict";
 
-const jsYaml = require('js-yaml');
+const yaml = require('js-yaml');
 const markdown = require('markdown').markdown;
+const dot = require('graphlib-dot');
 const path = require('path');
 
 const loadFiles = require('./loadfiles');
@@ -33,15 +34,20 @@ async function parseFiles(storyDirectory) {
       }
     }
   }
-  return storyFiles;
+
+  return new Story(storyConfig, storyActions, storyEntities);
 }
 
 function parseActionFile(actions, file) {
+  let key = actionToIdentifier(file);
+  let value = yaml.load(file.contents);
+  actions[key] = value;
+
   return actions;
 }
 
 function parseStoryConfigFile(file) {
-  return jsYaml.load(file.contents);
+  return yaml.load(file.contents);
 }
 
 function parseEntityFile(entities, file) {
@@ -57,16 +63,66 @@ function parseEntityFile(entities, file) {
 }
 
 function parseEntityConfigFile(entities, file) {
+  let key = entityToIdentifier(file);
+  let value = yaml.load(file.contents);
+
+  if (!(key in entities)) {
+    entities[key] = new Entity();
+  }
+  
+  entities[key].config = value;
+  
   return entities;
 }
 
 function parseEntityTextFile(entities, file) {
-  let test = markdown.parse(file.contents);
+  let key = entityToIdentifier(file);
+  let value = markdown.parse(file.contents);
+
+  if (!(key in entities)) {
+    entities[key] = new Entity();
+  }
+  
+  entities[key].text = value;
+  
   return entities;
 }
 
 function parseEntityStateFile(entities, file) {
+  let key = entityToIdentifier(file);
+  let value = dot.read(file.contents);
+
+  if (!(key in entities)) {
+    entities[key] = new Entity();
+  }
+  
+  entities[key].states = value;
+  
   return entities;
+}
+
+function entityToIdentifier(file) {
+  return JSON.stringify(file.directory.slice(1));
+}
+
+function actionToIdentifier(file) {
+  return JSON.stringify(file.directory.slice(1).concat(file.name));
+}
+
+class Entity {
+  constructor() {
+    this.states = {};
+    this.text = {};
+    this.config = {};
+  }
+}
+
+class Story {
+  constructor(config, actions, entities) {
+    this.config = config;
+    this.actions = actions;
+    this.entities = entities;
+  }
 }
 
 parseFiles('samples/simple').then(files => {
