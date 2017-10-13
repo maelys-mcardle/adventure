@@ -1,4 +1,4 @@
-graph conversation {
+digraph conversation {
     hello -> idle
     idle -> who_are_you
     idle -> who_are_you_really

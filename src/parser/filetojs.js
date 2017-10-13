@@ -5,12 +5,13 @@ const markdown = require('markdown').markdown;
 const dot = require('graphlib-dot');
 const path = require('path');
 
-const loadFiles = require('./loadfiles');
-
 const CONFIG_FILE_NAME = "config";
 
-async function parseFiles(storyDirectory) {
-  let storyFiles = await loadFiles.load(storyDirectory);
+module.exports = {
+  parse: parseFiles
+};
+
+async function parseFiles(storyFiles) {
   let storyActions = {}
   let storyEntities = {}
   let storyConfig = {}
@@ -124,7 +125,3 @@ class Story {
     this.entities = entities;
   }
 }
-
-parseFiles('samples/simple').then(files => {
-  console.log(files)
-}).catch(reason => console.log(reason))
