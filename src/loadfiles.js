@@ -3,6 +3,7 @@
 const walk = require('walk');
 const fs = require('fs');
 const path = require('path');
+const File = require('./file');
 
 module.exports = {
   load: loadFiles
@@ -36,12 +37,14 @@ async function getFilePaths(rootDirectory) {
 
 async function getFileContents(rootDirectory, filePaths) {
 
-  let files = {};
+  let files = [];
 
   filePaths.forEach(function(filePath) {
     let fileContents = fs.readFileSync(filePath, {'encoding': 'utf-8'});
     let relativePath = path.relative(rootDirectory, filePath);
-    files[relativePath] = fileContents;
+    let fileObject = new File(relativePath, fileContents);
+
+    files.push(fileObject);
   });
 
   return files;
