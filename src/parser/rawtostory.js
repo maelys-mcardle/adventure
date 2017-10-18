@@ -29,9 +29,9 @@ function parseRawText(rawText) {
   let stateText = new StateText();
   stateText.name = rawText.name;
 
-  for (let entry of rawText.contents.slice(1)) {
+  let key;
 
-    let key;
+  for (let entry of rawText.contents.slice(1)) {
 
     let entryType = entry[0];
     if (entryType === "header") {
@@ -41,7 +41,7 @@ function parseRawText(rawText) {
     } else if (entryType === "para" && key) {
       let paragraphText = entry[1];
       if (key in stateText.text) {
-        stateText.text[key] = '\n' + paragraphText;
+        stateText.text[key] += '\n' + paragraphText;
       } else {
         stateText.text[key] = paragraphText;
       }
