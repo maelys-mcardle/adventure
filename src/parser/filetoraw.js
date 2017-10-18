@@ -46,7 +46,7 @@ function parseActionFile(actions, file) {
   actions[key] = new RawAction();
   actions[key].name = actionName(file);
   actions[key].path = actionPath(file);
-  actions[key].config = value;
+  actions[key].action = new RawParsedFile(file.name, value);
 
   return actions;
 }
@@ -70,6 +70,7 @@ function parseEntityFile(entities, file) {
 function parseEntityFileWithFunction(entities, file, parseFunction, type) {
   let key = entityIdentifier(file);
   let value = parseFunction(file.contents);
+  let parsedFile = new RawParsedFile(file.name, value);
 
   if (!(key in entities)) {
     entities[key] = new RawEntity();
@@ -77,7 +78,7 @@ function parseEntityFileWithFunction(entities, file, parseFunction, type) {
     entities[key].name = entityName(file);
   }
   
-  entities[key][type][file.name] = value;
+  entities[key][type].push(parsedFile);
   
   return entities;
 }
@@ -91,7 +92,7 @@ function entityPath(file) {
 }
 
 function entityName(file) {
-  return file.directory.slice(-1, 1);
+  return file.directory.slice(-1)[0];
 }
 
 function actionIdentifier(file) {
@@ -110,9 +111,9 @@ class RawEntity {
   constructor() {
     this.name;
     this.path;
-    this.states = {};
-    this.text = {};
-    this.config = {};
+    this.states = [];
+    this.text = [];
+    this.config = [];
   }
 }
 
@@ -120,7 +121,7 @@ class RawAction {
   constructor() {
     this.name;
     this.path;
-    this.config;
+    this.action;
   }
 }
 
@@ -131,5 +132,12 @@ class RawStory {
     this.config = config;
     this.actions = actions;
     this.entities = entities;
+  }
+}
+
+class RawParsedFile {
+  constructor(name, contents) {
+    this.name = name;
+    this.contents = contents;
   }
 }

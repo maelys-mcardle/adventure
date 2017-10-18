@@ -1,6 +1,6 @@
 const loadFiles = require('./loadfiles');
 const fileToRaw = require('./filetoraw');
-const rawToStory = require('./jstostory');
+const rawToStory = require('./rawtostory');
 
 async function loadStory(storyDirectory) {
 
