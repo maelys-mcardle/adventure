@@ -1,19 +1,19 @@
 const loadFiles = require('./loadfiles');
-const fileToJs = require('./filetojs');
-const jsToStory = require('./jstostory');
+const fileToRaw = require('./filetoraw');
+const rawToStory = require('./jstostory');
 
 async function loadStory(storyDirectory) {
 
   // Load all the files in the specified directory in memory.
   let storyFiles = await loadFiles.load(storyDirectory);
 
-  // Parse the file contents as JavaScript objects.
-  // This is an intermediary representation.
-  let jsObject = await fileToJs.parse(storyFiles);
+  // Parse the file contents to an intermediary representation.
+  let rawStory = await fileToRaw.parse(storyFiles);
 
   // Parse the javascript objects to the story objects.
+  let story = await rawToStory.parse(rawStory);
 
-  return jsObject;
+  return story;
 }
 
 loadStory('samples/simple').then(story => {

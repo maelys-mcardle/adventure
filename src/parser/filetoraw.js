@@ -36,14 +36,14 @@ async function parseFiles(storyFiles) {
     }
   }
 
-  return new Story(storyConfig, storyActions, storyEntities);
+  return new RawStory(storyConfig, storyActions, storyEntities);
 }
 
 function parseActionFile(actions, file) {
   let key = actionIdentifier(file);
   let value = yaml.load(file.contents);
   
-  actions[key] = new Action();
+  actions[key] = new RawAction();
   actions[key].name = actionName(file);
   actions[key].path = actionPath(file);
   actions[key].config = value;
@@ -72,7 +72,7 @@ function parseEntityFileWithFunction(entities, file, parseFunction, type) {
   let value = parseFunction(file.contents);
 
   if (!(key in entities)) {
-    entities[key] = new Entity();
+    entities[key] = new RawEntity();
     entities[key].path = entityPath(file);
     entities[key].name = entityName(file);
   }
@@ -106,7 +106,7 @@ function actionName(file) {
   return file.name;
 }
 
-class Entity {
+class RawEntity {
   constructor() {
     this.name;
     this.path;
@@ -116,7 +116,7 @@ class Entity {
   }
 }
 
-class Action {
+class RawAction {
   constructor() {
     this.name;
     this.path;
@@ -124,7 +124,7 @@ class Action {
   }
 }
 
-class Story {
+class RawStory {
   constructor(config, actions, entities) {
     this.name;
     this.path;
