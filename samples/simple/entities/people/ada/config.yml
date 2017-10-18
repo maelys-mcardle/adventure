@@ -1,16 +1,16 @@
 conversation:
   - default: hello
   - actions: say
-  - variables:
-    - show_who_are_you_really: no
+  - disable:
+    - who_are_you_really
   - rules:
     - hello:
-      - set conversation: idle
+      - state: idle
     - who_are_you:
-      - set show_who_are_you_really: yes
+      - disable: who_are_you
+      - enable: who_are_you_really
+      - state: idle
     - who_are_you_really:
-      - set conversation: idle
-    - who_are_you_really:
-      - enabled: show_who_are_you_really
+      - state: idle
     - where_am_i:
-      - set conversation: idle
+      - state: idle
