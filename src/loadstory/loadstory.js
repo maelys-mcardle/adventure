@@ -2,8 +2,7 @@
 
 const loadFiles = require('./loadfiles');
 const fileToRaw = require('./convert/filetoraw');
-const rawToEntity = require('./convert/rawtoentity');
-const rawToAction = require('./convert/rawtoaction');
+const rawToStory = require('./convert/rawtostory');
 
 module.exports = {
   load: loadStory
@@ -18,27 +17,11 @@ async function loadStory(storyDirectory) {
   let rawStory = await fileToRaw.parse(storyFiles);
 
   // Process the intermediary representation into the final story object.
-  let story = await rawToStory(rawStory);
+  let story = await rawToStory.parse(rawStory);
+
+  // Add run-time properties to the story object.
 
   return story;
-}
-
-async function rawToStory(rawStory) {
-  let story = new Story();
-  story.config = rawStory.config;
-  story.entities = await rawToEntity.parse(rawStory.entities);
-  story.actions = await rawToAction.parse(rawStory.actions);
-
-  return story;
-}
-
-class Story {
-  constructor() {
-    this.name;
-    this.config = {};
-    this.entities = [];
-    this.actions = [];
-  }
 }
 
 loadStory('samples/simple').then(story => {
