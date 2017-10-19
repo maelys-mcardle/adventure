@@ -18,7 +18,7 @@ async function loadStory(storyDirectory) {
   let rawStory = await fileToRaw.parse(storyFiles);
 
   // Process the intermediary representation into the final story object.
-  let story = rawToStory(rawStory);
+  let story = await rawToStory(rawStory);
 
   return story;
 }
