@@ -1,20 +1,26 @@
 "use strict";
 
 module.exports = {
-  parse: parseEntity
+  parse: parseEntities
 };
 
-async function parseEntity(rawStoryEntities) {
+async function parseEntities(rawStoryEntities) {
 
   let entities = [];
 
+  // Iterate through each entity.
   for (let entityId in rawStoryEntities) {
     let entity = new Entity();
 
+    // Load the name/path of the entity. This is defined by the
+    // directory structure.
     let rawEntity = rawStoryEntities[entityId];
     entity.name = rawEntity.name;
     entity.path = rawEntity.path;
 
+    // Translate the config from a representation created with a yaml
+    // parser, a markdown parser, and a graphviz dot file parser into 
+    // a useful internal representation.
     for (let rawEntityConfig of rawEntity.config) {
       entity.config = parseRawEntityConfig(entity.config, rawEntityConfig);
     }
@@ -27,6 +33,7 @@ async function parseEntity(rawStoryEntities) {
       entity.states = parseRawEntityStates(entity.states, rawEntityStates);
     }
 
+    // Append this now parsed entity to the list.
     entities.push(entity);
   }
 

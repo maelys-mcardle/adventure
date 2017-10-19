@@ -1,6 +1,7 @@
 const loadFiles = require('./loadfiles');
 const fileToRaw = require('./filetoraw');
-const rawToEntity = require('./rawtoentity');
+const rawToEntities = require('./rawtoentities');
+const rawToActions = require('./rawtoactions');
 
 async function loadStory(storyDirectory) {
 
@@ -13,7 +14,8 @@ async function loadStory(storyDirectory) {
   // Process the intermediary representation into the final story
   // object.
   let story = new Story();  
-  story.entities = await rawToEntity.parse(rawStory.entities);
+  story.entities = await rawToEntities.parse(rawStory.entities);
+  story.actions = await rawToActions.parse(rawStory.actions);
 
   return story;
 }
@@ -21,6 +23,7 @@ async function loadStory(storyDirectory) {
 class Story {
   constructor() {
     this.entities = [];
+    this.actions = [];
   }
 }
 
