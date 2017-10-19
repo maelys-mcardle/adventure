@@ -1,7 +1,7 @@
-const loadFiles = require('./loadfiles');
-const fileToRaw = require('./filetoraw');
-const rawToEntities = require('./rawtoentities');
-const rawToActions = require('./rawtoactions');
+const loadFiles = require('./convert/loadfiles');
+const fileToRaw = require('./convert/filetoraw');
+const rawToEntity = require('./convert/rawtoentity');
+const rawToAction = require('./convert/rawtoaction');
 
 async function loadStory(storyDirectory) {
 
@@ -11,17 +11,25 @@ async function loadStory(storyDirectory) {
   // Parse the file contents to an intermediary representation.
   let rawStory = await fileToRaw.parse(storyFiles);
 
-  // Process the intermediary representation into the final story
-  // object.
-  let story = new Story();  
-  story.entities = await rawToEntities.parse(rawStory.entities);
-  story.actions = await rawToActions.parse(rawStory.actions);
+  // Process the intermediary representation into the final story object.
+  let story = rawToStory(rawStory);
+
+  return story;
+}
+
+async function rawToStory(rawStory) {
+  let story = new Story();
+  story.config = rawStory.config;
+  story.entities = await rawToEntity.parse(rawStory.entities);
+  story.actions = await rawToAction.parse(rawStory.actions);
 
   return story;
 }
 
 class Story {
   constructor() {
+    this.name;
+    this.config = {};
     this.entities = [];
     this.actions = [];
   }
