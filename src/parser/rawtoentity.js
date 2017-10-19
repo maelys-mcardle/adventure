@@ -4,13 +4,14 @@ module.exports = {
   parse: parseEntity
 };
 
-async function parseEntity(rawStory) {
-  let story = new Story();
+async function parseEntity(rawStoryEntities) {
 
-  for (let entityId in rawStory.entities) {
+  let entities = [];
+
+  for (let entityId in rawStoryEntities) {
     let entity = new Entity();
 
-    let rawEntity = rawStory.entities[entityId];
+    let rawEntity = rawStoryEntities[entityId];
     entity.name = rawEntity.name;
     entity.path = rawEntity.path;
 
@@ -22,16 +23,49 @@ async function parseEntity(rawStory) {
       entity.text = parseRawEntityText(entity.text, rawEntityText);
     }
 
-    story.entities.push(entity);
+    for (let rawEntityStates of rawEntity.states) {
+      entity.states = parseRawEntityStates(entity.states, rawEntityStates);
+    }
+
+    entities.push(entity);
   }
 
-  return story;
+  return entities;
+}
+
+function parseRawEntityStates(parsedStates, rawStates)
+{
+  for (let graph of rawStates.contents) {
+    let stateName = graph.graph().id;
+    parsedStates[stateName] = {};
+    
+    // Load all the possible state values.
+    for (let stateValue of graph.nodes()) {
+      parsedStates[stateName][stateValue] = [];
+    }
+
+    // Load all relationships each state value can have;
+    // in other words, the list of acceptable states it
+    // can transition to.
+    for (let stateRelationship of graph.edges()) {
+      parsedStates[stateName][stateRelationship.v].push(stateRelationship.w);
+
+      // Relationships between states are one-way in
+      // directed graphs, but two ways in undirected graphs.
+      if (!graph.isDirected()) {
+        parsedStates[stateName][stateRelationship.w].push(stateRelationship.v);
+      }
+    }
+
+  }
+  return parsedStates;
 }
 
 function parseRawEntityConfig(parsedConfig, rawConfig) {
 
+  // The raw config is already in the desired format; merge it with
+  // the master config.
   let mergedConfig = Object.assign({}, parsedConfig, rawConfig.contents);
-
   return mergedConfig;
 }
 
@@ -81,12 +115,6 @@ function parseRawEntityText(parsedText, rawText) {
   }
 
   return parsedText;
-}
-
-class Story {
-  constructor() {
-    this.entities = [];
-  }
 }
 
 class Entity {

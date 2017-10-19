@@ -1,5 +1,6 @@
 digraph conversation {
     hello -> idle
+    idle -> hello
     idle -> who_are_you
     idle -> who_are_you_really
     idle -> where_am_i
