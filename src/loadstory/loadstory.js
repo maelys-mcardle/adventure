@@ -20,6 +20,40 @@ async function loadStory(storyDirectory) {
   let story = await rawToStory.parse(rawStory);
 
   // Add run-time properties to the story object.
+  story = addPropertiesToStory(story);
+
+  return story;
+}
+
+function addPropertiesToStory(story) {
+
+  for (let entityId in story.entities) {
+
+    let entity = story.entities[entityId];
+    entity.currentState = {};
+
+    for (let stateName in entity.states) {
+
+      // Use the default state as the initial current state if
+      // specified.
+      if ("default" in entity.config[stateName]) {
+        entity.currentState[stateName] = entity.config[stateName].default;
+
+      // If no default first state is specified, go for the first
+      // state value.
+      } else {
+        let stateValues = Object.keys(entity.states[stateName]);
+
+        if (stateValues.length > 0) {
+          entity.currentState[stateName] = stateValues[0];
+        } else {
+          entity.currentState[stateName] = undefined;
+        }
+      }
+
+    }
+    
+  }
 
   return story;
 }
