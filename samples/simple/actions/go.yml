@@ -2,7 +2,7 @@ templates:
   - go @state
   - go to @state
 synonyms:
-  - go:
+  go:
     - travel
     - walk
     - head

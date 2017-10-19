@@ -3,9 +3,9 @@ templates:
   - say @entity @state
   - say to @entity @state
 synonyms:
-  - say:
+  say:
     - tell
     - speak
 match-input:
-  - entity: ask
-  - state: closest
+  entity: ask
+  state: closest

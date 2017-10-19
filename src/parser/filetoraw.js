@@ -61,7 +61,7 @@ function parseEntityFile(entities, file) {
   } else if (file.isMarkdown()) {
     return parseEntityFileWithFunction(entities, file, markdown.parse, 'text');
   } else if (file.isDot()) {
-    return parseEntityFileWithFunction(entities, file, dot.read, 'states');
+    return parseEntityFileWithFunction(entities, file, dot.readMany, 'states');
   }
 
   return entities;

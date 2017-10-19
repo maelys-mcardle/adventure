@@ -2,4 +2,4 @@ templates:
   - open
   - open @entity
 default:
-  - state: open
+  state: open

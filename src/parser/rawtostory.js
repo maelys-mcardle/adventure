@@ -15,11 +15,11 @@ async function parseEntity(rawStory) {
     entity.path = rawEntity.path;
 
     for (let rawEntityConfig of rawEntity.config) {
-      entity.config.push(parseRawEntityConfig(rawEntityConfig));
+      entity.config = parseRawEntityConfig(entity.config, rawEntityConfig);
     }
 
     for (let rawEntityText of rawEntity.text) {
-      entity.text.push(parseRawEntityText(rawEntityText));
+      entity.text = parseRawEntityText(entity.text, rawEntityText);
     }
 
     story.entities.push(entity);
@@ -28,22 +28,23 @@ async function parseEntity(rawStory) {
   return story;
 }
 
-function parseRawEntityConfig(rawConfig) {
-  let config = new EntityConfig();
+function parseRawEntityConfig(parsedConfig, rawConfig) {
+
+  let mergedConfig = Object.assign({}, parsedConfig, rawConfig.contents);
+
+  return mergedConfig;
 }
 
-function parseRawEntityText(rawText) {
+function parseRawEntityText(parsedText, rawText) {
 
-  let stateText = new StateText();
-  stateText.name = rawText.name;
-
-  let key;
+  let state;
+  let trigger;
 
   // The markdown parser provides an array of items. The first is the
   // string "markdown".
   if (rawText.contents.length === 0 || 
       rawText.contents[0] !== "markdown") {
-    return stateText;
+    return parsedText;
   }
 
   // Go through all the items in the array provided by the
@@ -56,24 +57,30 @@ function parseRawEntityText(rawText) {
     if (entryType === "header") {
       let headerLevel = entry[1].level;
       let headerText = entry[2];
-      key = headerText;
+      
+      if (entry[1].level === 1) {
+        state = headerText;
+        parsedText[state] = {};
+      } else {
+        trigger = headerText;
+      }
     
     // Paragraph. 
-    } else if (entryType === "para" && key) {
+    } else if (entryType === "para" && state && trigger) {
       let paragraphText = entry[1];
 
       // This is the second paragraph onward under the header.
-      if (key in stateText.text) {
-        stateText.text[key] += '\n' + paragraphText;
+      if (trigger in parsedText[state]) {
+        parsedText[state][trigger] += '\n' + paragraphText;
 
       // This is the first paragraph under the header.
       } else {
-        stateText.text[key] = paragraphText;
+        parsedText[state][trigger] = paragraphText;
       }
     }
   }
 
-  return stateText;
+  return parsedText;
 }
 
 class Story {
@@ -86,36 +93,9 @@ class Entity {
   constructor() {
     this.name;
     this.path;
-    this.config;
-    this.text = [];
-  }
-}
-
-class EntityConfig {
-  constructor() {
-    this.default;
-    this.disabled = [];
-    this.actions = [];
-    this.rules = {};
-    this.entities = {};
-  }
-}
-
-class EntityConfigRule {
-  constructor() {
-    this.trigger;
-    this.ifAction = [];
-    this.ifState = [];
-    this.setMessage;
-    this.setDisable = [];
-    this.setEnable = [];
-    this.setState; 
-  }
-}
-
-class StateText {
-  constructor() {
-    this.state;
+    this.config = {};
     this.text = {};
+    this.states = {};
   }
 }
+

@@ -2,4 +2,4 @@ templates:
   - close
   - close @entity
 default:
-  - state: closed
+  state: closed
