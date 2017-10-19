@@ -1,7 +1,13 @@
-const loadFiles = require('./convert/loadfiles');
+"use strict";
+
+const loadFiles = require('./loadfiles');
 const fileToRaw = require('./convert/filetoraw');
 const rawToEntity = require('./convert/rawtoentity');
 const rawToAction = require('./convert/rawtoaction');
+
+module.exports = {
+  load: loadStory
+};
 
 async function loadStory(storyDirectory) {
 

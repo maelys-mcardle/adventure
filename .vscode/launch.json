@@ -8,8 +8,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch parse.js",
-      "program": "${workspaceFolder}/src/parser/parse.js"
+      "name": "Launch loadstory.js",
+      "program": "${workspaceFolder}/src/loadstory/loadstory.js"
     }
   ]
 }
