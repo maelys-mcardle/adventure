@@ -1,10 +1,10 @@
 door:
-  - default: closed
-  - actions: [open, close]
-  - rules:
-      - open -> closed: 
-        - require action: closed
-        - message: door_already_open
-      - closed -> open:
-        - require action: open
-        - message: door_already_closed
+  default: closed
+  actions: [open, close]
+  rules:
+    - open -> closed: 
+      - if action: close
+      - set message: door_already_open
+    - closed -> open:
+      - if action: open
+      - set message: door_already_closed

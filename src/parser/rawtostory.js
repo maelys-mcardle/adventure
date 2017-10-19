@@ -14,8 +14,12 @@ async function parseEntity(rawStory) {
     entity.name = rawEntity.name;
     entity.path = rawEntity.path;
 
+    for (let rawEntityConfig of rawEntity.config) {
+      entity.config.push(parseRawEntityConfig(rawEntityConfig));
+    }
+
     for (let rawEntityText of rawEntity.text) {
-      entity.text.push(parseRawText(rawEntityText));
+      entity.text.push(parseRawEntityText(rawEntityText));
     }
 
     story.entities.push(entity);
@@ -24,7 +28,11 @@ async function parseEntity(rawStory) {
   return story;
 }
 
-function parseRawText(rawText) {
+function parseRawEntityConfig(rawConfig) {
+  let config = new EntityConfig();
+}
+
+function parseRawEntityText(rawText) {
 
   let stateText = new StateText();
   stateText.name = rawText.name;
@@ -85,7 +93,23 @@ class Entity {
 
 class EntityConfig {
   constructor() {
+    this.default;
+    this.disabled = [];
+    this.actions = [];
+    this.rules = {};
+    this.entities = {};
+  }
+}
 
+class EntityConfigRule {
+  constructor() {
+    this.trigger;
+    this.ifAction = [];
+    this.ifState = [];
+    this.setMessage;
+    this.setDisable = [];
+    this.setEnable = [];
+    this.setState; 
   }
 }
 
