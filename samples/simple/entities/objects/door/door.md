@@ -16,10 +16,10 @@ You closed the door.
 
 You opened the door.
 
-## door_already_open
+## door already open
 
 The door is already open.
 
-## door_already_closed
+## door already closed
 
 The door is already closed.

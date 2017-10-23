@@ -93,6 +93,7 @@ function parseRawEntityText(entity, rawText) {
 
   let state;
   let trigger;
+  let text;
 
   // The markdown parser provides an array of items. The first is the
   // string "markdown".
@@ -114,14 +115,16 @@ function parseRawEntityText(entity, rawText) {
       
       if (entry[1].level === 1) {
         state = headerText;
+        text = "";
       } else {
         trigger = headerText;
+        text = "";
       }
     
     // Paragraph. 
     } else if (entryType === "para" && state && trigger) {
-      let paragraphText = entry[1];
-      entity = addTextToState(entity, state, trigger, paragraphText);
+      text += '\n' + entry[1];
+      entity = addTextToState(entity, state, trigger, text.trim());
     }
   }
 
@@ -148,15 +151,15 @@ function addTextToState(entity, state, trigger, text) {
   //    for_state
   //    for_message
   if (trigger.includes('--')) {
-    [fromStateValue, toStateValue] = trigger.split('--').map(s => s.trim());
+    [fromStateValue, toStateValue] = trigger.split('--').map(s => normalizeName(s));
     isBidirectional = true;
     isStateTransition = true;
   } else if (trigger.includes('->')) {
-    [fromStateValue, toStateValue] = trigger.split('->').map(s => s.trim());
+    [fromStateValue, toStateValue] = trigger.split('->').map(s => normalizeName(s));
     isBidirectional = false;
     isStateTransition = true;
   } else {
-    forStateValueOrMessage = trigger.trim();
+    forStateValueOrMessage = normalizeName(trigger);
   }
 
   if (!isStateTransition) {
@@ -182,18 +185,24 @@ function addTextToState(entity, state, trigger, text) {
     }
 
     // For bidirectional state transition (--).
-    if (isBidirectional &&
-        toStateValue in entityState.values &&
+    if (isBidirectional) {
+      if (toStateValue in entityState.values &&
         fromStateValue in entityState.values[toStateValue].relationships) {
         entityState.values[toStateValue].relationships[fromStateValue].text = text;
-    } else {
-      console.log('Text for non-existant state ' + fromStateValue + 
-                  ' or ' + toStateValue + ': ' + text); 
+      } else {
+        console.log('Text for non-existant state ' + fromStateValue + 
+                    ' or ' + toStateValue + ': ' + text); 
+      }
     }
   }
 
   entity.states[state] = entityState;
   return entity;
+}
+
+function normalizeName(string) {
+  // Trim, replace space with underscores.
+  return string.trim().replace(/ /g, '_');
 }
 
 class Entity {

@@ -12,12 +12,12 @@ An entire life that suddenly stops midway through university.
 
 And then this.
 
-### upstairs_hallway
+### upstairs hallway
 
 You are in the upstairs hallway. Paintings line the wall. The door
 to the master bedroom is locked.
 
-### upstairs_hallway -> stairs
+### upstairs hallway -> stairs
 
 You are going down the stairs.
 
@@ -36,7 +36,7 @@ You are at the entrance. That painting covers the hole your dad did when
 he punched it in anger. You didn't know it was there; he showed you, pride
 in his voice.
 
-### living_room
+### living room
 
 You are in the living room. It hasn't changed since your childhood either.
 There's a beautiful large window overlooking the street. Your mom lives in
@@ -65,6 +65,6 @@ You are on the street. A dense white fog blocks out the view of the other
 homes. The air gets thick walking in any direction; you only seem to be
 able to go back to the home.
 
-## door_not_open
+## door not open
 
 The door must be open in order to go in or out of the house.
