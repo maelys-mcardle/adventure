@@ -172,24 +172,25 @@ function addTextToState(entity, state, trigger, text) {
 
   } else {
 
-    if (isBidirectional) {
-      
+    // For unidirectional state transition (->).
+    if (fromStateValue in entityState.values &&
+        toStateValue in entityState.values[fromStateValue].relationships) {
+        entityState.values[fromStateValue].relationships[toStateValue].text = text;
     } else {
+      console.log('Text for non-existant state ' + fromStateValue + 
+                  ' or ' + toStateValue + ': ' + text);
+    }
 
+    // For bidirectional state transition (--).
+    if (isBidirectional &&
+        toStateValue in entityState.values &&
+        fromStateValue in entityState.values[toStateValue].relationships) {
+        entityState.values[toStateValue].relationships[fromStateValue].text = text;
+    } else {
+      console.log('Text for non-existant state ' + fromStateValue + 
+                  ' or ' + toStateValue + ': ' + text); 
     }
   }
-
-
-  //entity.states[state]
-
-  // This is the second paragraph onward under the header.
-  //if (trigger in parsedText[state]) {
-    //parsedText[state][trigger] += '\n' + paragraphText;
-
-  // This is the first paragraph under the header.
-  //} else {
-    //parsedText[state][trigger] = paragraphText;
-  //}
 
   entity.states[state] = entityState;
   return entity;
