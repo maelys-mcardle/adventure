@@ -21,16 +21,16 @@ async function parseEntities(rawStoryEntities) {
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
+    for (let rawEntityStates of rawEntity.states) {
+      entity.states = parseRawEntityStates(entity.states, rawEntityStates);
+    }
+
     for (let rawEntityConfig of rawEntity.config) {
-      entity.config = parseRawEntityConfig(entity.config, rawEntityConfig);
+      //entity.config = parseRawEntityConfig(entity.config, rawEntityConfig);
     }
 
     for (let rawEntityText of rawEntity.text) {
-      entity.text = parseRawEntityText(entity.text, rawEntityText);
-    }
-
-    for (let rawEntityStates of rawEntity.states) {
-      entity.states = parseRawEntityStates(entity.states, rawEntityStates);
+      //entity.text = parseRawEntityText(entity.text, rawEntityText);
     }
 
     // Append this now parsed entity to the list.
@@ -43,26 +43,39 @@ async function parseEntities(rawStoryEntities) {
 function parseRawEntityStates(parsedStates, rawStates)
 {
   for (let graph of rawStates.contents) {
+    let entityState = new EntityState();
+
     let stateName = graph.graph().id;
-    parsedStates[stateName] = {};
+    entityState.name = stateName;
+
     
     // Load all the possible state values.
     for (let stateValue of graph.nodes()) {
-      parsedStates[stateName][stateValue] = [];
+      entityState.values[stateValue] = new EntityStateValue();
+      entityState.values[stateValue].name = stateValue;
     }
 
     // Load all relationships each state value can have;
     // in other words, the list of acceptable states it
     // can transition to.
     for (let stateRelationship of graph.edges()) {
-      parsedStates[stateName][stateRelationship.v].push(stateRelationship.w);
+      let fromState = stateRelationship.v;
+      let toState = stateRelationship.w;
+      let toRelationship = new EntityStateRelationship();
+
+      toRelationship.toState = toState;
+      entityState.values[fromState].relationships.push(toRelationship);
 
       // Relationships between states are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
-        parsedStates[stateName][stateRelationship.w].push(stateRelationship.v);
+        let fromRelationship = new EntityStateRelationship();
+        fromRelationship.toState = fromState;
+        entityState.values[toState].relationships.push(fromRelationship);
       }
     }
+
+    parsedStates[stateName] = entityState;
 
   }
   return parsedStates;
@@ -128,9 +141,39 @@ class Entity {
   constructor() {
     this.name;
     this.path;
-    this.config = {};
-    this.text = {};
     this.states = {};
   }
 }
 
+class EntityState {
+  constructor() {
+    this.name;
+    this.messages = {};
+    this.values = {};
+    this.defaultValue;
+    this.currentValue;
+  }
+}
+
+class EntityStateValue {
+  constructor() {
+    this.name;
+    this.text;
+    this.rules = [];
+    this.relationships = [];
+  }
+}
+
+class EntityStateRelationship {
+  constructor() {
+    this.toState;
+    this.text;
+    this.rules = {};
+  }
+}
+
+class EntityRule {
+  constructor() {
+    this.steps = [];
+  }
+}

@@ -19,9 +19,6 @@ async function loadStory(storyDirectory) {
   // Process the intermediary representation into the final story object.
   let story = await rawToStory.parse(rawStory);
 
-  // Add run-time properties to the story object.
-  story = addPropertiesToStory(story);
-
   return story;
 }
 
