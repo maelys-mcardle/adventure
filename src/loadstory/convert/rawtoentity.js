@@ -22,7 +22,7 @@ async function parseEntities(rawStoryEntities) {
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
     for (let rawEntityStates of rawEntity.states) {
-      entity.states = parseRawEntityStates(entity.states, rawEntityStates);
+      entity = parseRawEntityStates(entity, rawEntityStates);
     }
 
     for (let rawEntityConfig of rawEntity.config) {
@@ -30,7 +30,7 @@ async function parseEntities(rawStoryEntities) {
     }
 
     for (let rawEntityText of rawEntity.text) {
-      //entity.text = parseRawEntityText(entity.text, rawEntityText);
+      entity = parseRawEntityText(entity, rawEntityText);
     }
 
     // Append this now parsed entity to the list.
@@ -40,7 +40,7 @@ async function parseEntities(rawStoryEntities) {
   return entities;
 }
 
-function parseRawEntityStates(parsedStates, rawStates)
+function parseRawEntityStates(entity, rawStates)
 {
   for (let graph of rawStates.contents) {
     let entityState = new EntityState();
@@ -64,21 +64,21 @@ function parseRawEntityStates(parsedStates, rawStates)
       let toRelationship = new EntityStateRelationship();
 
       toRelationship.toState = toState;
-      entityState.values[fromState].relationships.push(toRelationship);
+      entityState.values[fromState].relationships[toState] = toRelationship;
 
       // Relationships between states are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
         let fromRelationship = new EntityStateRelationship();
         fromRelationship.toState = fromState;
-        entityState.values[toState].relationships.push(fromRelationship);
+        entityState.values[toState].relationships[fromState] = fromRelationship;
       }
     }
 
-    parsedStates[stateName] = entityState;
+    entity.states[stateName] = entityState;
 
   }
-  return parsedStates;
+  return entity;
 }
 
 function parseRawEntityConfig(parsedConfig, rawConfig) {
@@ -89,7 +89,7 @@ function parseRawEntityConfig(parsedConfig, rawConfig) {
   return mergedConfig;
 }
 
-function parseRawEntityText(parsedText, rawText) {
+function parseRawEntityText(entity, rawText) {
 
   let state;
   let trigger;
@@ -114,7 +114,6 @@ function parseRawEntityText(parsedText, rawText) {
       
       if (entry[1].level === 1) {
         state = headerText;
-        parsedText[state] = {};
       } else {
         trigger = headerText;
       }
@@ -122,19 +121,78 @@ function parseRawEntityText(parsedText, rawText) {
     // Paragraph. 
     } else if (entryType === "para" && state && trigger) {
       let paragraphText = entry[1];
-
-      // This is the second paragraph onward under the header.
-      if (trigger in parsedText[state]) {
-        parsedText[state][trigger] += '\n' + paragraphText;
-
-      // This is the first paragraph under the header.
-      } else {
-        parsedText[state][trigger] = paragraphText;
-      }
+      entity = addTextToState(entity, state, trigger, paragraphText);
     }
   }
 
-  return parsedText;
+  return entity;
+}
+
+function addTextToState(entity, state, trigger, text) {
+
+  if (!(state in entity.states)) {
+    console.log('Could not find state ' + state + ' for trigger ' + trigger);
+    return entity;
+  }
+
+  let entityState = entity.states[state];
+  let fromStateValue;
+  let toStateValue;
+  let forStateValueOrMessage;
+  let isStateTransition = false;
+  let isBidirectional = false;
+
+  // Triggers can be the following format:
+  //    from_state -- to_state
+  //    from_state -> to_state
+  //    for_state
+  //    for_message
+  if (trigger.includes('--')) {
+    [fromStateValue, toStateValue] = trigger.split('--').map(s => s.trim());
+    isBidirectional = true;
+    isStateTransition = true;
+  } else if (trigger.includes('->')) {
+    [fromStateValue, toStateValue] = trigger.split('->').map(s => s.trim());
+    isBidirectional = false;
+    isStateTransition = true;
+  } else {
+    forStateValueOrMessage = trigger.trim();
+  }
+
+  if (!isStateTransition) {
+
+      // For state.
+      if (forStateValueOrMessage in entityState.values) {
+        entityState.values[forStateValueOrMessage].text = text;
+
+      // For message.
+      } else {
+        entityState.messages[forStateValueOrMessage] = text;
+      }
+
+  } else {
+
+    if (isBidirectional) {
+      
+    } else {
+
+    }
+  }
+
+
+  //entity.states[state]
+
+  // This is the second paragraph onward under the header.
+  //if (trigger in parsedText[state]) {
+    //parsedText[state][trigger] += '\n' + paragraphText;
+
+  // This is the first paragraph under the header.
+  //} else {
+    //parsedText[state][trigger] = paragraphText;
+  //}
+
+  entity.states[state] = entityState;
+  return entity;
 }
 
 class Entity {
@@ -160,7 +218,7 @@ class EntityStateValue {
     this.name;
     this.text;
     this.rules = [];
-    this.relationships = [];
+    this.relationships = {};
   }
 }
 
