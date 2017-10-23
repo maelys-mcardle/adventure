@@ -25,12 +25,12 @@ async function parseEntities(rawStoryEntities) {
       entity = parseRawEntityStates(entity, rawEntityStates);
     }
 
-    for (let rawEntityConfig of rawEntity.config) {
-      //entity.config = parseRawEntityConfig(entity.config, rawEntityConfig);
-    }
-
     for (let rawEntityText of rawEntity.text) {
       entity = parseRawEntityText(entity, rawEntityText);
+    }
+
+    for (let rawEntityConfig of rawEntity.config) {
+      entity = parseRawEntityConfig(entity, rawEntityConfig);
     }
 
     // Append this now parsed entity to the list.
@@ -48,7 +48,6 @@ function parseRawEntityStates(entity, rawStates)
     let stateName = graph.graph().id;
     entityState.name = stateName;
 
-    
     // Load all the possible state values.
     for (let stateValue of graph.nodes()) {
       entityState.values[stateValue] = new EntityStateValue();
@@ -81,12 +80,29 @@ function parseRawEntityStates(entity, rawStates)
   return entity;
 }
 
-function parseRawEntityConfig(parsedConfig, rawConfig) {
+function parseRawEntityConfig(entity, rawConfig) {
 
-  // The raw config is already in the desired format; merge it with
-  // the master config.
-  let mergedConfig = Object.assign({}, parsedConfig, rawConfig.contents);
-  return mergedConfig;
+  for (let stateName of Object.keys(rawConfig.contents)) {
+    if (stateName in entity.states) {
+
+      let config = rawConfig.contents[stateName];
+      let state = entity.states[stateName];
+
+      if ('default' in config) {
+        state.defaultValue = config.default;
+        state.currentValue = config.default;
+      } else {
+        console.log(stateName + " has no default value specified in config.");
+      }
+
+      entity.states[stateName] = state;
+
+    } else {
+      console.log("Could not find state " + stateName + " of configs.");
+    }
+  }
+  
+  return entity;
 }
 
 function parseRawEntityText(entity, rawText) {
@@ -218,6 +234,7 @@ class EntityState {
     this.name;
     this.messages = {};
     this.values = {};
+    this.actions = [];
     this.defaultValue;
     this.currentValue;
   }
@@ -227,8 +244,9 @@ class EntityStateValue {
   constructor() {
     this.name;
     this.text;
-    this.rules = [];
     this.relationships = {};
+    this.childEntities = [];
+    this.rules = [];
   }
 }
 
@@ -236,7 +254,7 @@ class EntityStateRelationship {
   constructor() {
     this.toState;
     this.text;
-    this.rules = {};
+    this.rules = [];
   }
 }
 
