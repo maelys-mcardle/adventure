@@ -12,8 +12,8 @@ module.exports = {
 async function rawToStory(rawStory) {
   let story = new Story();
   story.config = rawStory.config;
-  story.entities = await rawToEntity.parse(rawStory.entities);
   story.actions = await rawToAction.parse(rawStory.actions);
+  story.entities = await rawToEntity.parse(rawStory.entities, story.actions);
 
   return story;
 }

@@ -4,7 +4,7 @@ module.exports = {
   parse: parseEntities
 };
 
-async function parseEntities(rawStoryEntities) {
+async function parseEntities(rawStoryEntities, actions) {
 
   let entities = [];
 
@@ -30,7 +30,7 @@ async function parseEntities(rawStoryEntities) {
     }
 
     for (let rawEntityConfig of rawEntity.config) {
-      entity = parseRawEntityConfig(entity, rawEntityConfig);
+      entity = parseRawEntityConfig(entity, actions, rawEntityConfig);
     }
 
     // Append this now parsed entity to the list.
@@ -80,7 +80,7 @@ function parseRawEntityStates(entity, rawStates)
   return entity;
 }
 
-function parseRawEntityConfig(entity, rawConfig) {
+function parseRawEntityConfig(entity, actions, rawConfig) {
 
   for (let stateName of Object.keys(rawConfig.contents)) {
     if (stateName in entity.states) {
@@ -88,12 +88,8 @@ function parseRawEntityConfig(entity, rawConfig) {
       let config = rawConfig.contents[stateName];
       let state = entity.states[stateName];
 
-      if ('default' in config) {
-        state.defaultValue = config.default;
-        state.currentValue = config.default;
-      } else {
-        console.log(stateName + " has no default value specified in config.");
-      }
+      state = loadConfigDefault(state, config);
+      state = loadConfigActions(state, actions, config);
 
       entity.states[stateName] = state;
 
@@ -103,6 +99,29 @@ function parseRawEntityConfig(entity, rawConfig) {
   }
   
   return entity;
+}
+
+function loadConfigDefault(state, config) {
+  if ('default' in config) {
+    state.defaultValue = config.default;
+    state.currentValue = config.default;
+  } else {
+    console.log(state.name + " has no default value specified in config.");
+  }
+  return state;
+}
+
+function loadConfigActions(state, actions, config) {
+  if ('actions' in config) {
+    for (let action of config.actions) {
+      if (actions.map(a => a.name).includes(action)) {
+        state.actions.push(action);
+      } else {
+        console.log(action + " for " + state.name + " hasn't been defined.");
+      }
+    }
+  }
+  return state;
 }
 
 function parseRawEntityText(entity, rawText) {
@@ -218,7 +237,7 @@ function addTextToState(entity, state, trigger, text) {
 
 function normalizeName(string) {
   // Trim, replace space with underscores.
-  return string.trim().replace(/ /g, '_');
+  return string.trim().toLowerCase().replace(/ /g, '_');
 }
 
 class Entity {
@@ -244,6 +263,7 @@ class EntityStateValue {
   constructor() {
     this.name;
     this.text;
+    this.disabled = false;
     this.relationships = {};
     this.childEntities = [];
     this.rules = [];
