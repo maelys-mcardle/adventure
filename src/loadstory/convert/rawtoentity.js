@@ -91,6 +91,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       state = loadConfigDefault(state, config);
       state = loadConfigActions(state, actions, config);
       state = loadConfigDisabled(state, config);
+      state = loadConfigRules(state, config);
 
       entity.states[stateName] = state;
 
@@ -136,6 +137,10 @@ function loadConfigDisabled(state, config) {
       }
     }
   }
+  return state;
+}
+
+function loadConfigRules(state, config) {
   return state;
 }
 
