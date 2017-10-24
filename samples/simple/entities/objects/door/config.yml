@@ -4,7 +4,7 @@ door:
   rules:
     - open -> closed: 
       - if action: close
-      - set message: door_already_open
+      - message: door_already_open
     - closed -> open:
       - if action: open
-      - set message: door_already_closed
+      - message: door_already_closed

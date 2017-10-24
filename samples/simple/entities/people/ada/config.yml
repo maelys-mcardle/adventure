@@ -4,12 +4,12 @@ conversation:
   disable: [who_are_you_really]
   rules:
     - hello:
-      - set state: idle
+      - state: idle
     - who_are_you:
-      - set disable: [who_are_you]
-      - set enable: [who_are_you_really]
-      - set state: idle
+      - disable: [who_are_you]
+      - enable: [who_are_you_really]
+      - state: idle
     - who_are_you_really:
-      - set state: idle
+      - state: idle
     - where_am_i:
-      - set state: idle
+      - state: idle

@@ -90,6 +90,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
 
       state = loadConfigDefault(state, config);
       state = loadConfigActions(state, actions, config);
+      state = loadConfigDisabled(state, config);
 
       entity.states[stateName] = state;
 
@@ -118,6 +119,20 @@ function loadConfigActions(state, actions, config) {
         state.actions.push(action);
       } else {
         console.log(action + " for " + state.name + " hasn't been defined.");
+      }
+    }
+  }
+  return state;
+}
+
+function loadConfigDisabled(state, config) {
+  if ('disable' in config) {
+    for (let disabledStateValue of config.disable) {
+      if (disabledStateValue in state.values) {
+        state.values[disabledStateValue].disabled = true;
+      } else {
+        console.log("Disabled value " + disabledStateValue + " for " + state.name +
+                    " does not exist.");
       }
     }
   }
