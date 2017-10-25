@@ -2,9 +2,17 @@
 
 class Story {
   constructor(name) {
-    this.config = {};
+    this.config = new Config('Untitled');
     this.entities = [];
     this.actions = [];
+  }
+
+  newConfig(name) {
+    return new Config(name);
+  }
+
+  setConfig(config) {
+    this.config = config;
   }
 
   newEntity(name, path) {
@@ -21,6 +29,14 @@ class Story {
 
   addAction(action) {
     this.actions.push(action);
+  }
+}
+
+class Config {
+  constructor(name) {
+    this.name = name;
+    this.author = '';
+    this.entities = [];
   }
 }
 
