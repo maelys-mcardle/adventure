@@ -2,9 +2,9 @@ door:
   default: closed
   actions: [open, close]
   rules:
-    - open -> closed: 
+    open -> closed: 
       - if action: close
-      - message: door_already_open
-    - closed -> open:
+      - then message: door_already_open
+    closed -> open:
       - if action: open
-      - message: door_already_closed
+      - then message: door_already_closed

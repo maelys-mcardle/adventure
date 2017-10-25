@@ -2,9 +2,9 @@ location:
   default: bedroom
   actions: [go]
   rules:
-    - entrance -- lawn: 
-      - if not state entrance.objects.door: open
-      - message: door_not_open
+    entrance -- lawn: 
+      - if not state: entrance.objects.door:open
+      - then message: door_not_open
   entities:
     entrance:
       - objects.door

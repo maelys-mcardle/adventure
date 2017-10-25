@@ -3,13 +3,13 @@ conversation:
   actions: [say]
   disable: [who_are_you_really]
   rules:
-    - hello:
+    hello:
       - state: idle
-    - who_are_you:
+    who_are_you:
       - disable: [who_are_you]
       - enable: [who_are_you_really]
       - state: idle
-    - who_are_you_really:
+    who_are_you_really:
       - state: idle
-    - where_am_i:
+    where_am_i:
       - state: idle

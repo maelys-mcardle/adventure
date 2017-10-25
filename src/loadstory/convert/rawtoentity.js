@@ -142,26 +142,23 @@ function loadConfigDisabled(state, config) {
 
 function loadConfigRules(state, config) {
   if ('rules' in config) {
-    for (let configRules of config.rules) {
-      for (let rawTrigger of Object.keys(configRules)) {
-        let trigger = parseTrigger(rawTrigger);
-        let ruleBlock = new RuleBlock();
-        ruleBlock.steps = configRules[rawTrigger];
+    for (let rawTrigger of Object.keys(config.rules)) {
+      let trigger = parseTrigger(rawTrigger);
+      let ruleBlock = config.rules[rawTrigger];
 
-        if (!trigger.isTransition) {
-          
-          // For state.
-          if (trigger.left in state.values) {
-            state.values[trigger.left].rules.push(ruleBlock);
-          } else {
-            console.log("Could not find " + trigger.left + " to apply rule to.");
-          }
-    
+      if (!trigger.isTransition) {
+        
+        // For state.
+        if (trigger.left in state.values) {
+          state.values[trigger.left].rules = ruleBlock;
         } else {
-
-          state = applyCallbackToRelationship(state, trigger, r => r.rules.push(ruleBlock));
-  
+          console.log("Could not find " + trigger.left + " to apply rule to.");
         }
+  
+      } else {
+
+        state = applyCallbackToRelationship(state, trigger, 'rules', ruleBlock);
+
       }
     }
   }
@@ -239,7 +236,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 
   } else {
 
-    state = applyCallbackToRelationship(state, trigger, r => r.text = text);
+    state = applyCallbackToRelationship(state, trigger, 'text', text);
 
   }
 
@@ -248,13 +245,13 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 }
 
 
-function applyCallbackToRelationship(state, trigger, callback) {
+function applyCallbackToRelationship(state, trigger, relationshipKey, relationshipValue) {
   
   // For unidirectional state transition (->).
   if (trigger.left in state.values &&
     trigger.right in state.values[trigger.left].relationships) {
       let relationship = state.values[trigger.left].relationships[trigger.right];
-      relationship = callback(relationship);
+      relationship[relationshipKey] = relationshipValue;
       state.values[trigger.left].relationships[trigger.right] = relationship;
   } else {
     console.log('Relationship ' + trigger.left + ' to ' + trigger.right + ' not defined.');
@@ -265,7 +262,7 @@ function applyCallbackToRelationship(state, trigger, callback) {
     if (trigger.right in state.values &&
       trigger.left in state.values[trigger.right].relationships) {
         let relationship = state.values[trigger.right].relationships[trigger.left];
-        relationship = callback(relationship);
+        relationship[relationshipKey] = relationshipValue;
         state.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
       console.log('Relationship ' + trigger.right + ' to ' + trigger.left + ' not defined.');
@@ -345,11 +342,5 @@ class EntityStateRelationship {
     this.toState;
     this.text = '';
     this.rules = [];
-  }
-}
-
-class RuleBlock {
-  constructor() {
-    this.steps = [];
   }
 }
