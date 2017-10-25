@@ -141,6 +141,31 @@ function loadConfigDisabled(state, config) {
 }
 
 function loadConfigRules(state, config) {
+  if ('rules' in config) {
+    for (let configRules of config.rules) {
+      for (let rawTrigger of Object.keys(configRules)) {
+        let trigger = parseTrigger(rawTrigger);
+        let ruleBlock = new RuleBlock();
+        ruleBlock.steps = configRules[rawTrigger];
+
+        if (!trigger.isTransition) {
+          
+          // For state.
+          if (trigger.left in state.values) {
+            state.values[trigger.left].rules.push(ruleBlock);
+          } else {
+            console.log("Could not find " + trigger.left + " to apply rule to.");
+          }
+    
+        } else {
+
+          state = applyCallbackToRelationship(state, trigger, r => r.rules.push(ruleBlock));
+  
+        }
+      }
+    }
+  }
+
   return state;
 }
 
@@ -186,73 +211,98 @@ function parseRawEntityText(entity, rawText) {
   return entity;
 }
 
-function addTextToState(entity, state, trigger, text) {
+function addTextToState(entity, stateName, rawTrigger, text) {
 
-  if (!(state in entity.states)) {
-    console.log('Could not find state ' + state + ' for trigger ' + trigger);
+  if (!(stateName in entity.states)) {
+    console.log('Could not find state ' + stateName + ' for trigger ' + rawTrigger);
     return entity;
   }
 
-  let entityState = entity.states[state];
-  let fromStateValue;
-  let toStateValue;
-  let forStateValueOrMessage;
-  let isStateTransition = false;
-  let isBidirectional = false;
+  let state = entity.states[stateName];
 
-  // Triggers can be the following format:
-  //    from_state -- to_state
-  //    from_state -> to_state
-  //    for_state
-  //    for_message
-  if (trigger.includes('--')) {
-    [fromStateValue, toStateValue] = trigger.split('--').map(s => normalizeName(s));
-    isBidirectional = true;
-    isStateTransition = true;
-  } else if (trigger.includes('->')) {
-    [fromStateValue, toStateValue] = trigger.split('->').map(s => normalizeName(s));
-    isBidirectional = false;
-    isStateTransition = true;
-  } else {
-    forStateValueOrMessage = normalizeName(trigger);
-  }
+  // Triggers have the format:
+  //  left -- right (isTransition, isBidirectional)
+  //  left -> right (isTransition, !isBidirectional)
+  //  left          (!isTransition)
+  let trigger = parseTrigger(rawTrigger);
 
-  if (!isStateTransition) {
+  if (!trigger.isTransition) {
 
       // For state.
-      if (forStateValueOrMessage in entityState.values) {
-        entityState.values[forStateValueOrMessage].text = text;
+      if (trigger.left in state.values) {
+        state.values[trigger.left].text = text;
 
       // For message.
       } else {
-        entityState.messages[forStateValueOrMessage] = text;
+        state.messages[trigger.left] = text;
       }
 
   } else {
 
-    // For unidirectional state transition (->).
-    if (fromStateValue in entityState.values &&
-        toStateValue in entityState.values[fromStateValue].relationships) {
-        entityState.values[fromStateValue].relationships[toStateValue].text = text;
-    } else {
-      console.log('Text for non-existant state ' + fromStateValue + 
-                  ' or ' + toStateValue + ': ' + text);
-    }
+    state = applyCallbackToRelationship(state, trigger, r => r.text = text);
 
-    // For bidirectional state transition (--).
-    if (isBidirectional) {
-      if (toStateValue in entityState.values &&
-        fromStateValue in entityState.values[toStateValue].relationships) {
-        entityState.values[toStateValue].relationships[fromStateValue].text = text;
-      } else {
-        console.log('Text for non-existant state ' + fromStateValue + 
-                    ' or ' + toStateValue + ': ' + text); 
-      }
+  }
+
+  entity.states[stateName] = state;
+  return entity;
+}
+
+
+function applyCallbackToRelationship(state, trigger, callback) {
+  
+  // For unidirectional state transition (->).
+  if (trigger.left in state.values &&
+    trigger.right in state.values[trigger.left].relationships) {
+      let relationship = state.values[trigger.left].relationships[trigger.right];
+      relationship = callback(relationship);
+      state.values[trigger.left].relationships[trigger.right] = relationship;
+  } else {
+    console.log('Relationship ' + trigger.left + ' to ' + trigger.right + ' not defined.');
+  }
+
+  // For bidirectional state transition (--).
+  if (trigger.isBidirectional) {
+    if (trigger.right in state.values &&
+      trigger.left in state.values[trigger.right].relationships) {
+        let relationship = state.values[trigger.right].relationships[trigger.left];
+        relationship = callback(relationship);
+        state.values[trigger.right].relationships[trigger.left] = relationship;
+    } else {
+      console.log('Relationship ' + trigger.right + ' to ' + trigger.left + ' not defined.');
     }
   }
 
-  entity.states[state] = entityState;
-  return entity;
+  return state;
+}
+
+function parseTrigger(trigger) {
+  let left;
+  let right;
+  let isTransition = false;
+  let isBidirectional = false;
+
+  // Triggers can be the following format:
+  //    left -- right (from left to right, right to left)
+  //    left -> right (from left to right)
+  //    left (for only left)
+  if (trigger.includes('--')) {
+    [left, right] = trigger.split('--').map(s => normalizeName(s));
+    isBidirectional = true;
+    isTransition = true;
+  } else if (trigger.includes('->')) {
+    [left, right] = trigger.split('->').map(s => normalizeName(s));
+    isBidirectional = false;
+    isTransition = true;
+  } else {
+    left = normalizeName(trigger);
+  }
+
+  return {
+    left: left,
+    right: right,
+    isTransition: isTransition,
+    isBidirectional: isBidirectional
+  }
 }
 
 function normalizeName(string) {
@@ -282,7 +332,7 @@ class EntityState {
 class EntityStateValue {
   constructor() {
     this.name;
-    this.text;
+    this.text = '';
     this.disabled = false;
     this.relationships = {};
     this.childEntities = [];
@@ -293,12 +343,12 @@ class EntityStateValue {
 class EntityStateRelationship {
   constructor() {
     this.toState;
-    this.text;
+    this.text = '';
     this.rules = [];
   }
 }
 
-class EntityRule {
+class RuleBlock {
   constructor() {
     this.steps = [];
   }
