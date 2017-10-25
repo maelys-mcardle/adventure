@@ -6,10 +6,19 @@ module.exports = {
 
 async function parseConfig(rawConfig, story) {
 
-  // Append this now parsed entity to the list.
-  let config = story.newConfig(rawConfig.name);
+  if ('title' in rawConfig) {
+    story.title = rawConfig.title;
+  }
 
-  story.setConfig(config);
+  if ('author' in rawConfig) {
+    story.author = rawConfig.author;
+  }
+
+  if ('entities' in rawConfig) {
+    for (let entityName of rawConfig.entities) {
+      story.addActiveEntity(entityName);
+    }
+  }
   
   return story;
 }
