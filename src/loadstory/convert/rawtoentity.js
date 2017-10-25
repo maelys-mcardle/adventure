@@ -154,7 +154,7 @@ function loadConfigRules(state, config) {
   
       } else {
 
-        state = applyCallbackToRelationship(state, trigger, 'rules', ruleBlock);
+        state = setRelationshipValue(state, trigger, 'rules', ruleBlock);
 
       }
     }
@@ -219,7 +219,8 @@ function parseRawEntityText(entity, rawText) {
 function addTextToState(entity, stateName, rawTrigger, text) {
 
   if (!(stateName in entity.states)) {
-    console.log('Could not find state ' + stateName + ' for trigger ' + rawTrigger);
+    console.log('Could not find state ' + stateName + 
+      ' for trigger ' + rawTrigger);
     return entity;
   }
 
@@ -244,7 +245,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 
   } else {
 
-    state = applyCallbackToRelationship(state, trigger, 'text', text);
+    state = setRelationshipValue(state, trigger, 'text', text);
 
   }
 
@@ -253,7 +254,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 }
 
 
-function applyCallbackToRelationship(state, trigger, relationshipKey, relationshipValue) {
+function setRelationshipValue(state, trigger, relationshipKey, relationshipValue) {
   
   // For unidirectional state transition (->).
   if (trigger.left in state.values &&
@@ -273,7 +274,8 @@ function applyCallbackToRelationship(state, trigger, relationshipKey, relationsh
         relationship[relationshipKey] = relationshipValue;
         state.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
-      console.log('Relationship ' + trigger.right + ' to ' + trigger.left + ' not defined.');
+      console.log('Relationship ' + trigger.right + ' to ' + 
+        trigger.left + ' not defined.');
     }
   }
 
