@@ -3,6 +3,7 @@
 const fileToRaw = require('./filetoraw');
 const rawToEntity = require('./rawtoentity');
 const rawToAction = require('./rawtoaction');
+const Story = require('./storyclass');
 
 module.exports = {
   parse: rawToStory
@@ -12,17 +13,8 @@ module.exports = {
 async function rawToStory(rawStory) {
   let story = new Story();
   story.config = rawStory.config;
-  story.actions = await rawToAction.parse(rawStory.actions);
-  story.entities = await rawToEntity.parse(rawStory.entities, story.actions);
+  story = await rawToAction.parse(rawStory.actions, story);
+  story = await rawToEntity.parse(rawStory.entities, story);
 
   return story;
-}
-
-class Story {
-  constructor() {
-    this.name;
-    this.config = {};
-    this.entities = [];
-    this.actions = [];
-  }
 }

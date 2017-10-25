@@ -4,26 +4,14 @@ module.exports = {
   parse: parseActions
 };
 
-async function parseActions(rawActions) {
+async function parseActions(rawActions, story) {
 
-  let actions = [];
   for (let rawActionId in rawActions) {
     let rawAction = rawActions[rawActionId];
-    let action = new Action();
-    action.name = rawAction.name;
-    action.path = rawAction.path;
+    let action = story.newAction(rawAction.name, rawAction.path);
     action.action = rawAction.action.contents;
-
-    actions.push(action);
+    story.addAction(action);
   }
 
-  return actions;
-}
-
-class Action {
-  constructor() {
-    this.name;
-    this.path;
-    this.action = {};
-  }
+  return story;
 }

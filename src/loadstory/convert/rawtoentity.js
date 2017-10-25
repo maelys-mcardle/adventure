@@ -4,19 +4,14 @@ module.exports = {
   parse: parseEntities
 };
 
-async function parseEntities(rawStoryEntities, actions) {
-
-  let entities = [];
+async function parseEntities(rawStoryEntities, story) {
 
   // Iterate through each entity.
   for (let entityId in rawStoryEntities) {
-    let entity = new Entity();
-
     // Load the name/path of the entity. This is defined by the
     // directory structure.
     let rawEntity = rawStoryEntities[entityId];
-    entity.name = rawEntity.name;
-    entity.path = rawEntity.path;
+    let entity = story.newEntity(rawEntity.name, rawEntity.path);
 
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
@@ -30,51 +25,47 @@ async function parseEntities(rawStoryEntities, actions) {
     }
 
     for (let rawEntityConfig of rawEntity.config) {
-      entity = parseRawEntityConfig(entity, actions, rawEntityConfig);
+      entity = parseRawEntityConfig(entity, story.actions, rawEntityConfig);
     }
 
     // Append this now parsed entity to the list.
-    entities.push(entity);
+    story.addEntity(entity);
   }
 
-  return entities;
+  return story;
 }
 
 function parseRawEntityStates(entity, rawStates)
 {
   for (let graph of rawStates.contents) {
-    let entityState = new EntityState();
 
     let stateName = graph.graph().id;
-    entityState.name = stateName;
+    let state = entity.newState(stateName);
 
     // Load all the possible state values.
     for (let stateValue of graph.nodes()) {
-      entityState.values[stateValue] = new EntityStateValue();
-      entityState.values[stateValue].name = stateValue;
+      state.addValue(state.newValue(stateValue));
     }
 
     // Load all relationships each state value can have;
     // in other words, the list of acceptable states it
     // can transition to.
     for (let stateRelationship of graph.edges()) {
-      let fromState = stateRelationship.v;
-      let toState = stateRelationship.w;
-      let toRelationship = new EntityStateRelationship();
+      let fromStateValue = stateRelationship.v;
+      let toStateValue = stateRelationship.w;
 
-      toRelationship.toState = toState;
-      entityState.values[fromState].relationships[toState] = toRelationship;
+      state.values[fromStateValue].addRelationship(
+        state.values[fromStateValue].newRelationship(toStateValue));
 
       // Relationships between states are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
-        let fromRelationship = new EntityStateRelationship();
-        fromRelationship.toState = fromState;
-        entityState.values[toState].relationships[fromState] = fromRelationship;
+        state.values[toStateValue].addRelationship(
+          state.values[toStateValue].newRelationship(fromStateValue));
       }
     }
 
-    entity.states[stateName] = entityState;
+    entity.addState(state);
 
   }
   return entity;
@@ -92,6 +83,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       state = loadConfigActions(state, actions, config);
       state = loadConfigDisabled(state, config);
       state = loadConfigRules(state, config);
+      state = loadConfigChildEntities(state, config);
 
       entity.states[stateName] = state;
 
@@ -146,6 +138,11 @@ function loadConfigRules(state, config) {
       let trigger = parseTrigger(rawTrigger);
       let ruleBlock = config.rules[rawTrigger];
 
+      if (!Array.isArray(ruleBlock)) {
+        console.log("Rules for " + rawTrigger + " are not an array.");
+        continue;
+      }
+
       if (!trigger.isTransition) {
         
         // For state.
@@ -163,6 +160,17 @@ function loadConfigRules(state, config) {
     }
   }
 
+  return state;
+}
+
+function loadConfigChildEntities(state, config) {
+  if ('entities' in config) {
+    for (let parentStateValue of Object.keys(config.entities)) {
+      for (let childEntityName of config.entities[parentStateValue]) {
+        state.values[parentStateValue].childEntities.push(childEntityName);
+      }
+    }
+  }
   return state;
 }
 
@@ -305,42 +313,4 @@ function parseTrigger(trigger) {
 function normalizeName(string) {
   // Trim, replace space with underscores.
   return string.trim().toLowerCase().replace(/ /g, '_');
-}
-
-class Entity {
-  constructor() {
-    this.name;
-    this.path;
-    this.states = {};
-  }
-}
-
-class EntityState {
-  constructor() {
-    this.name;
-    this.messages = {};
-    this.values = {};
-    this.actions = [];
-    this.defaultValue;
-    this.currentValue;
-  }
-}
-
-class EntityStateValue {
-  constructor() {
-    this.name;
-    this.text = '';
-    this.disabled = false;
-    this.relationships = {};
-    this.childEntities = [];
-    this.rules = [];
-  }
-}
-
-class EntityStateRelationship {
-  constructor() {
-    this.toState;
-    this.text = '';
-    this.rules = [];
-  }
 }

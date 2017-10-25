@@ -6,6 +6,3 @@ synonyms:
   say:
     - tell
     - speak
-match-input:
-  entity: ask
-  state: closest
