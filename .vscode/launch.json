@@ -9,7 +9,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch loadstory.js",
-      "program": "${workspaceFolder}/src/loadstory/loadstory.js"
+      "program": "${workspaceFolder}/src/parser/loadstory.js"
     }
   ]
 }

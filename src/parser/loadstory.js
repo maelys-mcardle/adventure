@@ -1,8 +1,8 @@
 "use strict";
 
-const loadFiles = require('./loadfiles');
-const fileToRaw = require('./convert/filetoraw');
-const rawToStory = require('./convert/rawtostory');
+const loadFiles = require('./tofile/loadfiles');
+const fileToRaw = require('./toraw/filetoraw');
+const rawToStory = require('./tostory/rawtostory');
 
 module.exports = {
   load: loadStory
@@ -23,5 +23,5 @@ async function loadStory(storyDirectory) {
 }
 
 loadStory('samples/simple').then(story => {
-  console.log(story)
+  console.log(JSON.stringify(story))
 }).catch(reason => console.log(reason))

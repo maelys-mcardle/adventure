@@ -16,7 +16,7 @@ async function parseConfig(rawConfig, story) {
 
   if ('entities' in rawConfig) {
     for (let entityName of rawConfig.entities) {
-      story.addActiveEntity(entityName);
+      story.addCurrentState(entityName);
     }
   }
   
