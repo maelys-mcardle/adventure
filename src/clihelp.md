@@ -20,5 +20,8 @@ Built-in commands
   help
   This help menu.
 
+  quit
+  Quit the game.
+
 Game commands
 -------------

@@ -11,10 +11,10 @@ module.exports = {
 
 function evaluateInput(story, input) {
   let words = input.split(' ');
-  let command = words.shift();
-  let argument = words.join(' ');
+  let command = words.shift().trim();
+  let argument = words.join(' ').trim();
   let output = '';
-
+  
   switch(command) {
     case 'new':
       story = loadNewStory(argument);
@@ -30,6 +30,9 @@ function evaluateInput(story, input) {
       break;
     case 'list':
       list(story, argument);
+      break;
+    case 'quit':
+      quit();
       break;
     default:
       story = runAction(story, input);
@@ -64,6 +67,10 @@ function listActions(story) {
 
 function runAction(story, input) {
 
+}
+
+function quit() {
+  process.exit();
 }
 
 function readHelpFile() {
