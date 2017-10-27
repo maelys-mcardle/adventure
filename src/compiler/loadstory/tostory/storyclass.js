@@ -51,8 +51,8 @@ class EntityState {
     this.messages = {};
     this.values = {};
     this.actions = [];
-    this.defaultValue;
-    this.currentValue;
+    this.defaultValue = null;
+    this.currentValue = null;
   }
 
   newValue(name) {
@@ -96,7 +96,7 @@ class Action {
     this.name = name;
     this.path = path;
     this.templates = [];
-    this.defaultStateValue;
+    this.defaultStateValue = null;
     this.description = '';
   }
 
