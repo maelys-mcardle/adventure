@@ -3,7 +3,7 @@
 const loadStory = require('../compiler/loadstory/loadstory');
 const eligibleActions = require('./eligibleactions');
 
-async function processAction(story, entity, state, newStateValue) {
+function processAction(story, entity, state, newStateValue) {
   let initialState = story;
   let currentState = createCopy(story);
 
@@ -29,8 +29,8 @@ function createCopy(object) {
 // Compare state with initial state.
 // Print messages for state values that have changed.
 
-async function test(directory) {
-  let story = await loadStory.load(directory);
+function test(directory) {
+  let story = loadStory.load(directory);
   let newState = parseInput(story, "go north");
   return newState;
 }

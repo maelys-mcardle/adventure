@@ -11,7 +11,7 @@ module.exports = {
   parse: parseFiles
 };
 
-async function parseFiles(storyFiles) {
+function parseFiles(storyFiles) {
   let storyActions = {}
   let storyEntities = {}
   let storyConfig = {}

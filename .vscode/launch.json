@@ -12,6 +12,22 @@
       "program": "${workspaceFolder}/src/engine/engine.js",
       "args": ["sample/simple"],
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch compilercli.js",
+      "program": "${workspaceFolder}/src/compiler/compilercli.js",
+      "args": ["sample/simple"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch clicommands.js",
+      "program": "${workspaceFolder}/src/clicommands.js",
+      "args": ["sample/simple"],
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

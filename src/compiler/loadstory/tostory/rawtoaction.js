@@ -4,7 +4,7 @@ module.exports = {
   parse: parseActions
 };
 
-async function parseActions(rawActions, story) {
+function parseActions(rawActions, story) {
 
   for (let rawActionId in rawActions) {
     let rawAction = rawActions[rawActionId];

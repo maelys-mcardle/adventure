@@ -9,11 +9,11 @@ module.exports = {
   parse: rawToStory
 };
 
-async function rawToStory(rawStory) {
+function rawToStory(rawStory) {
   let story = new Story();
-  story = await rawToConfig.parse(rawStory.config, story);
-  story = await rawToAction.parse(rawStory.actions, story);
-  story = await rawToEntity.parse(rawStory.entities, story);
+  story = rawToConfig.parse(rawStory.config, story);
+  story = rawToAction.parse(rawStory.actions, story);
+  story = rawToEntity.parse(rawStory.entities, story);
 
   return story;
 }

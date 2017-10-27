@@ -4,7 +4,7 @@ module.exports = {
   parse: parseConfig
 };
 
-async function parseConfig(rawConfig, story) {
+function parseConfig(rawConfig, story) {
 
   if ('title' in rawConfig) {
     story.title = rawConfig.title;

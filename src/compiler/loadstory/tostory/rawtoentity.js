@@ -6,7 +6,7 @@ module.exports = {
   parse: parseEntities
 };
 
-async function parseEntities(rawStoryEntities, story) {
+function parseEntities(rawStoryEntities, story) {
 
   let entities = [];
   
@@ -38,10 +38,10 @@ async function parseEntities(rawStoryEntities, story) {
   }
 
   // All entities loaded. Replace placeholders.
-  entities = await pathToEntity.entityPlaceholderToEntity(entities);
+  entities = pathToEntity.entityPlaceholderToEntity(entities);
 
   // Load active entities into the current state.
-  story = await pathToEntity.loadCurrentStateEntities(story, entities);
+  story = pathToEntity.loadCurrentStateEntities(story, entities);
 
   return story;
 }

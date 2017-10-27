@@ -8,13 +8,13 @@ module.exports = {
   load: loadFiles
 };
 
-async function loadFiles(rootDirectory) {
-  let filePaths = await getFilePaths(rootDirectory);
-  let files = await getFileContents(rootDirectory, filePaths);
+function loadFiles(rootDirectory) {
+  let filePaths = getFilePaths(rootDirectory);
+  let files = getFileContents(rootDirectory, filePaths);
   return files;
 }
 
-async function getFilePaths(rootDirectory) {
+function getFilePaths(rootDirectory) {
 
   let filePaths = [];
   
@@ -34,7 +34,7 @@ async function getFilePaths(rootDirectory) {
   return filePaths;
 }
 
-async function getFileContents(rootDirectory, filePaths) {
+function getFileContents(rootDirectory, filePaths) {
 
   let files = [];
 

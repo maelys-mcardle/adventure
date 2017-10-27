@@ -13,7 +13,5 @@ const argv = require('yargs')
   .alias('h', 'help')
   .argv;
 
-loadStory.loadJson(argv.directory).then(story => {
-  console.log(story);
-}).catch(errorReason => console.log(errorReason));
-
+let story = loadStory.loadJson(argv.directory);
+console.log(story);

@@ -9,24 +9,24 @@ module.exports = {
   loadJson: loadStoryAsJson
 };
 
-async function loadStory(storyDirectory) {
+function loadStory(storyDirectory) {
 
   // Load all the files in the specified directory in memory.
-  let storyFiles = await loadFiles.load(storyDirectory);
+  let storyFiles = loadFiles.load(storyDirectory);
 
   // Parse the file contents to an intermediary representation.
-  let rawStory = await fileToRaw.parse(storyFiles);
+  let rawStory = fileToRaw.parse(storyFiles);
 
   // Process the intermediary representation into the final story object.
-  let story = await rawToStory.parse(rawStory);
+  let story = rawToStory.parse(rawStory);
 
   return story;
 }
 
-async function loadStoryAsJson(directory) {
+function loadStoryAsJson(directory) {
 
   // Load the story.
-  let story = await loadStory(directory);
+  let story = loadStory(directory);
 
   // Serialize the story.
   let storyAsJson = JSON.stringify(story, null, 2);
