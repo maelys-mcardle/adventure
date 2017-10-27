@@ -8,8 +8,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch compiler.js",
-      "program": "${workspaceFolder}/src/compiler/compile.js"
+      "name": "Launch compilercli.js",
+      "program": "${workspaceFolder}/src/compiler/compilercli.js",
+      "args": ["sample/simple"]
     }
   ]
 }
