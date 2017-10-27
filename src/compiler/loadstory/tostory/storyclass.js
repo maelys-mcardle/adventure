@@ -92,21 +92,12 @@ class Action {
     this.name = name;
     this.path = path;
     this.templates = [];
-    this.synonyms = {};
     this.defaultStateValue;
-    this.help = 'No help available for this action.';
+    this.description = '';
   }
 
   addTemplate(template) {
     this.templates.push(template);
-  }
-
-  addSynonym(word, synonym) {
-    if (!(word in this.synonyms)) {
-      this.synonyms[word] = [synonym];
-    } else { 
-      this.synonyms[word].push(synonym);
-    }
   }
 }
 

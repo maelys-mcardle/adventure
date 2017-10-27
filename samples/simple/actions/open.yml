@@ -1,3 +1,4 @@
+description: open an item
 templates:
   - open
   - open @entity

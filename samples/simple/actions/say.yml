@@ -1,3 +1,4 @@
+description: speak to a character
 templates:
   - say @state
   - say @entity @state

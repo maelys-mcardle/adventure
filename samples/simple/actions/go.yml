@@ -1,3 +1,4 @@
+description: travel from place to place
 templates:
   - go @state
   - go to @state
@@ -7,7 +8,3 @@ synonyms:
     - walk
     - head
     - enter
-help: |
-  go [location]
-  run list places to get a list of destinations
-
