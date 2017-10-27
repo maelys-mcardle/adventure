@@ -5,7 +5,7 @@ class Story {
     this.title = 'Untitled';
     this.author = 'Anonymous';
     this.currentState = [];
-    this.actions = [];
+    this.actions = {};
   }
 
   newEntity(name, path) {
@@ -21,7 +21,11 @@ class Story {
   }
 
   addAction(action) {
-    this.actions.push(action);
+    let key = 
+      action.path === '' ? 
+        action.name: 
+        action.path + '.' + action.name;
+    this.actions[key] = action;
   }
 }
 

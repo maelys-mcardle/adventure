@@ -119,7 +119,7 @@ function loadConfigDefault(state, config) {
 function loadConfigActions(state, actions, config) {
   if ('actions' in config) {
     for (let action of config.actions) {
-      if (actions.map(a => a.name).includes(action)) {
+      if (action in actions) {
         state.actions.push(action);
       } else {
         console.log(action + " for " + state.name + " hasn't been defined.");
