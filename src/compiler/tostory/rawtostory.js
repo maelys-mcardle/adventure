@@ -3,7 +3,6 @@
 const rawToConfig = require('./rawtoconfig');
 const rawToEntity = require('./rawtoentity');
 const rawToAction = require('./rawtoaction');
-const pathToEntity = require('./pathtoentity');
 const Story = require('./storyclass');
 
 module.exports = {
@@ -15,7 +14,6 @@ async function rawToStory(rawStory) {
   story = await rawToConfig.parse(rawStory.config, story);
   story = await rawToAction.parse(rawStory.actions, story);
   story = await rawToEntity.parse(rawStory.entities, story);
-  story = await pathToEntity.replacePlaceholdersWithEntities(story);
 
   return story;
 }

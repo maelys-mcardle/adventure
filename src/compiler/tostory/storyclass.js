@@ -5,20 +5,15 @@ class Story {
     this.title = 'Untitled';
     this.author = 'Anonymous';
     this.currentState = [];
-    this.entities = [];
     this.actions = [];
-  }
-
-  addCurrentState(entity) {
-    this.currentState.push(entity);
   }
 
   newEntity(name, path) {
     return new Entity(name, path);
   }
-
-  addEntity(entity) {
-    this.entities.push(entity);
+  
+  addCurrentState(entity) {
+    this.currentState.push(entity);
   }
 
   newAction(name, path) {

@@ -5,7 +5,8 @@ const fileToRaw = require('./toraw/filetoraw');
 const rawToStory = require('./tostory/rawtostory');
 
 module.exports = {
-  load: loadStory
+  load: loadStory,
+  loadJson: loadStoryAsJson
 };
 
 async function loadStory(storyDirectory) {
@@ -22,6 +23,13 @@ async function loadStory(storyDirectory) {
   return story;
 }
 
-loadStory('samples/simple').then(story => {
-  console.log(JSON.stringify(story))
-}).catch(reason => console.log(reason))
+async function loadStoryAsJson(directory) {
+
+  // Load the story.
+  let story = await loadStory(directory);
+
+  // Serialize the story.
+  let storyAsJson = JSON.stringify(story, null, 2);
+
+  return storyAsJson;
+}

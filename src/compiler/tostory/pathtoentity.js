@@ -1,16 +1,11 @@
 "use strict";
 
 module.exports = {
-  replacePlaceholdersWithEntities: replacePlaceholdersWithEntities
+  entityPlaceholderToEntity: entityPlaceholderToEntity,
+  loadCurrentStateEntities: loadCurrentStateEntities
 };
 
-async function replacePlaceholdersWithEntities(story) {
-  story = entityPlaceholderToEntity(story);
-  story = currentStatePlaceholderToEntity(story);
-  return story;
-}
-
-function currentStatePlaceholderToEntity(story) {
+function loadCurrentStateEntities(story, entities) {
 
   if (story.currentState.length === 0) {
     console.log("Story has no entities specified.");
@@ -19,21 +14,21 @@ function currentStatePlaceholderToEntity(story) {
   // Iterate over every active entity.
   for (let entityIndex in story.currentState) {
     let placeholder = story.currentState[entityIndex];
-    let entity = getEntityFromPath(story, placeholder);
+    let entity = getEntityFromPath(entities, placeholder);
     story.currentState[entityIndex] = entity;
   }
 
   return story;
 }
 
-function entityPlaceholderToEntity(story) {
+function entityPlaceholderToEntity(entities) {
 
   // Single pass only.
   // At this point, child entities cannot contain children.
 
   // Iterate over every entity.
-  for (let entityIndex in story.entities) {
-    let entity = story.entities[entityIndex];
+  for (let entityIndex in entities) {
+    let entity = entities[entityIndex];
 
     // Iterate over every entity's state.
     for (let stateName of Object.keys(entity.states)) {
@@ -47,7 +42,7 @@ function entityPlaceholderToEntity(story) {
         for (let childIndex in stateValue.childEntities) {
           let placeholder = stateValue.childEntities[childIndex];
           if (typeof(placeholder) === 'string') {
-            let childEntity = getEntityFromPath(story, placeholder);
+            let childEntity = getEntityFromPath(entities, placeholder);
             stateValue.childEntities[childIndex] = childEntity;
           }
         }
@@ -55,13 +50,13 @@ function entityPlaceholderToEntity(story) {
       }
       entity.states[stateName] = state;
     }
-    story.entities[entityIndex] = entity;
+    entities[entityIndex] = entity;
   }
 
-  return story;
+  return entities;
 }
 
-function getEntityFromPath(story, path) {
+function getEntityFromPath(entities, path) {
   let splitPath = path.split('.');
 
   if (splitPath.length > 0 ) {
@@ -69,7 +64,7 @@ function getEntityFromPath(story, path) {
     let searchName = splitPath.pop();
     let searchPath = splitPath.join('.');
 
-    for (let entity of story.entities) {
+    for (let entity of entities) {
       if (searchName == entity.name &&
           searchPath == entity.path) {
         return entity;

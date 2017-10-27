@@ -1,13 +1,18 @@
 "use strict";
 
+const pathToEntity = require('./pathtoentity');
+
 module.exports = {
   parse: parseEntities
 };
 
 async function parseEntities(rawStoryEntities, story) {
 
+  let entities = [];
+  
   // Iterate through each entity.
   for (let entityId in rawStoryEntities) {
+    
     // Load the name/path of the entity. This is defined by the
     // directory structure.
     let rawEntity = rawStoryEntities[entityId];
@@ -29,8 +34,14 @@ async function parseEntities(rawStoryEntities, story) {
     }
 
     // Append this now parsed entity to the list.
-    story.addEntity(entity);
+    entities.push(entity);
   }
+
+  // All entities loaded. Replace placeholders.
+  entities = await pathToEntity.entityPlaceholderToEntity(entities);
+
+  // Load active entities into the current state.
+  story = await pathToEntity.loadCurrentStateEntities(story, entities);
 
   return story;
 }
