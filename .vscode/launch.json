@@ -8,9 +8,10 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch compilercli.js",
-      "program": "${workspaceFolder}/src/compiler/compilercli.js",
-      "args": ["sample/simple"]
+      "name": "Launch engine.js",
+      "program": "${workspaceFolder}/src/engine/engine.js",
+      "args": ["sample/simple"],
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
