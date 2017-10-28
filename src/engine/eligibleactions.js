@@ -20,36 +20,51 @@ function getEligibleActionExamples(story) {
       // template is: 
       //   action
       if (!hasEntityVariable && !hasStateVariable) {
-        examples.push(template);
+        examples = [template];
 
       // template is: 
       //   action @entity
       } else if (hasEntityVariable && !hasStateVariable) {
-        for (let eligibleEntity of Object.keys(eligibleAction.entities)) {
-          let example = template.replace('@entity', 
-            eligibleEntity.readableName);
-          examples.push(example);
-        }
+        examples = examplesWithEntityTemplate(template, eligibleAction);
 
       // template is:
       //   action @state
       //   action @entity @state
       } else {
-        for (let eligibleEntity of Object.keys(eligibleAction.entities)) {
-          let templateWithEntity = template.replace('@entity', 
-            eligibleEntity.readableName);
-          for (let eligibleStateValues of Object.keys(eligibleEntity)) {
-            let example = templateWithEntity.replace('@state', 
-              eligibleStateValues.readableName);
-            examples.push(example);
-          }
-        }
+        examples = examplesWithStateTemplate(template, eligibleAction);
       }
 
-      eligibleActionExamples[eligibleAction] = examples;
+      eligibleActionExamples[eligibleActionName] = examples;
     }
   }
   return eligibleActionExamples;
+}
+
+function examplesWithEntityTemplate(template, eligibleAction) {
+  let examples = [];
+  for (let entityName of Object.keys(eligibleAction.entities)) {
+    let entity = eligibleAction.entities[entityName];
+    let example = template.replace('@entity', entity.readableName);
+    examples.push(example);
+  }
+  return examples;
+}
+
+function examplesWithStateTemplate(template, eligibleAction) {
+  let examples = [];
+
+  for (let entityName of Object.keys(eligibleAction.entities)) {
+    let entity = eligibleAction.entities[entityName];
+    let templateWithEntity = template.replace('@entity', entity.readableName);
+    
+    for (let valueName of Object.keys(entity.eligibleStateValues)) {
+      let stateValue = entity.eligibleStateValues[valueName];
+      let example = templateWithEntity.replace('@state', stateValue.readableName);
+      examples.push(example);
+    }
+  }
+
+  return examples;
 }
 
 /** Lists the actions that can be performed on the current state. */

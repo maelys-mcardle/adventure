@@ -1,10 +1,10 @@
 # conversation
 
-## hello: Hello
+## hello
 
 Hello, friend.
 
-## idle: Idle
+## idle
 
 The presence looks at you.
 

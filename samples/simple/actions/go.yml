@@ -1,7 +1,7 @@
 description: travel from place to place
 templates:
-  - go @state
   - go to @state
+  - go @state
 synonyms:
   go:
     - travel

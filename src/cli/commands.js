@@ -46,8 +46,8 @@ const builtinCommands = [
     callback: help
   },
   {
-    command: 'quit',
-    description: 'Start a new story',
+    command: 'exit',
+    description: 'Leave the story',
     callback: quit
   },
 ]
@@ -89,7 +89,16 @@ function saveStoryProgress(story, savePath) {
 }
 
 function listActions(story, argument) {
-  let output = toJson(eligibleActions.listExamples(story));
+  let output = 'STORY COMMANDS\n\n';
+  let examples = eligibleActions.listExamples(story);
+
+  for (let actionName of Object.keys(examples)) {
+    output += ' ' + actionName + ':\n';
+    for (let actionExample of examples[actionName]) {
+      output += '  "' + actionExample + '"\n';
+    }
+  }
+
   return [story, output];
 }
 
