@@ -1,8 +1,7 @@
 'use strict';
 
 const repl = require('repl');
-
-const cliCommands = require('./clicommands');
+const cliCommands = require('./cli/commands');
 
 /** Evaluating input. Wrapped in closure for persistence of story. */
 function evaluateInput() {
