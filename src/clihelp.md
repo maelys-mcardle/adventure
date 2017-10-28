@@ -5,7 +5,7 @@ Adventure is a text-adventure game engine.
 
 Built-in commands
 -----------------
-  new [path]   
+  start [path]   
   Start a new game. Specify the directory containing the story files.
 
   load [path]

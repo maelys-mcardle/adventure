@@ -3,21 +3,22 @@
 const fs = require('fs');
 const path = require('path');
 
-const compiler = require('./compiler/loadstory/loadstory');
+const loadStory = require('./compiler/loadstory/loadstory');
+const storyEngine = require('./engine/engine');
 
 module.exports = {
   evaluate: evaluateInput,
 }
 
 function evaluateInput(story, input) {
-  let words = input.split(' ');
-  let command = words.shift().trim();
-  let argument = words.join(' ').trim();
+  let inputWords = input.split(' ');
+  let command = inputWords.shift().trim();
+  let argument = inputWords.join(' ').trim();
   let output = '';
   
   switch(command) {
-    case 'new':
-      story = loadNewStory(argument);
+    case 'start':
+      story = startNewStory(argument);
       break;
     case 'load':
       story = loadStoryProgress(argument);
@@ -29,7 +30,7 @@ function evaluateInput(story, input) {
       output = help(story, argument);
       break;
     case 'list':
-      list(story, argument);
+      output = list(story, argument);
       break;
     case 'quit':
       quit();
@@ -38,11 +39,11 @@ function evaluateInput(story, input) {
       story = runAction(story, input);
   }
   
-  return story, output;
+  return [story, output];
 }
 
-function loadNewStory(storyDirectoryPath) {
-  return compiler.loadStory(storyDirectoryPath);
+function startNewStory(storyDirectoryPath) {
+  return loadStory.load(storyDirectoryPath);
 }
 
 function loadStoryProgress(savePath) {
@@ -62,11 +63,12 @@ function help(story, topic) {
 }
 
 function listActions(story) {
-
+  let output = "list";
+  return output;
 }
 
 function runAction(story, input) {
-
+  story, output = storyEngine.evaluateInput(story, input);
 }
 
 function quit() {
@@ -82,11 +84,10 @@ function readHelpFile() {
 }
 
 function writeFile(path, contents) {
-  fs.writeFile(storyFilePath, storyAsJson, error => {
-    if(error) {
-        return console.log(error);
+  fs.writeFile(path, contents, error => {
+    if (error) {
+      return console.log(error);
     }
-    console.log("Saved to " + storyFilePath);
   });
 }
 

@@ -4,12 +4,14 @@ const repl = require('repl');
 
 const cliCommands = require('./clicommands');
 
-let story = null;
-
-function evaluateInput(command, context, filename, callback) {
-  let output = '';
-  story, output = cliCommands.evaluate(story, command);
-  callback(null, output);
+/** Evaluating input. Wrapped in closure for persistence of story. */
+function evaluateInput() {
+  let story = null;
+  return (command, context, filename, callback) => {
+    let output = '';
+    [story, output] = cliCommands.evaluate(story, command);
+    callback(null, output);
+  }
 }
 
 function formatOutput(output) {
@@ -18,6 +20,6 @@ function formatOutput(output) {
 
 repl.start({ 
   prompt: '> ', 
-  eval: evaluateInput, 
+  eval: evaluateInput(), 
   writer: formatOutput 
 });

@@ -1,7 +1,10 @@
 "use strict";
 
-const loadStory = require('../compiler/loadstory/loadstory');
 const eligibleActions = require('./eligibleactions');
+
+module.exports = {
+  evaluateInput: evaluateInput
+}
 
 function processAction(story, entity, state, newStateValue) {
   let initialState = story;
@@ -10,10 +13,11 @@ function processAction(story, entity, state, newStateValue) {
   return currentState;
 }
 
-function parseInput(story, input) {
+function evaluateInput(story, input) {
   let possibleActions = eligibleActions.list(story.actions, story.currentState);
+  let output = "story action";
 
-  return possibleActions;
+  return story, output;
 }
 
 function createCopy(object) {
@@ -28,13 +32,3 @@ function createCopy(object) {
 
 // Compare state with initial state.
 // Print messages for state values that have changed.
-
-function test(directory) {
-  let story = loadStory.load(directory);
-  let newState = parseInput(story, "go north");
-  return newState;
-}
-
-test('samples/simple').then(output => {
-  console.log(output);
-}).catch(errorReason => console.log(errorReason));
