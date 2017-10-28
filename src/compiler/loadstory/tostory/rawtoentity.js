@@ -248,6 +248,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
       // For state.
       if (trigger.left in state.values) {
         state.values[trigger.left].text = text;
+        state.values[trigger.left].readableName = trigger.readableName;
 
       // For message.
       } else {
@@ -298,32 +299,38 @@ function parseTrigger(trigger) {
   let right;
   let isTransition = false;
   let isBidirectional = false;
+  let readableName;
 
   // Triggers can be the following format:
   //    left -- right (from left to right, right to left)
   //    left -> right (from left to right)
   //    left (for only left)
+  //    left: readableName
+
   if (trigger.includes('--')) {
-    [left, right] = trigger.split('--').map(s => normalizeName(s));
+    [left, right] = trigger.split('--').map(s => s.trim());
     isBidirectional = true;
     isTransition = true;
   } else if (trigger.includes('->')) {
-    [left, right] = trigger.split('->').map(s => normalizeName(s));
+    [left, right] = trigger.split('->').map(s => s.trim());
     isBidirectional = false;
     isTransition = true;
   } else {
-    left = normalizeName(trigger);
+    left = trigger;
+  }
+
+  if (left.includes(':')) {
+    [left, readableName] = left.split(':').map(s => s.trim());
+  } else {
+    readableName = left;
   }
 
   return {
     left: left,
     right: right,
     isTransition: isTransition,
-    isBidirectional: isBidirectional
+    isBidirectional: isBidirectional,
+    readableName: readableName
   }
 }
 
-function normalizeName(string) {
-  // Trim, replace space with underscores.
-  return string.trim().toLowerCase().replace(/ /g, '_');
-}

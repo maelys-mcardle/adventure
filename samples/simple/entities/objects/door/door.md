@@ -1,10 +1,10 @@
 # door
 
-## open
+## open: Open
 
 The door is open.
 
-## closed
+## closed: Closed
 
 The door is closed.
 
@@ -16,10 +16,10 @@ You closed the door.
 
 You opened the door.
 
-## door already open
+## door\_already\_open
 
 The door is already open.
 
-## door already closed
+## door\_already\_closed
 
 The door is already closed.

@@ -67,6 +67,7 @@ class EntityState {
 class EntityStateValue {
   constructor(name) {
     this.name = name;
+    this.readableName = name;
     this.text = '';
     this.disabled = false;
     this.relationships = {};
