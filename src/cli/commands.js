@@ -36,6 +36,11 @@ const builtinCommands = [
     callback: dumpStoryState
   },
   {
+    command: 'describe',
+    description: 'Describe the current situation',
+    callback: describe
+  },
+  {
     command: 'list',
     description: 'List commands for the story',
     callback: listActions
@@ -104,6 +109,10 @@ function listActions(story, argument) {
 
 function dumpStoryState(story, argument) {
   return [story, toJson(story)];
+}
+
+function describe(story, entity) {
+  // entity may or may not be populated.
 }
 
 function runAction(story, input) {
