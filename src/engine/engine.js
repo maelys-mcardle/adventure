@@ -22,8 +22,10 @@ function evaluateInput(story, input) {
 
 function createCopy(object) {
   return JSON.parse(JSON.stringify(object));
-
 }
+
+
+
 // Initial state.
 // Action to change state. Actions relative to current state.
 

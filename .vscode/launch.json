@@ -24,8 +24,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch clicommands.js",
-      "program": "${workspaceFolder}/src/clicommands.js",
+      "name": "Launch scratch.js",
+      "program": "${workspaceFolder}/src/scratch.js",
       "args": ["sample/simple"],
       "cwd": "${workspaceFolder}"
     }

@@ -5,6 +5,7 @@ const path = require('path');
 
 const loadStory = require('../compiler/loadstory/loadstory');
 const storyEngine = require('../engine/engine');
+const eligibleActions = require('../engine/eligibleactions');
 
 module.exports = {
   evaluate: evaluateInput,
@@ -77,27 +78,28 @@ function startNewStory(story, storyDirectoryPath) {
 
 function loadStoryProgress(story, savePath) {
   let storyAsJson = readFile(savePath);
-  story = jsonToStory(storyAsJson);
+  story = fromJson(storyAsJson);
   return [story, 'Loaded ' + story.title];
 }
 
 function saveStoryProgress(story, savePath) {
-  let storyAsJson = storyToJson(story);
+  let storyAsJson = toJson(story);
   writeFile(savePath, storyAsJson);
   return [story, 'Saved ' + story.title];
 }
 
 function listActions(story, argument) {
-  let output = "list";
-  return output;
+  let output = toJson(eligibleActions.listExamples(story));
+  return [story, output];
 }
 
 function dumpStoryState(story, argument) {
-  return [story, storyToJson(story)];
+  return [story, toJson(story)];
 }
 
 function runAction(story, input) {
-  story, output = storyEngine.evaluateInput(story, input);
+  [story, output] = storyEngine.evaluateInput(story, input);
+  return [story, output];
 }
 
 function help(story, argument) {
@@ -128,10 +130,10 @@ function readFile(path) {
   return contents;
 }
 
-function storyToJson(story) {
-  return JSON.stringify(story, null, 2);
+function toJson(object) {
+  return JSON.stringify(object, null, 2);
 }
 
-function jsonToStory(json) {
-  return JSON.parse(json);
+function fromJson(object) {
+  return JSON.parse(object);
 }
