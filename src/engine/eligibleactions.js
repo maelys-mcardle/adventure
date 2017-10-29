@@ -2,6 +2,7 @@
 
 module.exports = {
   list: getEligibleInputs,
+  listArray: getEligibleInputsAsArray,
   listExamples: getEligibleInputExamples
 }
 
@@ -11,6 +12,18 @@ function getEligibleInputExamples(story) {
 
 function getEligibleInputs(story) {
   return getPopulatedTemplates(story, false);
+}
+
+function getEligibleInputsAsArray(story) {
+  let eligibleInputsAsMap = getPopulatedTemplates(story, false);
+  let eligibleInputsAsArray = [];
+
+  for (let actionName of Object.keys(eligibleInputsAsMap)) {
+    let inputs = eligibleInputsAsMap[actionName];
+    eligibleInputsAsArray = eligibleInputsAsArray.concat(inputs);
+  }
+
+  return eligibleInputsAsArray;
 }
 
 function getPopulatedTemplates(story, firstTemplateOnly) {

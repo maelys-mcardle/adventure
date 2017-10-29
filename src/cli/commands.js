@@ -116,8 +116,8 @@ function describe(story, entity) {
 }
 
 function runAction(story, input) {
-  [story, output] = storyEngine.evaluateInput(story, input);
-  return [story, output];
+  let [updatedStory, output] = storyEngine.evaluateInput(story, input);
+  return [updatedStory, output];
 }
 
 function help(story, argument) {
