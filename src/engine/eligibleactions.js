@@ -1,57 +1,68 @@
 'use strict';
 
 module.exports = {
-  list: getEligibleActions,
-  listExamples: getEligibleActionExamples
+  list: getEligibleInputs,
+  listExamples: getEligibleInputExamples
 }
 
-function getEligibleActionExamples(story) {
+function getEligibleInputExamples(story) {
+  return getPopulatedTemplates(story, true);
+}
+
+function getEligibleInputs(story) {
+  return getPopulatedTemplates(story, false);
+}
+
+function getPopulatedTemplates(story, firstTemplateOnly) {
   let eligibleActions = getEligibleActions(story);
-  let eligibleActionExamples = {};
+  let eligibleInputs = {};
 
   for (let eligibleActionName of Object.keys(eligibleActions)) {
     let eligibleAction = eligibleActions[eligibleActionName];
-    if (eligibleAction.action.templates.length) {
-      let template = eligibleAction.action.templates[0];
+    for (let template of eligibleAction.action.templates) {
       let hasStateVariable = template.includes('@state');
       let hasEntityVariable = template.includes('@entity');
-      let examples = [];
+      let inputs = [];
 
       // template is: 
       //   action
       if (!hasEntityVariable && !hasStateVariable) {
-        examples = [template];
+        inputs = [template];
 
       // template is: 
       //   action @entity
       } else if (hasEntityVariable && !hasStateVariable) {
-        examples = examplesWithEntityTemplate(template, eligibleAction);
+        inputs = inputsWithEntityTemplate(template, eligibleAction);
 
       // template is:
       //   action @state
       //   action @entity @state
       } else {
-        examples = examplesWithStateTemplate(template, eligibleAction);
+        inputs = inputsWithStateTemplate(template, eligibleAction);
       }
 
-      eligibleActionExamples[eligibleActionName] = examples;
+      eligibleInputs[eligibleActionName] = inputs;
+
+      if (firstTemplateOnly) {
+        break;
+      }
     }
   }
-  return eligibleActionExamples;
+  return eligibleInputs;
 }
 
-function examplesWithEntityTemplate(template, eligibleAction) {
-  let examples = [];
+function inputsWithEntityTemplate(template, eligibleAction) {
+  let validInputs = [];
   for (let entityName of Object.keys(eligibleAction.entities)) {
     let entity = eligibleAction.entities[entityName];
-    let example = template.replace('@entity', entity.readableName);
-    examples.push(example);
+    let input = template.replace('@entity', entity.readableName);
+    validInputs.push(input);
   }
-  return examples;
+  return validInputs;
 }
 
-function examplesWithStateTemplate(template, eligibleAction) {
-  let examples = [];
+function inputsWithStateTemplate(template, eligibleAction) {
+  let validInputs = [];
 
   for (let entityName of Object.keys(eligibleAction.entities)) {
     let entity = eligibleAction.entities[entityName];
@@ -59,12 +70,12 @@ function examplesWithStateTemplate(template, eligibleAction) {
     
     for (let valueName of Object.keys(entity.eligibleStateValues)) {
       let stateValue = entity.eligibleStateValues[valueName];
-      let example = templateWithEntity.replace('@state', stateValue.readableName);
-      examples.push(example);
+      let input = templateWithEntity.replace('@state', stateValue.readableName);
+      validInputs.push(input);
     }
   }
 
-  return examples;
+  return validInputs;
 }
 
 /** Lists the actions that can be performed on the current state. */

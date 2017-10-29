@@ -14,7 +14,9 @@ function processAction(story, entity, state, newStateValue) {
 }
 
 function evaluateInput(story, input) {
-  let possibleActions = eligibleActions.list(story.actions, story.currentState);
+  
+  let validInputs = eligibleActions.list(story);
+
   let output = "story action";
 
   return story, output;
