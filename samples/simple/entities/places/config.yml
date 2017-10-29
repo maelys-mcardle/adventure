@@ -4,7 +4,7 @@ location:
   rules:
     entrance -- lawn: 
       - if not state: entrance.objects.door.door:open
-      - then message: door_not_open
+      - then message: doorNotOpen
       - then revert: location
   entities:
     entrance:

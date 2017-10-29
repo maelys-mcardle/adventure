@@ -1,15 +1,15 @@
 conversation:
   default: hello
   actions: [say]
-  disable: [who_are_you_really]
+  disable: [whoAreYouReally]
   rules:
     hello:
       - state: idle
-    who_are_you:
-      - disable: [who_are_you]
-      - enable: [who_are_you_really]
+    whoAreYou:
+      - disable: [whoAreYou]
+      - enable: [whoAreYouReally]
       - state: idle
-    who_are_you_really:
+    whoAreYouReally:
       - state: idle
-    where_am_i:
+    whereAmI:
       - state: idle

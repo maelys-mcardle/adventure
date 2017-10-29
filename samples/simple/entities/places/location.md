@@ -16,7 +16,7 @@ And then this.
 
 You are in the bathroom.
 
-### upstairs_hallway: upstairs hallway
+### upstairsHallway: upstairs hallway
 
 You are in the upstairs hallway. Paintings line the wall. The door
 to the master bedroom is locked.
@@ -32,7 +32,7 @@ You are at the entrance. That painting covers the hole your dad did when
 he punched it in anger. You didn't know it was there; he showed you, pride
 in his voice.
 
-### living_room: living room
+### livingRoom: living room
 
 You are in the living room. It hasn't changed since your childhood either.
 There's a beautiful large window overlooking the street. Your mom lives in
@@ -61,7 +61,7 @@ You are on the street. A dense white fog blocks out the view of the other
 homes. The air gets thick walking in any direction; you only seem to be
 able to go back to the home.
 
-### upstairs_hallway -> stairs
+### upstairsHallway -> stairs
 
 You are going down the stairs.
 
@@ -69,6 +69,6 @@ You are going down the stairs.
 
 You are going up the stairs.
 
-## door\_not\_open
+## doorNotOpen
 
 The door must be open in order to go in or out of the house.
