@@ -13,10 +13,11 @@ function evaluateInput(story, input) {
   if (inputMatch.hasMatch) {
 
     [story, output] = processAction(story, 
-      inputMatch.match.action,
-      inputMatch.match.entity,
-      inputMatch.match.state,
-      inputMatch.match.stateValue);
+      inputMatch.match.actionName,
+      inputMatch.match.entityName,
+      inputMatch.match.entityPath,
+      inputMatch.match.stateName,
+      inputMatch.match.stateValueName);
     
     if (!inputMatch.isExactMatch) {
       output = 'Understood "' + inputMatch.match.text + '"\n\n' + output;
@@ -29,11 +30,31 @@ function evaluateInput(story, input) {
   return [story, output];
 }
 
-function processAction(story, action, entity, state, newStateValue) {
-  let initialState = story;
-  let currentState = createCopy(story);
+function processAction(story, actionName, entityName, entityPath,
+  stateName, newStateValueName) {
 
-  return currentState;
+  let updatedStory = createCopy(story);
+
+  updatedStory = executeRules(updatedStory, actionName, entityName, entityPath,
+    stateName, newStateValueName);
+
+  return [updatedStory, ''];
+}
+
+function executeRules(story, actionName, entityName, 
+    entityPath, stateName, newStateValueName) {
+
+  for (let entityIndex in story.currentState) {
+    let entity = story.currentState[entityIndex];
+    if (entity.name == entityName && entity.path == entityPath) {
+      entity.states[stateName].currentValue = newStateValueName;
+    }
+    story.currentState[entityIndex] = entity;
+  }
+
+  // No rules. Change state.
+
+  return story;
 }
 
 function createCopy(object) {

@@ -3,9 +3,9 @@ location:
   actions: [go]
   rules:
     entrance -- lawn: 
-      - if not state: entrance.objects.door.door:open
+      - if not state: entrance.objects.door:door:open
       - then message: doorNotOpen
-      - then revert: location
+      - then cancel: state
   entities:
     entrance:
       - objects.door

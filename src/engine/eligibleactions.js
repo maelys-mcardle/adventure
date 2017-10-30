@@ -97,10 +97,11 @@ function getInputsWithTemplate(template, eligibleAction) {
 
       let eligibleInput = new EligibleInput();
       eligibleInput.text = templateWithState;
-      eligibleInput.action = eligibleAction.action.name;
-      eligibleInput.entity = entity.entityName;
-      eligibleInput.state = entity.stateName;
-      eligibleInput.stateValue = stateValueName;
+      eligibleInput.actionName = eligibleAction.action.name;
+      eligibleInput.entityName = entity.entityName;
+      eligibleInput.entityPath = entity.entityPath;
+      eligibleInput.stateName = entity.stateName;
+      eligibleInput.stateValueName = stateValueName;
       
       validInputs.push(eligibleInput);
     }
@@ -169,10 +170,11 @@ class MatchingInput {
 class EligibleInput {
   constructor() {
     this.text;
-    this.action;
-    this.entity;
-    this.state;
-    this.stateValue;
+    this.actionName;
+    this.entityName;
+    this.entityPath;
+    this.stateName;
+    this.stateValueName;
   }
 }
 
