@@ -97,11 +97,8 @@ function listActions(story, argument) {
   let output = 'STORY COMMANDS\n\n';
   let examples = eligibleActions.listExamples(story);
 
-  for (let actionName of Object.keys(examples)) {
-    output += ' ' + actionName + ':\n';
-    for (let actionExample of examples[actionName]) {
-      output += '  "' + actionExample + '"\n';
-    }
+  for (let actionExample of examples) {
+    output += ' "' + actionExample.text + '"\n';
   }
 
   return [story, output];

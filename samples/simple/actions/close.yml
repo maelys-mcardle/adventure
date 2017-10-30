@@ -1,6 +1,5 @@
 description: close an item
 templates:
-  - close
   - close @entity
 default:
   state: closed

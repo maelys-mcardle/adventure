@@ -1,6 +1,5 @@
 description: open an item
 templates:
-  - open
   - open @entity
 default:
   state: open

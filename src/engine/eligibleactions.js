@@ -1,97 +1,88 @@
 'use strict';
 
 module.exports = {
-  list: getEligibleInputs,
-  listArray: getEligibleInputsAsArray,
+  listAll: getAllEligibleInputs,
   listExamples: getEligibleInputExamples
 }
 
 function getEligibleInputExamples(story) {
-  return getPopulatedTemplates(story, true);
+  return getEligibleInputs(story, true);
 }
 
-function getEligibleInputs(story) {
-  return getPopulatedTemplates(story, false);
+function getAllEligibleInputs(story) {
+  return getEligibleInputs(story, false);
 }
 
-function getEligibleInputsAsArray(story) {
-  let eligibleInputsAsMap = getPopulatedTemplates(story, false);
-  let eligibleInputsAsArray = [];
-
-  for (let actionName of Object.keys(eligibleInputsAsMap)) {
-    let inputs = eligibleInputsAsMap[actionName];
-    eligibleInputsAsArray = eligibleInputsAsArray.concat(inputs);
-  }
-
-  return eligibleInputsAsArray;
-}
-
-function getPopulatedTemplates(story, firstTemplateOnly) {
+function getEligibleInputs(story, firstTemplateOnly) {
   let eligibleActions = getEligibleActions(story);
-  let eligibleInputs = {};
+  let eligibleInputs = [];
 
   for (let eligibleActionName of Object.keys(eligibleActions)) {
     let eligibleAction = eligibleActions[eligibleActionName];
     for (let template of eligibleAction.action.templates) {
-      let hasStateVariable = template.includes('@state');
-      let hasEntityVariable = template.includes('@entity');
-      let inputs = [];
-
-      // template is: 
-      //   action
-      if (!hasEntityVariable && !hasStateVariable) {
-        inputs = [template];
-
-      // template is: 
-      //   action @entity
-      } else if (hasEntityVariable && !hasStateVariable) {
-        inputs = inputsWithEntityTemplate(template, eligibleAction);
-
-      // template is:
-      //   action @state
-      //   action @entity @state
-      } else {
-        inputs = inputsWithStateTemplate(template, eligibleAction);
-      }
-
-      eligibleInputs[eligibleActionName] = inputs;
+      let inputs = getInputsWithTemplate(template, eligibleAction);
+      eligibleInputs = eligibleInputs.concat(inputs);
 
       if (firstTemplateOnly) {
         break;
       }
     }
   }
+
   return eligibleInputs;
 }
 
-function inputsWithEntityTemplate(template, eligibleAction) {
+function getInputsWithTemplate(template, eligibleAction) {
+
   let validInputs = [];
-  for (let entityName of Object.keys(eligibleAction.entities)) {
-    let entity = eligibleAction.entities[entityName];
-    let input = template.replace('@entity', entity.readableName);
-    validInputs.push(input);
+  let hasStateVariable = template.includes('@state');
+  let hasEntityVariable = template.includes('@entity');
+  let eligibleActionEntitiesNames = Object.keys(eligibleAction.entities);
+
+  if (eligibleActionEntitiesNames.length === 0) {
+    return validInputs;
+  } else if (!hasEntityVariable && eligibleActionEntitiesNames.length > 1) {
+    console.log(template + " is ambiguous and can refer to: " + 
+      eligibleActionEntitiesNames.join(', '));
+    return validInputs;
   }
-  return validInputs;
-}
 
-function inputsWithStateTemplate(template, eligibleAction) {
-  let validInputs = [];
-
-  for (let entityName of Object.keys(eligibleAction.entities)) {
+  for (let entityName of eligibleActionEntitiesNames) {
     let entity = eligibleAction.entities[entityName];
+    let stateValues = entity.eligibleStateValues;
+    let stateValueNames = Object.keys(stateValues);
     let templateWithEntity = template.replace('@entity', entity.readableName);
-    
-    for (let valueName of Object.keys(entity.eligibleStateValues)) {
-      let stateValue = entity.eligibleStateValues[valueName];
-      let input = templateWithEntity.replace('@state', stateValue.readableName);
-      validInputs.push(input);
+
+    if (stateValueNames.length === 0) {
+      continue;
+    } else if (!hasStateVariable && stateValueNames.length > 1) {
+      console.log(template + " is ambiguous and can refer to: " + 
+        stateValueNames.join(', '));
+      continue;
+    }
+
+    for (let stateValueName of stateValueNames) {
+      let stateValue = stateValues[stateValueName];
+      let templateWithState = 
+        templateWithEntity.replace('@state', stateValue.readableName);
+
+      let eligibleInput = new EligibleInput();
+      eligibleInput.text = templateWithState;
+      eligibleInput.action = eligibleAction.action.name;
+      eligibleInput.entity = entity.entityName;
+      eligibleInput.state = entity.stateName;
+      eligibleInput.stateValue = stateValueName;
+      
+      validInputs.push(eligibleInput);
     }
   }
 
   return validInputs;
 }
 
-/** Lists the actions that can be performed on the current state. */
+/** Lists the actions that can be performed on the current state, 
+ * and the states and entities they can be performed on.
+ */
 function getEligibleActions(story) {
   let eligibleActions = {};
 
@@ -134,6 +125,16 @@ function addEligibleAction(eligibleActions, actions, actionName, entityName,
   }
 
   return eligibleActions;
+}
+
+class EligibleInput {
+  constructor() {
+    this.text;
+    this.action;
+    this.entity;
+    this.state;
+    this.stateValue;
+  }
 }
 
 class EligibleAction {
