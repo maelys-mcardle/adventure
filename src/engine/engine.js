@@ -1,32 +1,39 @@
 "use strict";
 
-const didYouMean = require('didyoumean');
-
 const eligibleActions = require('./eligibleactions');
 
 module.exports = {
   evaluateInput: evaluateInput
 }
 
-function processAction(story, entity, state, newStateValue) {
+function evaluateInput(story, input) {
+  let output = 'Command not recognized.';
+  let inputMatch = eligibleActions.matchInput(story, input);
+
+  if (inputMatch.hasMatch) {
+
+    [story, output] = processAction(story, 
+      inputMatch.match.action,
+      inputMatch.match.entity,
+      inputMatch.match.state,
+      inputMatch.match.stateValue);
+    
+    if (!inputMatch.isExactMatch) {
+      output = 'Understood "' + inputMatch.match.text + '"\n\n' + output;
+    }
+
+  } else if (inputMatch.hasSuggestion) {
+    output = 'Did you mean "' + inputMatch.suggestion + '"?';
+  }
+
+  return [story, output];
+}
+
+function processAction(story, action, entity, state, newStateValue) {
   let initialState = story;
   let currentState = createCopy(story);
 
   return currentState;
-}
-
-function evaluateInput(story, input) {
-  
-  let validInputs = eligibleActions.listArray(story);
-  let closestInput = didYouMean(input, validInputs);
-  let output = closestInput;
-
-  if (closestInput === null) {
-    output = 'The command was not understood. ' +
-      'Use "help" and "list" for valid commands.';
-  }
-
-  return [story, output];
 }
 
 function createCopy(object) {

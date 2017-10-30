@@ -88,13 +88,23 @@ function loadStoryProgress(story, savePath) {
 }
 
 function saveStoryProgress(story, savePath) {
+
+  if (story == null) {
+    return [story, 'Load a story first.']
+  }
+
   let storyAsJson = toJson(story);
   writeFile(savePath, storyAsJson);
   return [story, 'Saved ' + story.title];
 }
 
 function listActions(story, argument) {
-  let output = 'STORY COMMANDS\n\n';
+
+  if (story == null) {
+    return [story, 'Load a story first.']
+  }
+
+  let output = 'STORY COMMANDS\n\n';  
   let examples = eligibleActions.listExamples(story);
 
   for (let actionExample of examples) {
@@ -113,6 +123,11 @@ function describe(story, entity) {
 }
 
 function runAction(story, input) {
+
+  if (story == null) {
+    return [story, 'Command not recognized.']
+  }
+
   let [updatedStory, output] = storyEngine.evaluateInput(story, input);
   return [updatedStory, output];
 }

@@ -1,8 +1,37 @@
 'use strict';
 
+const stringSimilarity = require('string-similarity');
+
 module.exports = {
+  matchInput: matchInputToAction,
   listAll: getAllEligibleInputs,
   listExamples: getEligibleInputExamples
+}
+
+/** Matches user input to an action. */
+function matchInputToAction(story, input) {
+
+  let matchingInput = new MatchingInput();
+  let eligibleInputs = getAllEligibleInputs(story, input);
+
+  let bestMatch = stringSimilarity.findBestMatch(input.trim(),
+    eligibleInputs.map(i => i.text)).bestMatch;
+
+  if (bestMatch.rating > 0.9) {
+    for (let eligibleAction of eligibleInputs) {
+      if (bestMatch.target === eligibleAction.text) {
+        matchingInput.match = eligibleAction;
+        matchingInput.hasMatch = true;
+        matchingInput.isExactMatch = bestMatch.rating === 1.0;
+        break;
+      }
+    }
+  } else if (bestMatch.rating > 0.5) {
+    matchingInput.suggestion = bestMatch.target;
+    matchingInput.hasSuggestion = true;
+  }
+
+  return matchingInput;
 }
 
 function getEligibleInputExamples(story) {
@@ -125,6 +154,16 @@ function addEligibleAction(eligibleActions, actions, actionName, entityName,
   }
 
   return eligibleActions;
+}
+
+class MatchingInput {
+  constructor() {
+    this.match;
+    this.hasMatch = false;
+    this.isExactMatch = false;
+    this.hasSuggestion = false;
+    this.suggestion = '';
+  }
 }
 
 class EligibleInput {
