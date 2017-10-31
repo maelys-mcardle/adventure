@@ -77,14 +77,20 @@ function evaluateInput(story, input) {
 }
 
 function startNewStory(story, storyDirectoryPath) {
-  story = loadStory.load(storyDirectoryPath);
-  return [story, 'Loaded ' + story.title];
+  let loadedStory = loadStory.load(storyDirectoryPath);
+  let output = 'Loaded ' + loadedStory.title + '\n\n' +
+    storyEngine.describeCurrentState(loadedStory) + '\n\n' +
+    listEligibleActions(loadedStory);
+  return [loadedStory, output];
 }
 
 function loadStoryProgress(story, savePath) {
   let storyAsJson = readFile(savePath);
-  story = fromJson(storyAsJson);
-  return [story, 'Loaded ' + story.title];
+  let loadedStory = fromJson(storyAsJson);
+  let output = 'Loaded ' + loadedStory.title + '\n\n' +
+    storyEngine.describeCurrentState(loadedStory) + '\n\n' +
+    listEligibleActions(loadedStory);
+  return [loadedStory, output];
 }
 
 function saveStoryProgress(story, savePath) {
@@ -104,12 +110,7 @@ function listActions(story, argument) {
     return [story, 'Load a story first.']
   }
 
-  let output = 'STORY COMMANDS\n\n';  
-  let examples = eligibleActions.listExamples(story);
-
-  for (let actionExample of examples) {
-    output += ' "' + actionExample.text + '"\n';
-  }
+  let output = listEligibleActions(story);
 
   return [story, output];
 }
@@ -119,7 +120,8 @@ function dumpStoryState(story, argument) {
 }
 
 function describe(story, entity) {
-  // entity may or may not be populated.
+  let output = storyEngine.describeCurrentState(story);
+  return [story, output];
 }
 
 function runAction(story, input) {
@@ -129,7 +131,16 @@ function runAction(story, input) {
   }
 
   let [updatedStory, output] = storyEngine.evaluateInput(story, input);
+  output += '\n\n' + listEligibleActions(updatedStory);
+
   return [updatedStory, output];
+}
+
+function listEligibleActions(story) {
+  let possibleActions = eligibleActions.listExamples(story);
+  let output = 'You can:\n' + 
+    possibleActions.map(a => ' ' + a.text).join('\n');
+  return output;
 }
 
 function help(story, argument) {

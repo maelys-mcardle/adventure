@@ -1,9 +1,16 @@
 "use strict";
 
 const eligibleActions = require('./eligibleactions');
+const describeState = require('./describestate');
 
 module.exports = {
-  evaluateInput: evaluateInput
+  evaluateInput: evaluateInput,
+  describeCurrentState: describeCurrentState
+}
+
+function describeCurrentState(story) {
+  let output = describeState.getAll(story).join('\n\n');
+  return output;
 }
 
 function evaluateInput(story, input) {
@@ -39,7 +46,8 @@ function executeAction(initialStory, actionName, entityName, entityPath,
     entityName, entityPath,
     stateName, newStateValueName);
 
-  let output = textForStateDifference(initialStory, updatedStory);
+  let paragraphs = describeState.getDelta(initialStory, updatedStory);
+  let output = paragraphs.join('\n\n');
   
   return [updatedStory, output];
 }
