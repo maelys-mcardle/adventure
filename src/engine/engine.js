@@ -12,7 +12,7 @@ function evaluateInput(story, input) {
 
   if (inputMatch.hasMatch) {
 
-    [story, output] = processAction(story, 
+    [story, output] = executeAction(story, 
       inputMatch.match.actionName,
       inputMatch.match.entityName,
       inputMatch.match.entityPath,
@@ -30,19 +30,24 @@ function evaluateInput(story, input) {
   return [story, output];
 }
 
-function processAction(story, actionName, entityName, entityPath,
+function executeAction(initialStory, actionName, entityName, entityPath,
   stateName, newStateValueName) {
 
-  let updatedStory = createCopy(story);
-
-  updatedStory = executeRules(updatedStory, actionName, entityName, entityPath,
+  let [updatedStory, messages] = executeRules(
+    createCopy(initialStory), 
+    actionName, 
+    entityName, entityPath,
     stateName, newStateValueName);
 
-  return [updatedStory, ''];
+  let output = textForStateDifference(initialStory, updatedStory);
+  
+  return [updatedStory, output];
 }
 
 function executeRules(story, actionName, entityName, 
     entityPath, stateName, newStateValueName) {
+
+  let messages = [];
 
   for (let entityIndex in story.currentState) {
     let entity = story.currentState[entityIndex];
@@ -54,7 +59,11 @@ function executeRules(story, actionName, entityName,
 
   // No rules. Change state.
 
-  return story;
+  return [story, messages];
+}
+
+function textForStateDifference(initialStory, finalStory) {
+  return '';
 }
 
 function createCopy(object) {

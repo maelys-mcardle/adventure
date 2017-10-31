@@ -130,8 +130,8 @@ function getEligibleActions(story) {
         }
 
         eligibleActions = addEligibleAction(eligibleActions, story.actions, 
-          actionName, entity.name, stateName, currentStateValue.name, 
-          eligibleStateValues);
+          actionName, entity.name, entity.path, stateName, 
+          currentStateValue.name, eligibleStateValues);
       }
     }
   }
@@ -140,7 +140,7 @@ function getEligibleActions(story) {
 }
 
 function addEligibleAction(eligibleActions, actions, actionName, entityName, 
-  stateName, currentStateValue, eligibleStateValues) {
+  entityPath, stateName, currentStateValue, eligibleStateValues) {
 
   if (!(actionName in eligibleActions)) {
     let action = actions[actionName];
@@ -148,7 +148,9 @@ function addEligibleAction(eligibleActions, actions, actionName, entityName,
   }
 
   if (!(entityName in eligibleActions[actionName].entities)) {
-    let eligibleEntity = new EligibleActionEntity(entityName, stateName);
+    let eligibleEntity = new EligibleActionEntity(
+      entityName, entityPath, stateName);
+
     eligibleEntity.eligibleStateValues = eligibleStateValues;
     eligibleEntity.currentStateValue = currentStateValue;
     eligibleActions[actionName].entities[entityName] = eligibleEntity;
@@ -186,8 +188,9 @@ class EligibleAction {
 }
 
 class EligibleActionEntity {
-  constructor(entityName, stateName) {
+  constructor(entityName, entityPath, stateName) {
     this.entityName = entityName;
+    this.entityPath = entityPath;
     this.stateName = stateName;
     this.currentStateValue = null;
     this.eligibleStateValues = {};
