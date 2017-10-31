@@ -2,8 +2,21 @@
 
 module.exports = {
   getDelta: getStateDeltaText,
-  getEntity: getStateEntityText,
+  getEntity: getAllEntityText,
   getAll: getAllStateText
+}
+
+const MAX_RECURSION = 5;
+
+function getAllStateText(story) {
+  let text = [];
+
+  for (let entityIndex in story.currentState) {
+    let entity = story.currentState[entityIndex];
+    text = text.concat(getAllEntityText(entity, 0));
+  }
+
+  return text;
 }
 
 function getStateDeltaText(oldStory, newStory) {
@@ -16,11 +29,10 @@ function getStateDeltaText(oldStory, newStory) {
     for (let stateName of Object.keys(oldEntity.states)) {
       let oldValue = oldEntity.states[stateName].currentValue;
       let newValue = newEntity.states[stateName].currentValue;
-      let newState = newEntity.states[stateName];
 
       if (oldValue != newValue) {
-        let stateValueText = getStateValueText(newState, newValue);
-        text.push(stateValueText);
+        let stateValueText = getAllEntityText(newEntity, 0);
+        text = text.concat(stateValueText);
       }
     }
   }
@@ -28,29 +40,27 @@ function getStateDeltaText(oldStory, newStory) {
   return text;
 }
 
-function getAllStateText(story) {
+function getAllEntityText(entity, recursion) {
   let text = [];
 
-  for (let entityIndex in story.currentState) {
-    let entity = story.currentState[entityIndex];
+  if (recursion >= MAX_RECURSION) {
+    console.log('Maximum recursion depth exceeded.');
+    return text;
+  }
 
-    for (let stateName of Object.keys(entity.states)) {
-      let state = entity.states[stateName];
-      let value = state.currentValue;
+  for (let stateName of Object.keys(entity.states)) {
+    let state = entity.states[stateName];
+    let value = state.currentValue;
 
-      let stateValueText = getStateValueText(state, value);
-      text.push(stateValueText);
+    let stateValueText = state.values[value].text;
+    text.push(stateValueText);
+
+    for (let childEntity of state.values[value].childEntities) {
+      let childEntityText = getAllEntityText(childEntity, recursion + 1);
+      text = text.concat(childEntityText);
     }
+
   }
 
   return text;
-}
-
-function getStateValueText(state, valueName) {
-  let text = state.values[valueName].text;
-  return text;
-}
-
-function getStateEntityText(story, entityName) {
-
 }

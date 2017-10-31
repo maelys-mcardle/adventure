@@ -131,6 +131,7 @@ function runAction(story, input) {
   }
 
   let [updatedStory, output] = storyEngine.evaluateInput(story, input);
+
   output += '\n\n' + listEligibleActions(updatedStory);
 
   return [updatedStory, output];
