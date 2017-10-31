@@ -2,6 +2,8 @@
 
 const stringSimilarity = require('string-similarity');
 
+const constants = require('./constants');
+
 module.exports = {
   matchInput: matchInputToAction,
   listAll: getAllEligibleInputs,
@@ -117,44 +119,62 @@ function getEligibleActions(story) {
   let eligibleActions = {};
 
   for (let entity of story.currentState) {
-    for (let stateName of Object.keys(entity.states)) {
-      let state = entity.states[stateName];
-      for (let actionName of state.actions) {
-        let currentStateValue = state.values[state.currentValue];
-        let eligibleStateValuesNames = Object.keys(currentStateValue.relationships);
-        let eligibleStateValues = {};
+    let entityActions = getEligibleActionsFromEntity(story.actions, entity, 0);
+    eligibleActions = Object.assign(eligibleActions, entityActions);
+  }
 
-        for (let valueName of eligibleStateValuesNames) {
-          let value = state.values[valueName];
-          eligibleStateValues[value.name] = value;
+  return eligibleActions;
+}
+
+function getEligibleActionsFromEntity(actions, entity, recursion) {
+  let eligibleActions = {};
+
+  if (recursion >= constants.MAX_RECURSION) {
+    console.log('Maximum recursion depth exceeded.');
+    return eligibleActions;
+  }
+
+  for (let stateName of Object.keys(entity.states)) {
+    let state = entity.states[stateName];
+    for (let actionName of state.actions) {
+      let currentStateValue = state.values[state.currentValue];
+      let eligibleStateValuesNames = Object.keys(currentStateValue.relationships);
+      let eligibleStateValues = {};
+
+      for (let valueName of eligibleStateValuesNames) {
+        let value = state.values[valueName];
+        eligibleStateValues[value.name] = value;
+
+        for (let childEntity of value.childEntities) {
+          let childActions = getEligibleActionsFromEntity(
+            actions, entity, recursion + 1);
+          eligibleActions = Object.assign(eligibleActions, childActions);
         }
-
-        eligibleActions = addEligibleAction(eligibleActions, story.actions, 
-          actionName, entity.name, entity.path, stateName, 
-          currentStateValue.name, eligibleStateValues);
       }
+
+      eligibleActions = addEligibleAction(eligibleActions, actions, 
+        actionName, entity, stateName, 
+        currentStateValue.name, eligibleStateValues);
     }
   }
 
   return eligibleActions;
 }
 
-function addEligibleAction(eligibleActions, actions, actionName, entityName, 
-  entityPath, stateName, currentStateValue, eligibleStateValues) {
+function addEligibleAction(eligibleActions, actions, actionName, 
+  entity, stateName, currentStateValue, eligibleStateValues) {
 
   if (!(actionName in eligibleActions)) {
     let action = actions[actionName];
     eligibleActions[actionName] = new EligibleAction(action);
   }
 
-  if (!(entityName in eligibleActions[actionName].entities)) {
-    let eligibleEntity = new EligibleActionEntity(
-      entityName, entityPath, stateName);
+  let eligibleEntity = new EligibleActionEntity(
+    entity.name, entity.path, stateName);
 
-    eligibleEntity.eligibleStateValues = eligibleStateValues;
-    eligibleEntity.currentStateValue = currentStateValue;
-    eligibleActions[actionName].entities[entityName] = eligibleEntity;
-  }
+  eligibleEntity.eligibleStateValues = eligibleStateValues;
+  eligibleEntity.currentStateValue = currentStateValue;
+  eligibleActions[actionName].entities[entity.name] = eligibleEntity;
 
   return eligibleActions;
 }

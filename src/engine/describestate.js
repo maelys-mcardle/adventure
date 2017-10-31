@@ -6,7 +6,7 @@ module.exports = {
   getAll: getAllStateText
 }
 
-const MAX_RECURSION = 5;
+const constants = require('./constants');
 
 function getAllStateText(story) {
   let text = [];
@@ -43,7 +43,7 @@ function getStateDeltaText(oldStory, newStory) {
 function getAllEntityText(entity, recursion) {
   let text = [];
 
-  if (recursion >= MAX_RECURSION) {
+  if (recursion >= constants.MAX_RECURSION) {
     console.log('Maximum recursion depth exceeded.');
     return text;
   }
