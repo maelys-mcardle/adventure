@@ -43,6 +43,14 @@ function entityPlaceholderToEntity(entities) {
           let placeholder = stateValue.childEntities[childIndex];
           if (typeof(placeholder) === 'string') {
             let childEntity = getEntityFromPath(entities, placeholder);
+
+            // child path is:
+            //  parentPath.parentName.parentState.paarentStateValue.childPath
+            let childPath = 
+              [entity.path, entity.name, stateName, stateValueName, 
+                childEntity.path].filter(s => s != '').join('.');
+
+            childEntity.path = childPath;
             stateValue.childEntities[childIndex] = childEntity;
           }
         }
