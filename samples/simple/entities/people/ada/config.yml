@@ -4,12 +4,12 @@ conversation:
   disable: [whoAreYouReally]
   rules:
     hello:
-      - state: idle
+      - state: nothing
     whoAreYou:
       - disable: [whoAreYou]
       - enable: [whoAreYouReally]
-      - state: idle
+      - state: nothing
     whoAreYouReally:
-      - state: idle
+      - state: nothing
     whereAmI:
-      - state: idle
+      - state: nothing

@@ -4,7 +4,7 @@
 
 Ada tells you "Hello, friend."
 
-## idle
+## nothing
 
 The presence looks at you.
 

@@ -82,7 +82,7 @@ function getInputsWithTemplate(template, eligibleAction) {
     let entity = eligibleAction.entities[entityName];
     let stateValues = entity.eligibleStateValues;
     let stateValueNames = Object.keys(stateValues);
-    let templateWithEntity = template.replace('@entity', entity.readableName);
+    let templateWithEntity = template.replace('@entity', entity.entityName);
 
     if (stateValueNames.length === 0) {
       continue;
