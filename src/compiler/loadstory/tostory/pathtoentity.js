@@ -5,6 +5,8 @@ module.exports = {
   loadCurrentStateEntities: loadCurrentStateEntities
 };
 
+const MAX_RECURSION = 5;
+
 function loadCurrentStateEntities(story, entities) {
 
   if (story.currentState.length === 0) {
@@ -23,45 +25,56 @@ function loadCurrentStateEntities(story, entities) {
 
 function entityPlaceholderToEntity(entities) {
 
-  // Single pass only.
-  // At this point, child entities cannot contain children.
-
   // Iterate over every entity.
   for (let entityIndex in entities) {
     let entity = entities[entityIndex];
-
-    // Iterate over every entity's state.
-    for (let stateName of Object.keys(entity.states)) {
-      let state = entity.states[stateName];
-
-      // Iterate over every entity's state values.
-      for (let stateValueName of Object.keys(state.values)) {
-        let stateValue = state.values[stateValueName];
-
-        // Iterate over all child entities in the state values.
-        for (let childIndex in stateValue.childEntities) {
-          let placeholder = stateValue.childEntities[childIndex];
-          if (typeof(placeholder) === 'string') {
-            let childEntity = getEntityFromPath(entities, placeholder);
-
-            // child path is:
-            //  parentPath.parentName.parentState.paarentStateValue.childPath
-            let childPath = 
-              [entity.path, entity.name, stateName, stateValueName, 
-                childEntity.path].filter(s => s != '').join('.');
-
-            childEntity.path = childPath;
-            stateValue.childEntities[childIndex] = childEntity;
-          }
-        }
-        state.values[stateValueName] = stateValue;
-      }
-      entity.states[stateName] = state;
-    }
+    entity = updateEntityPlaceholders(entities, entity, 0);
     entities[entityIndex] = entity;
   }
 
   return entities;
+}
+
+function updateEntityPlaceholders(entities, entity, recursion) {
+  
+  if (recursion >= MAX_RECURSION) {
+    console.log('Max recursion exceeded.');
+    return entity;
+  }
+      
+  // Iterate over every entity's state.
+  for (let stateName of Object.keys(entity.states)) {
+    let state = entity.states[stateName];
+
+    // Iterate over every entity's state values.
+    for (let stateValueName of Object.keys(state.values)) {
+      let stateValue = state.values[stateValueName];
+
+      // Iterate over all child entities in the state values.
+      for (let childIndex in stateValue.childEntities) {
+        let placeholder = stateValue.childEntities[childIndex];
+        if (typeof(placeholder) === 'string') {
+          let childEntity = getEntityFromPath(entities, placeholder);
+
+          // child path is:
+          //  parentPath.parentName.parentState.parentStateValue.childPath
+          let childPath = 
+            [entity.path, entity.name, stateName, stateValueName, 
+              childEntity.path].filter(s => s != '').join('.');
+
+          childEntity.path = childPath;
+          childEntity = updateEntityPlaceholders(entities, 
+            childEntity, recursion + 1);
+          
+          stateValue.childEntities[childIndex] = childEntity;
+        }
+      }
+      state.values[stateValueName] = stateValue;
+    }
+    entity.states[stateName] = state;
+  }
+  
+  return entity;
 }
 
 function getEntityFromPath(entities, path) {
