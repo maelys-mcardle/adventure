@@ -1,5 +1,6 @@
 description: travel from place to place
 templates:
+  - go to the @state
   - go to @state
   - go @state
 synonyms:
