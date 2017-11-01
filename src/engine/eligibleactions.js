@@ -144,17 +144,17 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
       for (let valueName of eligibleStateValuesNames) {
         let value = state.values[valueName];
         eligibleStateValues[value.name] = value;
-
-        for (let childEntity of value.childEntities) {
-          let childActions = getEligibleActionsFromEntity(
-            actions, entity, recursion + 1);
-          eligibleActions = Object.assign(eligibleActions, childActions);
-        }
       }
 
       eligibleActions = addEligibleAction(eligibleActions, actions, 
         actionName, entity, stateName, 
         currentStateValue.name, eligibleStateValues);
+
+      for (let childEntity of currentStateValue.childEntities) {
+        let childActions = getEligibleActionsFromEntity(
+          actions, childEntity, recursion + 1);
+        eligibleActions = Object.assign(eligibleActions, childActions);
+      }
     }
   }
 

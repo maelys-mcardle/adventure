@@ -1,5 +1,5 @@
 location:
-  default: bedroom
+  default: entrance
   actions: [go]
   rules:
     entrance -- lawn: 
