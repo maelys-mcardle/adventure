@@ -1,7 +1,7 @@
 digraph conversation {
-    hello -> idle
-    idle -> hello
-    idle -> whoAreYou
-    idle -> whoAreYouReally
-    idle -> whereAmI
+    hello -> nothing
+    nothing -> hello
+    nothing -> whoAreYou
+    nothing -> whoAreYouReally
+    nothing -> whereAmI
 }
