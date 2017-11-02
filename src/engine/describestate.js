@@ -25,14 +25,39 @@ function getStateDeltaText(oldStory, newStory) {
   for (let entityIndex in oldStory.currentState) {
     let oldEntity = oldStory.currentState[entityIndex];
     let newEntity = newStory.currentState[entityIndex];
+    let entityText = getEntityDeltaText(oldEntity, newEntity, 0);
+    text = text.concat(entityText);
+  }
 
-    for (let stateName of Object.keys(oldEntity.states)) {
-      let oldValue = oldEntity.states[stateName].currentValue;
-      let newValue = newEntity.states[stateName].currentValue;
+  return text;
+}
 
-      if (oldValue != newValue) {
-        let stateValueText = getAllEntityText(newEntity, 0);
-        text = text.concat(stateValueText);
+function getEntityDeltaText(oldEntity, newEntity, recursion) {
+  let text = [];
+  
+  if (recursion >= constants.MAX_RECURSION) {
+    console.log('Maximum recursion depth exceeded.');
+    return text;
+  }
+
+  for (let stateName of Object.keys(oldEntity.states)) {
+    let oldState = oldEntity.states[stateName];
+    let newState = newEntity.states[stateName]; 
+    let oldValue = oldState.currentValue;
+    let newValue = newState.currentValue;
+
+    // Value changed. Describe everything.
+    if (oldValue != newValue) {
+      let stateValueText = getAllEntityText(newEntity, 0);
+      text = text.concat(stateValueText);
+    
+    // Value same. See if child changed.
+    } else {
+      for (let childIndex in newState.values[newValue].childEntities) {
+        let oldChild = oldState.values[oldValue].childEntities[childIndex];
+        let newChild = newState.values[newValue].childEntities[childIndex];
+        let childText = getEntityDeltaText(oldChild, newChild, recursion + 1);
+        text = text.concat(childText);
       }
     }
   }
