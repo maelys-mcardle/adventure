@@ -1,11 +1,11 @@
 location:
-  initial: bedroom
+  start: bedroom
   actions: [go]
   rules:
-    entrance -- lawn: 
-      if state entrance.objects.door.door is closed:
+    entrance -- lawn:
+      if state door is closed:
         message: doorNotOpen
-        revert: state
+        revert: location
   entities:
     entrance:
       - objects.door

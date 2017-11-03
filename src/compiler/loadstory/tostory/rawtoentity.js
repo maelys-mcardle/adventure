@@ -90,7 +90,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       let config = rawConfig.contents[stateName];
       let state = entity.states[stateName];
 
-      state = loadConfigDefault(state, config);
+      state = loadConfigCurrentValue(state, config);
       state = loadConfigActions(state, actions, config);
       state = loadConfigDisabled(state, config);
       state = loadConfigRules(state, config);
@@ -106,11 +106,11 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
   return entity;
 }
 
-function loadConfigDefault(state, config) {
-  if ('initial' in config) {
-    state.currentValue = config.initial;
+function loadConfigCurrentValue(state, config) {
+  if ('start' in config) {
+    state.currentValue = config.start;
   } else {
-    console.log(state.name + " has no initial value specified in config.");
+    console.log(state.name + " has no start value specified in config.");
   }
   return state;
 }
