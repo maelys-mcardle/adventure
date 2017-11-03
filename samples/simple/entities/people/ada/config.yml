@@ -1,5 +1,5 @@
 conversation:
-  default: hello
+  initial: hello
   actions: [say]
   disable: [whoAreYouReally]
   rules:

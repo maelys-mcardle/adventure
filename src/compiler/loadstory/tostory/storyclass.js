@@ -51,7 +51,6 @@ class EntityState {
     this.messages = {};
     this.values = {};
     this.actions = [];
-    this.defaultValue = null;
     this.currentValue = null;
   }
 

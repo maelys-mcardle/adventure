@@ -1,5 +1,5 @@
 door:
-  default: closed
+  initial: closed
   actions: [open, close]
   rules:
     open -> closed: 

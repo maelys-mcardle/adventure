@@ -107,11 +107,10 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
 }
 
 function loadConfigDefault(state, config) {
-  if ('default' in config) {
-    state.defaultValue = config.default;
-    state.currentValue = config.default;
+  if ('initial' in config) {
+    state.currentValue = config.initial;
   } else {
-    console.log(state.name + " has no default value specified in config.");
+    console.log(state.name + " has no initial value specified in config.");
   }
   return state;
 }
