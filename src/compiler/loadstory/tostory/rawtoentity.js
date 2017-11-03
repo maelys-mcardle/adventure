@@ -146,25 +146,20 @@ function loadConfigRules(state, config) {
   if ('rules' in config) {
     for (let rawTrigger of Object.keys(config.rules)) {
       let trigger = parseTrigger(rawTrigger);
-      let ruleBlock = config.rules[rawTrigger];
-
-      if (!Array.isArray(ruleBlock)) {
-        console.log("Rules for " + rawTrigger + " are not an array.");
-        continue;
-      }
+      let triggerRules = config.rules[rawTrigger];
 
       if (!trigger.isTransition) {
         
         // For state.
         if (trigger.left in state.values) {
-          state.values[trigger.left].rules = ruleBlock;
+          state.values[trigger.left].rules = triggerRules;
         } else {
           console.log("Could not find " + trigger.left + " to apply rule to.");
         }
   
       } else {
 
-        state = setRelationshipValue(state, trigger, 'rules', ruleBlock);
+        state = setRelationshipValue(state, trigger, 'rules', triggerRules);
 
       }
     }

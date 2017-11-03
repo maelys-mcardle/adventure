@@ -3,10 +3,10 @@ door:
   actions: [open, close]
   rules:
     open -> closed: 
-      - if action: close
-      - then message: doorAlreadyOpen
-      - then state: open
+      if action close:
+        message: doorAlreadyOpen
+        state: open
     closed -> open:
-      - if action: open
-      - then message: doorAlreadyClosed
-      - then state: closed
+      if action open:
+        message: doorAlreadyClosed
+        state: closed
