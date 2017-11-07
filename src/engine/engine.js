@@ -54,7 +54,7 @@ function executeAction(initialStory, actionName, entityName, entityPath,
     stateName, newStateValueName);
 
   let paragraphs = describeState.getDelta(initialStory, updatedStory);
-  let output = paragraphs.join('\n\n');
+  let output = messages.concat(paragraphs).join('\n\n');
   
   return [updatedStory, output];
 }
