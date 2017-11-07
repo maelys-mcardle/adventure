@@ -2,7 +2,7 @@
 
 const stringSimilarity = require('string-similarity');
 
-const constants = require('./constants');
+const constants = require('../constants');
 
 module.exports = {
   matchInput: matchInputToAction,
@@ -143,6 +143,9 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
 
       for (let valueName of eligibleStateValuesNames) {
         let value = state.values[valueName];
+
+        // Disabled states won't show up.
+        // Only show enabled states.
         if (!value.disabled) {
           eligibleStateValues[value.name] = value;
         }

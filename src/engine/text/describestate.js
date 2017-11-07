@@ -6,7 +6,7 @@ module.exports = {
   getAll: getAllStateText
 }
 
-const constants = require('./constants');
+const constants = require('../constants');
 
 function getAllStateText(story) {
   let text = [];

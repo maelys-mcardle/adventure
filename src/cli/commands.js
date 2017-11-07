@@ -5,7 +5,6 @@ const path = require('path');
 
 const loadStory = require('../compiler/loadstory/loadstory');
 const storyEngine = require('../engine/engine');
-const eligibleActions = require('../engine/eligibleactions');
 
 module.exports = {
   evaluate: evaluateInput,
@@ -138,7 +137,7 @@ function runAction(story, input) {
 }
 
 function listEligibleActions(story) {
-  let possibleActions = eligibleActions.listExamples(story);
+  let possibleActions = storyEngine.listActionExamples(story);
   let output = 'You can:\n' + 
     possibleActions.map(a => ' ' + a.text).join('\n');
   return output;

@@ -1,16 +1,22 @@
 "use strict";
 
-const eligibleActions = require('./eligibleactions');
-const describeState = require('./describestate');
-const executeRules = require('./executerules');
+const eligibleActions = require('./actions/eligibleactions');
+const describeState = require('./text/describestate');
+const executeRules = require('./rules/executeall');
 
 module.exports = {
   evaluateInput: evaluateInput,
-  describeCurrentState: describeCurrentState
+  describeCurrentState: describeCurrentState,
+  listActionExamples: listActionExamples
 }
 
 function describeCurrentState(story) {
   let output = describeState.getAll(story).join('\n\n');
+  return output;
+}
+
+function listActionExamples(story) {
+  let output = eligibleActions.listExamples(story);
   return output;
 }
 
@@ -53,19 +59,6 @@ function executeAction(initialStory, actionName, entityName, entityPath,
   return [updatedStory, output];
 }
 
-function textForStateDifference(initialStory, finalStory) {
-  return '';
-}
-
 function createCopy(object) {
   return JSON.parse(JSON.stringify(object));
 }
-
-// Initial state.
-// Action to change state. Actions relative to current state.
-
-// Parse rules for state transition.
-// Rules might change state. Otherwise proceed to final state.
-
-// Compare state with initial state.
-// Print messages for state values that have changed.
