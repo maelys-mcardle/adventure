@@ -143,7 +143,9 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
 
       for (let valueName of eligibleStateValuesNames) {
         let value = state.values[valueName];
-        eligibleStateValues[value.name] = value;
+        if (!value.disabled) {
+          eligibleStateValues[value.name] = value;
+        }
       }
 
       eligibleActions = addEligibleAction(eligibleActions, actions, 

@@ -71,7 +71,7 @@ class EntityStateValue {
     this.disabled = false;
     this.relationships = {};
     this.childEntities = [];
-    this.rules = [];
+    this.rules = {};
   }
 
   newRelationship(toState) {
