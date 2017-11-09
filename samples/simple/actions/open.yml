@@ -1,4 +1,5 @@
 description: open an item
+type: change state
 templates:
   - open the @entity
   - open @entity

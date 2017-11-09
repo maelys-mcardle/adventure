@@ -2,7 +2,7 @@
 
 const eligibleActions = require('./actions/eligibleactions');
 const describeState = require('./text/describestate');
-const executeRules = require('./rules/executeall');
+const executeRules = require('./rules/executerules');
 
 module.exports = {
   evaluateInput: evaluateInput,
@@ -47,14 +47,38 @@ function evaluateInput(story, input) {
 function executeAction(initialStory, actionName, entityName, entityPath,
   stateName, newStateValueName) {
 
-  let [updatedStory, messages] = executeRules.execute(
-    createCopy(initialStory), 
+  let transitionMessages = [];
+  let stateMessages = [];
+  
+  // Copy story.
+  let updatedStory = createCopy(initialStory);
+
+  // Transition to new state:
+  //  - set new state
+  //  - apply rules for transition
+  [updatedStory, transitionMessages] = 
+    executeRules.before(
+      updatedStory, 
+      actionName, 
+      entityName, entityPath,
+      stateName, newStateValueName);
+
+  // Print the current delta.
+  let paragraphs = describeState.getDelta(initialStory, updatedStory);
+
+  // Apply rules for when in state.
+  [updatedStory, stateMessages] = executeRules.after(
+    updatedStory, 
     actionName, 
     entityName, entityPath,
-    stateName, newStateValueName);
+    stateName);
 
-  let paragraphs = describeState.getDelta(initialStory, updatedStory);
-  let output = messages.concat(paragraphs).join('\n\n');
+  // Concatenate the output.
+  let output = 
+    transitionMessages.
+      concat(paragraphs).
+      concat(stateMessages).
+      join('\n\n');
   
   return [updatedStory, output];
 }

@@ -1,43 +1,85 @@
 'use strict';
 
-const constants = require('../constants');
+const constants = require('../../constants');
 const stateRules = require('./staterules');
 
 module.exports = {
-  execute: executeRules
+  before: executeTransitionRules,
+  after: executeStateRules
+}
+
+function executeTransitionRules(story, actionName, targetEntityName, 
+  targetEntityPath, targetStateName, newStateValueName) {
+
+  return executeRules(story, actionName, targetEntityName, 
+    targetEntityPath, targetStateName, newStateValueName, true);
+}
+
+function executeStateRules(story, actionName, targetEntityName, 
+  targetEntityPath, targetStateName) {
+
+  return executeRules(story, actionName, targetEntityName, 
+    targetEntityPath, targetStateName, null, false);
 }
 
 function executeRules(story, actionName, targetEntityName, 
-  targetEntityPath, targetStateName, newStateValueName) {
+  targetEntityPath, targetStateName, newStateValueName, isTransition) {
 
   let messages = [];
+  
+  // Get entity state.
+  let entityState = 
+    findEntityState(story, targetEntityName, targetEntityPath, targetStateName);
+  
+  if (entityState == null) {
+    console.log('Could not find ' + targetEntityName + ' ' + targetStateName);
+    return [story, messages];
+  }
+
+  // Apply rules to state.
+  if (isTransition) {
+    [entityState, messages] = 
+      stateRules.transition(actionName, entityState, newStateValueName);
+  } else {
+    [entityState, messages] = 
+      stateRules.state(actionName, entityState);
+  }
+
+  // Update entity.
+  story = updateEntityState(story, targetEntityName, 
+    targetEntityPath, targetStateName, entityState);
+
+  return [story, messages];
+}
+
+function findEntityState(story, targetEntityName, targetEntityPath, 
+  targetStateName) {
+
+  for (let entity of story.currentState) {
+    let entityState = getEntityStateByName(entity, 
+      targetEntityName, targetEntityPath, targetStateName, 0);
+
+    if (entityState != null) {
+      return entityState;
+    }
+  }
+
+  return null;
+}
+
+function updateEntityState(story, targetEntityName, targetEntityPath, 
+  targetStateName, updatedState) {
 
   for (let entityIndex in story.currentState) {
     let entity = story.currentState[entityIndex];
 
-    // Get entity state.
-    let entityState = 
-      getEntityStateByName(entity, targetEntityName, targetEntityPath, 
-        targetStateName, 0);
-      
-    if (entityState == null) {
-      console.log('Could not find ' + targetEntityName + ' ' + targetStateName);
-      continue;
-    }
+    entity = updateEntityStateByName(entity, targetEntityName, targetEntityPath, 
+      targetStateName, updatedState, 0);
 
-    // Apply rules to state.
-    let [updatedEntityState, newMessages] = 
-      stateRules.execute(actionName, entityState, newStateValueName);
-    messages = messages.concat(newMessages);
-
-    // Update entity.
-    entity = updateEntityStateByName(entity, targetEntityName, 
-      targetEntityPath, targetStateName, updatedEntityState, 0);
-    
     story.currentState[entityIndex] = entity;
   }
 
-  return [story, messages];
+  return story;
 }
 
 function getEntityStateByName(entity, targetEntityName, targetEntityPath, 

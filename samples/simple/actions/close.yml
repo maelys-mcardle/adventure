@@ -1,4 +1,5 @@
 description: close an item
+type: change state
 templates:
   - close the @entity
   - close @entity

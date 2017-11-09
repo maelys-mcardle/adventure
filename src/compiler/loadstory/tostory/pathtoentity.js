@@ -1,11 +1,11 @@
 "use strict";
 
+const constants = require('../../../constants');
+
 module.exports = {
   entityPlaceholderToEntity: entityPlaceholderToEntity,
   loadCurrentStateEntities: loadCurrentStateEntities
 };
-
-const MAX_RECURSION = 5;
 
 function loadCurrentStateEntities(story, entities) {
 
@@ -37,7 +37,7 @@ function entityPlaceholderToEntity(entities) {
 
 function updateEntityPlaceholders(entities, entity, recursion) {
   
-  if (recursion >= MAX_RECURSION) {
+  if (recursion >= constants.MAX_RECURSION) {
     console.log('Max recursion exceeded.');
     return entity;
   }

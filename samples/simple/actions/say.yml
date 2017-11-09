@@ -1,4 +1,5 @@
 description: speak to a character
+type: change state
 templates:
   - say @state
   - say @entity @state

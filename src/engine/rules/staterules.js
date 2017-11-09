@@ -1,43 +1,49 @@
 'use strict';
 
-const constants = require('../constants');
+const constants = require('../../constants');
 
 module.exports = {
-  execute: executeEntityStateRules
+  transition: executeTransitionRules,
+  state: executeStateRules,
 }
 
-function executeEntityStateRules(actionName, entityState, newStateValueName) {
+function executeTransitionRules(actionName, entityState, newStateValueName) {
   
-    let transitionMessages = [];
-    let stateMessages = [];
+  let messages = [];
   
-    // Set state value.
-    let oldStateValueName = entityState.currentValue;
-  
-    // Execute transition rules.
-    let stateTransitionRules = 
-      entityState.values[oldStateValueName].
-        relationships[newStateValueName].rules;
-    [entityState, transitionMessages] = 
-      applyRules(actionName, oldStateValueName, 
-        entityState, stateTransitionRules, 0);
+  // Set state value.
+  let oldStateValueName = entityState.currentValue;
 
-    // Set state.
-    entityState.currentValue = newStateValueName;
+  // Set state.
+  entityState.currentValue = newStateValueName;
+  
+  // Execute transition rules.
+  let stateTransitionRules = 
+    entityState.values[oldStateValueName].
+      relationships[newStateValueName].rules;
 
-    // Read state delta.
+  [entityState, messages] = 
+    applyRules(actionName, oldStateValueName, 
+      entityState, stateTransitionRules, 0);
+
+  return [entityState, messages];
+}
+
+function executeStateRules(actionName, entityState) {
+
+  let messages = [];
+
+  // Set state value.
+  let newStateValueName = entityState.currentValue;
+
+  // Execute state value rules.
+  let stateValueRules = entityState.values[newStateValueName].rules;
+  [entityState, messages] = 
+    applyRules(actionName, newStateValueName,
+      entityState, stateValueRules, 0);
   
-    // Execute state value rules.
-    let stateValueRules = entityState.values[newStateValueName].rules;
-    [entityState, stateMessages] = 
-      applyRules(actionName, oldStateValueName,
-        entityState, stateValueRules, 0);
-  
-    // Concatenate messages.
-    let messages = transitionMessages.concat(stateMessages);
-  
-    return [entityState, messages];
-  }
+  return [entityState, messages];
+}
   
 function applyRules(actionName, oldStateValueName, entityState, 
   rules, recursion) {

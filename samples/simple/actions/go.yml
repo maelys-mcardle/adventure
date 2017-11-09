@@ -1,4 +1,5 @@
 description: travel from place to place
+type: change state
 templates:
   - go to the @state
   - go to @state
