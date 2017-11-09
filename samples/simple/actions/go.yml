@@ -1,5 +1,5 @@
 description: travel from place to place
-type: change state
+do: transition
 templates:
   - go to the @state
   - go to @state

@@ -27,6 +27,15 @@ function parseActions(rawActions, story) {
       }
     }
 
+    if ('do' in config) {
+      if ('transition' == config.do) {
+        action.doStateChange = true;
+      }
+      if ('describe' == config.do) {
+        action.doDescribeEntity = true;
+      }
+    }
+
     // Synonyms are alternative words that can be used in the
     // templates. So like "say" can have the synonym "speak",
     // "talk". Explicitly list all templates including these

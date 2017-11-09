@@ -95,9 +95,11 @@ class Action {
   constructor(name, path) {
     this.name = name;
     this.path = path;
+    this.description = '';
     this.templates = [];
     this.defaultStateValue = null;
-    this.description = '';
+    this.doStateChange = false;
+    this.doDescribeEntity = false;
   }
 
   addTemplate(template) {

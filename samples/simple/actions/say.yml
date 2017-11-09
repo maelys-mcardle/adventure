@@ -1,5 +1,5 @@
 description: speak to a character
-type: change state
+do: transition
 templates:
   - say @state
   - say @entity @state
@@ -8,3 +8,4 @@ synonyms:
   say:
     - tell
     - speak
+    - ask
