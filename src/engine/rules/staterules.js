@@ -23,7 +23,7 @@ function executeTransitionRules(actionName, entityState, newStateValueName) {
       relationships[newStateValueName].rules;
 
   [entityState, messages] = 
-    applyRules(actionName, oldStateValueName, 
+    applyRules(actionName, oldStateValueName, newStateValueName,
       entityState, stateTransitionRules, 0);
 
   return [entityState, messages];
@@ -39,14 +39,14 @@ function executeStateRules(actionName, entityState) {
   // Execute state value rules.
   let stateValueRules = entityState.values[newStateValueName].rules;
   [entityState, messages] = 
-    applyRules(actionName, newStateValueName,
+    applyRules(actionName, newStateValueName, newStateValueName,
       entityState, stateValueRules, 0);
   
   return [entityState, messages];
 }
   
-function applyRules(actionName, oldStateValueName, entityState, 
-  rules, recursion) {
+function applyRules(actionName, oldStateValueName, newStateValueName, 
+  entityState, rules, recursion) {
 
   let messages = [];
 
@@ -98,21 +98,68 @@ function applyRules(actionName, oldStateValueName, entityState,
     let words = trigger.split(' ');
     if (words.length > 1 && words[0] == 'if') {
 
+      let childRules = rules[trigger];
+      let childMessages = [];
+
       // if action X
       if (words.length == 3 && 
           words[1] == 'action' && 
           words[2] == actionName) {
             
-        let childRules = rules[trigger];
-        let childMessages = [];
         [entityState, childMessages] = 
-          applyRules(actionName, oldStateValueName, entityState, 
-            childRules, recursion + 1) 
+          applyRules(actionName, oldStateValueName, newStateValueName,
+            entityState, childRules, recursion + 1) 
         messages = messages.concat(childMessages);
       }
 
+      // if state X is Y
+      if (words.length == 5 &&
+          words[1] == 'state' &&
+          words[3] == 'is') {
+
+        let targetState = words[2];
+        let targetStateValue = words[4];
+
+        // Look at current state value, but also child entities of either
+        // state value.
+        if (isStateValue(entityState, oldStateValueName, 
+              targetState, targetStateValue, 0) ||
+            isStateValue(entityState, newStateValueName, 
+              targetState, targetStateValue, 0)) {
+
+          [entityState, childMessages] = 
+            applyRules(actionName, oldStateValueName, newStateValueName,
+              entityState, childRules, recursion + 1);
+          
+          messages = messages.concat(childMessages);
+        }
+      }
     }
   }
 
   return [entityState, messages];
+}
+
+function isStateValue(state, stateValue, targetState, targetStateValue, recursion) {
+
+  if (recursion >= constants.MAX_RECURSION) {
+    console.log('Max recursion reached');
+    return false;
+  }
+
+  if (state.name == targetState && stateValue == targetStateValue) {
+    return true;
+  } else {
+    for (let childEntity of state.values[stateValue].childEntities) {
+      for (let stateName of Object.keys(childEntity.states)) {
+        let state = childEntity.states[stateName];
+        if (isStateValue(state, state.currentValue, 
+             targetState, targetStateValue, recursion + 1)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 }
