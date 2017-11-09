@@ -1,3 +1,7 @@
+appearance:
+  actions: [describe]
+  start: floating
+
 conversation:
   start: hello
   actions: [say]

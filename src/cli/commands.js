@@ -35,9 +35,9 @@ const builtinCommands = [
     callback: dumpStoryState
   },
   {
-    command: 'describe',
+    command: 'refresh',
     description: 'Describe the current situation',
-    callback: describe
+    callback: refresh
   },
   {
     command: 'list',
@@ -118,7 +118,7 @@ function dumpStoryState(story, argument) {
   return [story, toJson(story)];
 }
 
-function describe(story, entity) {
+function refresh(story, entity) {
   let output = storyEngine.describeCurrentState(story);
   return [story, output];
 }

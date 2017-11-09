@@ -1,6 +1,6 @@
 location:
   start: entrance
-  actions: [go]
+  actions: [go, describe]
   rules:
     entrance -- lawn:
       if state door is closed:

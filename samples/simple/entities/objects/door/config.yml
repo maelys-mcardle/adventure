@@ -1,6 +1,6 @@
 door:
   start: closed
-  actions: [open, close]
+  actions: [open, close, describe]
   rules:
     open -> closed: 
       if action open:

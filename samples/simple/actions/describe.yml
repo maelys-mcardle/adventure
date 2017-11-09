@@ -1,0 +1,11 @@
+description: describes an object
+do: describe
+templates:
+  - describe @entity
+  - describe at @entity
+  - describe the @entity
+synonyms:
+  describe:
+    - look
+    - inspect
+    - examine

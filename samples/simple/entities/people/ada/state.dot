@@ -1,3 +1,7 @@
+graph appearance {
+    floating
+}
+
 digraph conversation {
     hello -> nothing
     nothing -> hello
