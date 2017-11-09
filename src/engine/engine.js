@@ -3,6 +3,7 @@
 const eligibleActions = require('./actions/eligibleactions');
 const describeState = require('./text/describestate');
 const executeRules = require('./rules/executerules');
+const getEntity = require('./entities/getentity');
 
 module.exports = {
   evaluateInput: evaluateInput,
@@ -44,8 +45,43 @@ function evaluateInput(story, input) {
   return [story, output];
 }
 
-function executeAction(initialStory, actionName, entityName, entityPath,
-  stateName, newStateValueName) {
+function executeAction(story, actionName, 
+  entityName, entityPath, stateName, newStateValueName) {
+
+  let action = story.actions[actionName];
+
+  if (action.doesStateChange) { 
+    return executeStateChangeAction(story, action, 
+      entityName, entityPath, stateName, newStateValueName);
+  }
+
+  if (action.doesDescribeEntity) {
+    return executeDescribeAction(story, entityName, entityPath);
+  }
+
+  return [story, ''];
+}
+
+function executeDescribeAction(story, entityName, entityPath) {
+
+  // Get entity.
+  let entity = getEntity.find(story, entityName, entityPath);
+
+  if (entity == null) {
+    return [story, ''];
+  }
+
+  // Print the description.
+  let paragraphs = describeState.getEntity(entity, 0);
+
+  // Concatenate the output.
+  let output = paragraphs.join('\n\n');
+  
+  return [story, output];
+}
+
+function executeStateChangeAction(initialStory, action, 
+  entityName, entityPath, stateName, newStateValueName) {
 
   let transitionMessages = [];
   let stateMessages = [];
@@ -59,7 +95,7 @@ function executeAction(initialStory, actionName, entityName, entityPath,
   [updatedStory, transitionMessages] = 
     executeRules.before(
       updatedStory, 
-      actionName, 
+      action, 
       entityName, entityPath,
       stateName, newStateValueName);
 
@@ -69,7 +105,7 @@ function executeAction(initialStory, actionName, entityName, entityPath,
   // Apply rules for when in state.
   [updatedStory, stateMessages] = executeRules.after(
     updatedStory, 
-    actionName, 
+    action, 
     entityName, entityPath,
     stateName);
 

@@ -7,7 +7,7 @@ module.exports = {
   state: executeStateRules,
 }
 
-function executeTransitionRules(actionName, entityState, newStateValueName) {
+function executeTransitionRules(action, entityState, newStateValueName) {
   
   let messages = [];
   
@@ -23,13 +23,13 @@ function executeTransitionRules(actionName, entityState, newStateValueName) {
       relationships[newStateValueName].rules;
 
   [entityState, messages] = 
-    applyRules(actionName, oldStateValueName, newStateValueName,
+    applyRules(action, oldStateValueName, newStateValueName,
       entityState, stateTransitionRules, 0);
 
   return [entityState, messages];
 }
 
-function executeStateRules(actionName, entityState) {
+function executeStateRules(action, entityState) {
 
   let messages = [];
 
@@ -39,13 +39,13 @@ function executeStateRules(actionName, entityState) {
   // Execute state value rules.
   let stateValueRules = entityState.values[newStateValueName].rules;
   [entityState, messages] = 
-    applyRules(actionName, newStateValueName, newStateValueName,
+    applyRules(action, newStateValueName, newStateValueName,
       entityState, stateValueRules, 0);
   
   return [entityState, messages];
 }
   
-function applyRules(actionName, oldStateValueName, newStateValueName, 
+function applyRules(action, oldStateValueName, newStateValueName, 
   entityState, rules, recursion) {
 
   let messages = [];
@@ -61,7 +61,7 @@ function applyRules(actionName, oldStateValueName, newStateValueName,
   messages = applyRuleMessage(entityState, rules, messages);
 
   [entityState, messages] = 
-    applyRuleIfBlock(actionName, entityState, rules, messages, 
+    applyRuleIfBlock(action, entityState, rules, messages, 
       oldStateValueName, newStateValueName, recursion);
 
   return [entityState, messages];
@@ -126,7 +126,7 @@ function applyRuleMessage(entityState, rules, messages) {
   return messages;
 }
 
-function applyRuleIfBlock(actionName, entityState, rules, messages, 
+function applyRuleIfBlock(action, entityState, rules, messages, 
   oldStateValueName, newStateValueName, recursion) {
 
   for (let trigger of Object.keys(rules)) {
@@ -137,11 +137,11 @@ function applyRuleIfBlock(actionName, entityState, rules, messages,
       let ifActionMessages = [];
       let ifStateMessages = [];
 
-      [entityState, ifActionMessages] = applyRuleIfAction(actionName, 
+      [entityState, ifActionMessages] = applyRuleIfAction(action, 
         entityState, rules, oldStateValueName, newStateValueName,
         words, childRules, recursion);
 
-      [entityState, ifStateMessages] = applyRuleIfState(actionName, 
+      [entityState, ifStateMessages] = applyRuleIfState(action, 
         entityState, rules, oldStateValueName, newStateValueName, 
         words, childRules, recursion);
 
@@ -152,7 +152,7 @@ function applyRuleIfBlock(actionName, entityState, rules, messages,
   return [entityState, messages];
 }
 
-function applyRuleIfAction(actionName, 
+function applyRuleIfAction(action, 
   entityState, rules, oldStateValueName, newStateValueName,
   words, childRules, recursion) {
 
@@ -161,17 +161,17 @@ function applyRuleIfAction(actionName,
   // if action X
   if (words.length == 3 && 
     words[1] == 'action' && 
-    words[2] == actionName) {
+    words[2] == action.name) {
         
     [entityState, messages] = 
-      applyRules(actionName, oldStateValueName, newStateValueName,
+      applyRules(action, oldStateValueName, newStateValueName,
         entityState, childRules, recursion + 1) 
   }
 
   return [entityState, messages];
 }
 
-function applyRuleIfState(actionName, 
+function applyRuleIfState(action, 
   entityState, rules, oldStateValueName, newStateValueName,
   words, childRules, recursion) {
 
@@ -193,7 +193,7 @@ function applyRuleIfState(actionName,
           targetState, targetStateValue, 0)) {
 
       [entityState, messages] = 
-        applyRules(actionName, oldStateValueName, newStateValueName,
+        applyRules(action, oldStateValueName, newStateValueName,
           entityState, childRules, recursion + 1);
     }
   }
