@@ -9,4 +9,5 @@ location:
   entities:
     entrance:
       - objects.door
+    lawn:
       - people.ada

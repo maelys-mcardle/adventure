@@ -8,33 +8,20 @@ module.exports = {
 }
 
 function findEntity(story, targetEntityName, targetEntityPath) {
-  
-  for (let entity of story.currentState) {
-    let foundEntity = getEntityByName(entity, 
-      targetEntityName, targetEntityPath);
 
-    if (foundEntity != null) {
-      return foundEntity;
-    }
-  }
+  let foundEntity = getEntityByName(story.rootEntity, 
+    targetEntityName, targetEntityPath);
 
-  return null;
-  
+  return foundEntity;
 }
 
 function findEntityState(story, targetEntityName, targetEntityPath, 
   targetStateName) {
 
-  for (let entity of story.currentState) {
-    let entityState = getEntityStateByName(entity, 
-      targetEntityName, targetEntityPath, targetStateName);
+  let entityState = getEntityStateByName(story.rootEntity, 
+    targetEntityName, targetEntityPath, targetStateName);
 
-    if (entityState != null) {
-      return entityState;
-    }
-  }
-
-  return null;
+  return entityState;
 }
 
 function getEntityStateByName(rootEntity, targetEntityName, targetEntityPath, 

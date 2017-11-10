@@ -9,17 +9,11 @@ module.exports = {
 
 function loadCurrentStateEntities(story, entities) {
 
-  if (story.currentState.length === 0) {
+  if (story.rootEntity == null) {
     console.log("Story has no entities specified.");
   }
 
-  // Iterate over every active entity.
-  for (let entityIndex in story.currentState) {
-    let placeholder = story.currentState[entityIndex];
-    let entity = getEntityFromPath(entities, placeholder);
-    story.currentState[entityIndex] = entity;
-  }
-
+  story.rootEntity = getEntityFromPath(entities, story.rootEntity);
   return story;
 }
 

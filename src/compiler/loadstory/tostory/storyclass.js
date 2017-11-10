@@ -4,7 +4,7 @@ class Story {
   constructor(name) {
     this.title = 'Untitled';
     this.author = 'Anonymous';
-    this.currentState = [];
+    this.rootEntity = null;
     this.actions = {};
   }
 
@@ -12,10 +12,6 @@ class Story {
     return new Entity(name, path);
   }
   
-  addCurrentState(entity) {
-    this.currentState.push(entity);
-  }
-
   newAction(name, path) {
     return new Action(name, path);
   }

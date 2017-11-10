@@ -10,26 +10,16 @@ module.exports = {
 const constants = require('../../constants');
 
 function getStoryText(story) {
-  let text = [];
-
-  for (let entityIndex in story.currentState) {
-    let entity = story.currentState[entityIndex];
-    text = text.concat(getEntityText(entity, 0));
-  }
-
+  let text = getEntityText(story.rootEntity, 0);
   return text;
 }
 
 function getStoryDeltaText(oldStory, newStory) {
-  let text = [];
 
-  for (let entityIndex in oldStory.currentState) {
-    let oldEntity = oldStory.currentState[entityIndex];
-    let newEntity = newStory.currentState[entityIndex];
-    let entityText = getEntityDeltaText(oldEntity, newEntity, 0);
-    text = text.concat(entityText);
-  }
-
+  let oldEntity = oldStory.rootEntity;
+  let newEntity = newStory.rootEntity;
+  let text = getEntityDeltaText(oldEntity, newEntity, 0);
+  
   return text;
 }
 

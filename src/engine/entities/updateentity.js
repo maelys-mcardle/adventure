@@ -9,14 +9,10 @@ module.exports = {
 function updateEntityState(story, targetEntityName, targetEntityPath, 
   targetStateName, updatedState) {
 
-  for (let entityIndex in story.currentState) {
-    let entity = story.currentState[entityIndex];
-
-    entity = updateEntityStateByName(entity, targetEntityName, targetEntityPath, 
+  story.rootEntity = 
+    updateEntityStateByName(
+      story.rootEntity, targetEntityName, targetEntityPath, 
       targetStateName, updatedState, 0);
-
-    story.currentState[entityIndex] = entity;
-  }
 
   return story;
 }

@@ -14,10 +14,8 @@ function parseConfig(rawConfig, story) {
     story.author = rawConfig.author;
   }
 
-  if ('entities' in rawConfig) {
-    for (let entityName of rawConfig.entities) {
-      story.addCurrentState(entityName);
-    }
+  if ('entity' in rawConfig) {
+    story.rootEntity = rawConfig.entity;
   }
   
   return story;

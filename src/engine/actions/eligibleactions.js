@@ -146,12 +146,9 @@ function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
  * and the states and entities they can be performed on.
  */
 function getEligibleActions(story) {
-  let eligibleActions = {};
 
-  for (let entity of story.currentState) {
-    eligibleActions = 
-      getEligibleActionsFromEntity(eligibleActions, story.actions, entity, 0);
-  }
+  let eligibleActions = 
+    getEligibleActionsFromEntity({}, story.actions, story.rootEntity, 0);
 
   return eligibleActions;
 }
