@@ -14,6 +14,10 @@ function parseConfig(rawConfig, story) {
     story.author = rawConfig.author;
   }
 
+  if ('description' in rawConfig) {
+    story.description = rawConfig.description;
+  }
+
   if ('entity' in rawConfig) {
     story.rootEntity = rawConfig.entity;
   }

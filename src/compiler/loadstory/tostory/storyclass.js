@@ -4,6 +4,7 @@ class Story {
   constructor(name) {
     this.title = 'Untitled';
     this.author = 'Anonymous';
+    this.description = '';
     this.rootEntity = null;
     this.actions = {};
   }
