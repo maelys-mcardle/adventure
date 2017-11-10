@@ -149,15 +149,15 @@ function getEligibleActions(story) {
   let eligibleActions = {};
 
   for (let entity of story.currentState) {
-    let entityActions = getEligibleActionsFromEntity(story.actions, entity, 0);
-    eligibleActions = Object.assign(eligibleActions, entityActions);
+    eligibleActions = 
+      getEligibleActionsFromEntity(eligibleActions, story.actions, entity, 0);
   }
 
   return eligibleActions;
 }
 
-function getEligibleActionsFromEntity(actions, entity, recursion) {
-  let eligibleActions = {};
+function getEligibleActionsFromEntity(eligibleActions, 
+  actions, entity, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log('Maximum recursion depth exceeded.');
@@ -189,11 +189,9 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
         entity, stateName, state.currentValue, eligibleStateValues);
 
       for (let childEntity of currentStateValue.childEntities) {
-
-        let childActions = 
-          getEligibleActionsFromEntity(actions, childEntity, recursion + 1);
-        
-        eligibleActions = Object.assign(eligibleActions, childActions);
+        eligibleActions = 
+          getEligibleActionsFromEntity(eligibleActions, 
+            actions, childEntity, recursion + 1);
       }
     }
   }
@@ -204,7 +202,9 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
 function addEligibleAction(eligibleActions, action, 
   entity, stateName, currentStateValue, eligibleStateValues) {
 
-  eligibleActions[action.name] = new EligibleAction(action);
+  if (!(action.name in eligibleActions)) {
+    eligibleActions[action.name] = new EligibleAction(action);
+  }
 
   let eligibleEntity = new EligibleActionEntity(
     entity.name, entity.path, stateName);

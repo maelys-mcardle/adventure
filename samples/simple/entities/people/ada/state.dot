@@ -4,7 +4,6 @@ graph appearance {
 
 digraph conversation {
     hello -> nothing
-    nothing -> hello
     nothing -> whoAreYou
     nothing -> whoAreYouReally
     nothing -> whereAmI

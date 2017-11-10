@@ -1,5 +1,5 @@
 location:
-  start: lawn
+  start: entrance
   actions: [go, describe]
   rules:
     entrance -- lawn:
@@ -9,5 +9,4 @@ location:
   entities:
     entrance:
       - objects.door
-    lawn:
       - people.ada
