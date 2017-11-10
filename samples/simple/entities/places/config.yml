@@ -1,5 +1,5 @@
 location:
-  start: entrance
+  start: lawn
   actions: [go, describe]
   rules:
     entrance -- lawn:

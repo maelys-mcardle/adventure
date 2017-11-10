@@ -84,32 +84,62 @@ function getInputsWithTemplate(template, eligibleAction) {
     let stateValueNames = Object.keys(stateValues);
     let templateWithEntity = template.replace('@entity', entity.entityName);
 
-    if (stateValueNames.length === 0) {
-      continue;
-    } else if (!hasStateVariable && stateValueNames.length > 1) {
-      console.log(template + " is ambiguous and can refer to: " + 
-        stateValueNames.join(', '));
-      continue;
+    if (eligibleAction.action.changesStateValue) {
+      if (stateValueNames.length === 0) {
+        continue;
+      } else if (!hasStateVariable && stateValueNames.length > 1) {
+        console.log(template + " is ambiguous and can refer to: " + 
+          stateValueNames.join(', '));
+        continue;
+      }
+
+      for (let stateValueName of stateValueNames) {
+        let stateValue = stateValues[stateValueName];
+        let templateWithState = 
+          templateWithEntity.replace('@state', stateValue.readableName);
+
+        let eligibleInput =
+          EligibleInputChangeState(
+            templateWithState, eligibleAction, entity, stateValueName);
+        
+        validInputs.push(eligibleInput);
+      }
     }
 
-    for (let stateValueName of stateValueNames) {
-      let stateValue = stateValues[stateValueName];
-      let templateWithState = 
-        templateWithEntity.replace('@state', stateValue.readableName);
-
-      let eligibleInput = new EligibleInput();
-      eligibleInput.text = templateWithState;
-      eligibleInput.actionName = eligibleAction.action.name;
-      eligibleInput.entityName = entity.entityName;
-      eligibleInput.entityPath = entity.entityPath;
-      eligibleInput.stateName = entity.stateName;
-      eligibleInput.stateValueName = stateValueName;
+    if (eligibleAction.action.describesEntityState) {
+    
+      let eligibleInput = 
+        EligibleInputDescribeEntity(
+          templateWithEntity, eligibleAction, entity);
       
       validInputs.push(eligibleInput);
     }
   }
 
   return validInputs;
+}
+
+function EligibleInputChangeState(matchString, eligibleAction, entity, 
+  stateValueName) {
+
+  let eligibleInput = new EligibleInput();
+  eligibleInput.text = matchString;
+  eligibleInput.actionName = eligibleAction.action.name;
+  eligibleInput.entityName = entity.entityName;
+  eligibleInput.entityPath = entity.entityPath;
+  eligibleInput.stateName = entity.stateName;
+  eligibleInput.stateValueName = stateValueName;
+  return eligibleInput;
+}
+
+function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
+  let eligibleInput = new EligibleInput();
+  eligibleInput.text = matchString;
+  eligibleInput.actionName = eligibleAction.action.name;
+  eligibleInput.entityName = entity.entityName;
+  eligibleInput.entityPath = entity.entityPath;
+  eligibleInput.stateName = entity.stateName;
+  return eligibleInput;
 }
 
 /** Lists the actions that can be performed on the current state, 
@@ -137,27 +167,32 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
   for (let stateName of Object.keys(entity.states)) {
     let state = entity.states[stateName];
     for (let actionName of state.actions) {
+      let action = actions[actionName];
       let currentStateValue = state.values[state.currentValue];
-      let eligibleStateValuesNames = Object.keys(currentStateValue.relationships);
+      let eligibleStateValuesNames = 
+        Object.keys(currentStateValue.relationships);
       let eligibleStateValues = {};
 
-      for (let valueName of eligibleStateValuesNames) {
-        let value = state.values[valueName];
-
-        // Disabled states won't show up.
-        // Only show enabled states.
-        if (!value.disabled) {
-          eligibleStateValues[value.name] = value;
-        }
+      // Action for changing the state value.
+      if (action.changesStateValue) {
+        for (let valueName of eligibleStateValuesNames) {
+          let value = state.values[valueName];
+          // Disabled states won't show up.
+          // Only show enabled states.
+          if (!value.disabled) {
+            eligibleStateValues[value.name] = value;
+          }
+        } 
       }
 
-      eligibleActions = addEligibleAction(eligibleActions, actions, 
-        actionName, entity, stateName, 
-        currentStateValue.name, eligibleStateValues);
+      eligibleActions = addEligibleAction(eligibleActions, action,
+        entity, stateName, state.currentValue, eligibleStateValues);
 
       for (let childEntity of currentStateValue.childEntities) {
-        let childActions = getEligibleActionsFromEntity(
-          actions, childEntity, recursion + 1);
+
+        let childActions = 
+          getEligibleActionsFromEntity(actions, childEntity, recursion + 1);
+        
         eligibleActions = Object.assign(eligibleActions, childActions);
       }
     }
@@ -166,20 +201,17 @@ function getEligibleActionsFromEntity(actions, entity, recursion) {
   return eligibleActions;
 }
 
-function addEligibleAction(eligibleActions, actions, actionName, 
+function addEligibleAction(eligibleActions, action, 
   entity, stateName, currentStateValue, eligibleStateValues) {
 
-  if (!(actionName in eligibleActions)) {
-    let action = actions[actionName];
-    eligibleActions[actionName] = new EligibleAction(action);
-  }
+  eligibleActions[action.name] = new EligibleAction(action);
 
   let eligibleEntity = new EligibleActionEntity(
     entity.name, entity.path, stateName);
 
   eligibleEntity.eligibleStateValues = eligibleStateValues;
   eligibleEntity.currentStateValue = currentStateValue;
-  eligibleActions[actionName].entities[entity.name] = eligibleEntity;
+  eligibleActions[action.name].entities[entity.name] = eligibleEntity;
 
   return eligibleActions;
 }
@@ -218,6 +250,6 @@ class EligibleActionEntity {
     this.entityPath = entityPath;
     this.stateName = stateName;
     this.currentStateValue = null;
-    this.eligibleStateValues = {};
+    this.eligibleStateValue = {};
   }
 }

@@ -13,29 +13,30 @@ function executeAction(story, actionName,
 
   let action = story.actions[actionName];
 
-  if (action.doesStateChange) { 
+  if (action.changesStateValue) { 
     return executeStateChangeAction(story, action, 
       entityName, entityPath, stateName, newStateValueName);
   }
 
-  if (action.doesDescribeEntity) {
-    return executeDescribeAction(story, entityName, entityPath);
+  if (action.describesEntityState) {
+    return executeDescribeAction(story, entityName, entityPath, stateName);
   }
 
   return [story, ''];
 }
 
-function executeDescribeAction(story, entityName, entityPath) {
+function executeDescribeAction(story, entityName, entityPath, stateName) {
 
   // Get entity.
-  let entity = getEntity.find(story, entityName, entityPath);
+  let entityState = 
+    getEntity.findState(story, entityName, entityPath, stateName);
 
-  if (entity == null) {
+  if (entityState == null) {
     return [story, ''];
   }
 
   // Print the description.
-  let paragraphs = describeState.getEntity(entity, 0);
+  let paragraphs = describeState.getEntityState(entityState);
 
   // Concatenate the output.
   let output = paragraphs.join('\n\n');

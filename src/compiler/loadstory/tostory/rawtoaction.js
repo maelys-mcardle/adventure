@@ -29,10 +29,10 @@ function parseActions(rawActions, story) {
 
     if ('do' in config) {
       if ('transition' == config.do) {
-        action.doesStateChange = true;
+        action.changesStateValue = true;
       }
       if ('describe' == config.do) {
-        action.doesDescribeEntity = true;
+        action.describesEntityState = true;
       }
     }
 

@@ -98,8 +98,8 @@ class Action {
     this.description = '';
     this.templates = [];
     this.defaultStateValue = null;
-    this.doesStateChange = false;
-    this.doesDescribeEntity = false;
+    this.changesStateValue = false;
+    this.describesEntityState = false;
   }
 
   addTemplate(template) {

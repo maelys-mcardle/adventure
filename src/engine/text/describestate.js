@@ -1,25 +1,26 @@
 'use strict';
 
 module.exports = {
-  getDelta: getStateDeltaText,
-  getEntity: getAllEntityText,
-  getAll: getAllStateText
+  getAll: getStoryText,
+  getDelta: getStoryDeltaText,
+  getEntity: getEntityText,
+  getEntityState: getEntityStateText,
 }
 
 const constants = require('../../constants');
 
-function getAllStateText(story) {
+function getStoryText(story) {
   let text = [];
 
   for (let entityIndex in story.currentState) {
     let entity = story.currentState[entityIndex];
-    text = text.concat(getAllEntityText(entity, 0));
+    text = text.concat(getEntityText(entity, 0));
   }
 
   return text;
 }
 
-function getStateDeltaText(oldStory, newStory) {
+function getStoryDeltaText(oldStory, newStory) {
   let text = [];
 
   for (let entityIndex in oldStory.currentState) {
@@ -48,7 +49,7 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
 
     // Value changed. Describe everything.
     if (oldValue != newValue) {
-      let stateValueText = getAllEntityText(newEntity, 0);
+      let stateValueText = getEntityText(newEntity);
       text = text.concat(stateValueText);
     
     // Value same. See if child changed.
@@ -65,7 +66,15 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   return text;
 }
 
-function getAllEntityText(entity, recursion) {
+function getEntityText(entity) {
+  return getEntityTextRecursive(entity, 0);
+}
+
+function getEntityStateText(state) {
+  return getEntityStateTextRecursive(state, 0);
+}
+
+function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
   if (recursion >= constants.MAX_RECURSION) {
@@ -75,16 +84,24 @@ function getAllEntityText(entity, recursion) {
 
   for (let stateName of Object.keys(entity.states)) {
     let state = entity.states[stateName];
-    let value = state.currentValue;
+    let stateText = getEntityStateTextRecursive(state, recursion);
+    text = text.concat(stateText);
+  }
 
-    let stateValueText = state.values[value].text;
-    text.push(stateValueText);
+  return text;
+}
 
-    for (let childEntity of state.values[value].childEntities) {
-      let childEntityText = getAllEntityText(childEntity, recursion + 1);
-      text = text.concat(childEntityText);
-    }
+function getEntityStateTextRecursive(state, recursion) {
+  let text = [];
 
+  let value = state.currentValue;
+
+  let stateValueText = state.values[value].text;
+  text.push(stateValueText);
+
+  for (let childEntity of state.values[value].childEntities) {
+    let childEntityText = getEntityTextRecursive(childEntity, recursion + 1);
+    text = text.concat(childEntityText);
   }
 
   return text;
