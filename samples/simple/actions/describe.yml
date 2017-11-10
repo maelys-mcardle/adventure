@@ -4,6 +4,7 @@ templates:
   - describe @entity
   - describe at @entity
   - describe the @entity
+  - describe at the @entity
 synonyms:
   describe:
     - look

@@ -10,6 +10,12 @@ module.exports = {
 const constants = require('../../constants');
 
 function getStoryText(story) {
+
+  if (story.rootEntity == null) {
+    console.log('Root entity is not defined.');
+    return '';
+  }
+
   let text = getEntityText(story.rootEntity, 0);
   return text;
 }
