@@ -139,7 +139,7 @@ function runAction(story, input) {
 function listEligibleActions(story) {
   let possibleActions = storyEngine.listActionExamples(story);
   let output = 'You can:\n' + 
-    possibleActions.map(a => ' ' + a.text).join('\n');
+    possibleActions.map(a => ' ' + a.text).sort().join('\n');
   return output;
 }
 

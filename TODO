@@ -1,14 +1,10 @@
-entity: places
-
-...instead of:
-
-entities:
-- places
-
----
-
 ordered states:
 
 ada:
 - appearance
 - conversations
+
+--
+
+rename describestate
+rename staterules
