@@ -1,0 +1,7 @@
+appearance:
+  start: description
+  actions: [describe]
+
+contents:
+  start: contents
+  actions: [read]

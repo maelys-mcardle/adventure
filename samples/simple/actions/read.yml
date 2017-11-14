@@ -1,0 +1,5 @@
+description: read something
+do: describe
+templates:
+  - read the @entity
+  - read @entity

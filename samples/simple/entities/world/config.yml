@@ -7,6 +7,8 @@ location:
         message: doorNotOpen
         state: .last
   entities:
+    bedroom:
+      - objects.letter
     entrance:
       - objects.door
     lawn:
