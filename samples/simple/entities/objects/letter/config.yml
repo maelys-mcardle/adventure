@@ -1,7 +1,6 @@
-appearance:
-  start: description
-  actions: [describe]
-
-contents:
-  start: contents
+letter:
+  start: unread
   actions: [read]
+  rules:
+    read:
+      state: unread

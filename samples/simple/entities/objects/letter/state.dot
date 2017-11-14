@@ -1,7 +1,3 @@
-graph appearance {
-  description
-}
-
-graph contents {
-  text
+digraph letter {
+  unread -> read
 }

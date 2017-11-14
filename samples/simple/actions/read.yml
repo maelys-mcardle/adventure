@@ -1,5 +1,7 @@
 description: read something
-do: describe
+do: transition
 templates:
   - read the @entity
   - read @entity
+default:
+  state: read

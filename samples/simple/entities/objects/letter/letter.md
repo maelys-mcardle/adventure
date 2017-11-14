@@ -1,11 +1,9 @@
-# appearance
+# letter
 
-## description
+## unread
 
 A letter is on the bedside table.
 
-# contents
-
-## text
+## read
 
 The letter just says "You are loved."

@@ -203,6 +203,11 @@ function applyRuleIfState(action,
 
 function isStateValue(state, stateValue, targetState, targetStateValue, recursion) {
 
+  // state can be:
+  //  state
+  //  state.childEntity.childState
+  //  state.childEntity.childState.[..].childState
+
   if (recursion >= constants.MAX_RECURSION) {
     console.log('Max recursion reached');
     return false;

@@ -3,7 +3,7 @@ location:
   actions: [go, describe]
   rules:
     entrance -- lawn:
-      if state door is closed:
+      if state entrance.objects.door.door is closed:
         message: doorNotOpen
         state: .last
   entities:
