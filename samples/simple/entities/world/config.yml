@@ -4,7 +4,11 @@ location:
   rules:
     entrance -- lawn:
       if state entrance.objects.door.door is closed:
-        message: doorNotOpen
+        message: frontDoorNotOpen
+        state: .last
+    upstairsHallway -- masterBedroom:
+      if state masterBedroom.objects.door.door is closed:
+        message: masterBedroomDoorLocked
         state: .last
   entities:
     bedroom:
@@ -13,3 +17,5 @@ location:
       - objects.door
     lawn:
       - people.ada
+    masterBedroom:
+      - objects.door

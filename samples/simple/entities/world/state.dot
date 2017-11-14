@@ -2,7 +2,7 @@ graph location {
 
     subgraph house {
         bedroom -- upstairsHallway -- bathroom
-        stairs -- upstairsHallway
+        stairs -- upstairsHallway -- masterBedroom
         livingRoom -- entrance -- stairs
         entrance -- kitchen -- livingRoom
     }

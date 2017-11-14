@@ -16,10 +16,13 @@ And then this.
 
 You are in the bathroom.
 
+### masterBedroom: master bedroom
+
+N/A.
+
 ### upstairsHallway: upstairs hallway
 
-You are in the upstairs hallway. Paintings line the wall. The door
-to the master bedroom is locked.
+You are in the upstairs hallway. Paintings line the wall.
 
 ### stairs
 
@@ -69,6 +72,10 @@ You are going down the stairs.
 
 You are going up the stairs.
 
-## doorNotOpen
+## frontDoorNotOpen
 
 The door must be open in order to go in or out of the house.
+
+## masterBedroomDoorLocked
+
+The master bedroom door is locked and cannot be open.

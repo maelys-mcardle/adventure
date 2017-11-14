@@ -50,6 +50,9 @@ function updateEntityPlaceholders(entities, entity, recursion) {
         if (typeof(placeholder) === 'string') {
           let childEntity = getEntityFromPath(entities, placeholder);
 
+          // Create a copy as it will be modified.
+          childEntity = copyEntity(childEntity);
+
           // child path is:
           //  parentPath.parentName.parentState.parentStateValue.childPath
           let childPath = 
@@ -89,4 +92,8 @@ function getEntityFromPath(entities, path) {
 
   console.log('Child entity ' + path + ' could not be found.');
   return path;
+}
+
+function copyEntity(entity) {
+  return JSON.parse(JSON.stringify(entity));
 }
