@@ -187,10 +187,7 @@ function applyRuleIfState(action,
 
     // Look at current state value, but also child entities of either
     // state value.
-    if (isStateValue(entityState, oldStateValueName, 
-          targetState, targetStateValue, 0) ||
-        isStateValue(entityState, newStateValueName, 
-          targetState, targetStateValue, 0)) {
+    if (isStateValue(entityState, '', targetState, targetStateValue, 0)) {
 
       [entityState, messages] = 
         applyRules(action, oldStateValueName, newStateValueName,
@@ -201,7 +198,7 @@ function applyRuleIfState(action,
   return [entityState, messages];
 }
 
-function isStateValue(state, stateValue, targetState, targetStateValue, recursion) {
+function isStateValue(state, statePrefix, targetState, targetStateValue, recursion) {
 
   // state can be:
   //  state
@@ -213,19 +210,28 @@ function isStateValue(state, stateValue, targetState, targetStateValue, recursio
     return false;
   }
 
-  if (state.name == targetState && stateValue == targetStateValue) {
+  let currentStateName = statePrefix + state.name;
+  if (currentStateName.endsWith(targetState) && 
+      state.currentValue == targetStateValue) {
     return true;
   } else {
-    for (let childEntity of state.values[stateValue].childEntities) {
-      for (let stateName of Object.keys(childEntity.states)) {
-        let state = childEntity.states[stateName];
-        if (isStateValue(state, state.currentValue, 
-             targetState, targetStateValue, recursion + 1)) {
-          return true;
+    for (let stateValue of Object.keys(state.values)) {
+      for (let childEntity of state.values[stateValue].childEntities) {
+        let prefix = getStatePrefix(childEntity);
+        for (let stateName of Object.keys(childEntity.states)) {
+          let state = childEntity.states[stateName];
+          if (isStateValue(state, prefix, 
+              targetState, targetStateValue, recursion + 1)) {
+            return true;
+          }
         }
       }
     }
   }
 
   return false;
+}
+
+function getStatePrefix(entity) {
+  return entity.path + '.' + entity.name + '.';
 }
