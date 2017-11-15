@@ -10,11 +10,11 @@ The door is closed.
 
 ## open -> closed
 
-You closed the door.
+You are closing the door.
 
 ## closed -> open
 
-You opened the door.
+You are opening the door.
 
 ## doorAlreadyOpen
 

@@ -45,8 +45,9 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
 
     // Value changed. Describe everything.
     if (oldValue != newValue) {
+      let stateTransitionText = getTransitionText(oldState, oldValue, newValue);
       let stateValueText = getEntityText(newEntity);
-      text = text.concat(stateValueText);
+      text = text.concat(stateTransitionText).concat(stateValueText);
     
     // Value same. See if child changed.
     } else {
@@ -60,6 +61,10 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   }
 
   return text;
+}
+
+function getTransitionText(state, fromValue, toValue) {
+  return state.values[fromValue].relationships[toValue].text;
 }
 
 function getEntityText(entity) {
