@@ -77,19 +77,23 @@ function evaluateInput(story, input) {
 
 function startNewStory(story, storyDirectoryPath) {
   let loadedStory = loadStory.load(storyDirectoryPath);
-  let output = 'Loaded ' + loadedStory.title + '\n\n' +
-    storyEngine.describeCurrentState(loadedStory) + '\n\n' +
-    listEligibleActions(loadedStory);
+  let output = getLoadedStoryOutput(loadedStory);
   return [loadedStory, output];
 }
 
 function loadStoryProgress(story, savePath) {
   let storyAsJson = readFile(savePath);
   let loadedStory = fromJson(storyAsJson);
-  let output = 'Loaded ' + loadedStory.title + '\n\n' +
-    storyEngine.describeCurrentState(loadedStory) + '\n\n' +
-    listEligibleActions(loadedStory);
+  let output = getLoadedStoryOutput(loadedStory);
   return [loadedStory, output];
+}
+
+function getLoadedStoryOutput(story) {
+  let output = 
+    `Loaded ${story.title}\n\n` +
+    `${storyEngine.describeCurrentState(story)}\n\n` +
+    listEligibleActions(story);
+  return output;
 }
 
 function saveStoryProgress(story, savePath) {

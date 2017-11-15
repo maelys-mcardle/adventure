@@ -1,11 +1,12 @@
 'use strict';
 
+const args = require('./arguments');
 const repl = require('repl');
 const cliCommands = require('./commands');
 
 /** Evaluating input. Wrapped in closure for persistence of story. */
 function evaluateInput() {
-  let story = null;
+  let story = args.loadStory();
   return (command, context, filename, callback) => {
     let output = '';
     [story, output] = cliCommands.evaluate(story, command);
