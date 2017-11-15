@@ -35,7 +35,7 @@ function executeRules(story, action, targetEntityName,
       targetEntityPath, targetStateName);
   
   if (entityState == null) {
-    console.log('Could not find ' + targetEntityName + ' ' + targetStateName);
+    console.log(`Could not find ${targetEntityName} ${targetStateName}`);
     return [story, messages];
   }
 

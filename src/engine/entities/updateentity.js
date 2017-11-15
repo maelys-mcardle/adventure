@@ -21,7 +21,7 @@ function updateEntityStateByName(entity, targetEntityName, targetEntityPath,
 targetStateName, updatedState, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Max recursion reached.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return entity;
   }
 

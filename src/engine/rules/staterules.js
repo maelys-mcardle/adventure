@@ -51,7 +51,7 @@ function applyRules(action, oldStateValueName, newStateValueName,
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Max recursion reached.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return [entityState, messages];
   }
 
@@ -75,7 +75,7 @@ function applyRuleState(entityState, rules, oldStateValueName) {
     } else if (rules.state in entityState.values) {
       entityState.currentValue = rules.state;
     } else {
-      console.log(rules.state + ' not found.');
+      console.log(`${rules.state} not found.`);
     }
   }
 
@@ -89,7 +89,7 @@ function applyRuleDisable(entityState, rules) {
       if (disableStateValue in entityState.values) {
         entityState.values[disableStateValue].disabled = true;
       } else {
-        console.log(disableStateValue + ' not found.');
+        console.log(`${disableStateValue} not found.`);
       }
     }
   }
@@ -104,7 +104,7 @@ function applyRuleEnable(entityState, rules) {
       if (enableStateValue in entityState.values) {
         entityState.values[enableStateValue].disabled = false;
       } else {
-        console.log(enableStateValue + ' not found.');
+        console.log(`${enableStateValue} not found.`);
       }
     }
   }
@@ -119,7 +119,7 @@ function applyRuleMessage(entityState, rules, messages) {
       let message = entityState.messages[rules.message];
       messages.push(message);
     } else {
-      console.log(rules.message + ' not found.');
+      console.log(`${rules.message} not found.`);
     }
   }
 
@@ -206,7 +206,7 @@ function isStateValue(state, statePrefix, targetState, targetStateValue, recursi
   //  state.childEntity.childState.[..].childState
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Max recursion reached');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return false;
   }
 

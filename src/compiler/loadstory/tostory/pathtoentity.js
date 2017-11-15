@@ -32,7 +32,7 @@ function entityPlaceholderToEntity(entities) {
 function updateEntityPlaceholders(entities, entity, recursion) {
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Max recursion exceeded.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return entity;
   }
       
@@ -90,7 +90,7 @@ function getEntityFromPath(entities, path) {
     }
   }
 
-  console.log('Child entity ' + path + ' could not be found.');
+  console.log(`Child entity ${path} could not be found.`);
   return path;
 }
 

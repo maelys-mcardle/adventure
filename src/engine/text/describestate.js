@@ -33,7 +33,7 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   let text = [];
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Maximum recursion depth exceeded.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return text;
   }
 
@@ -79,7 +79,7 @@ function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Maximum recursion depth exceeded.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return text;
   }
 

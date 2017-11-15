@@ -50,8 +50,7 @@ function parseActions(rawActions, story) {
                 template.replace(word, synonym)
               )
             } else {
-              console.log("Word " + word + " not found in template " +
-                         template);
+              console.log(`Word ${word} not found in template ${template}`);
             }
           }
         }

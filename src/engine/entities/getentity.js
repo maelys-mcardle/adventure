@@ -41,7 +41,7 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
    recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Max recursion reached.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return null;
   }
 

@@ -25,7 +25,7 @@ function getFilePaths(rootDirectory) {
         next(); 
       },
       errors: function(fileDirectory, nodeStats, next) {
-        console.log('Error listing file in %s', fileDirectory);
+        console.log(`Error listing file in ${fileDirectory}`);
         next(); 
       }
     }

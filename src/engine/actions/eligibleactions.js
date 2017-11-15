@@ -73,7 +73,7 @@ function getInputsWithTemplate(template, eligibleAction) {
   if (eligibleActionEntitiesNames.length === 0) {
     return validInputs;
   } else if (!hasEntityVariable && eligibleActionEntitiesNames.length > 1) {
-    console.log(template + " is ambiguous and can refer to: " + 
+    console.log(`${template} is ambiguous and can refer to: ` +
       eligibleActionEntitiesNames.join(', '));
     return validInputs;
   }
@@ -88,7 +88,7 @@ function getInputsWithTemplate(template, eligibleAction) {
       if (stateValueNames.length === 0) {
         continue;
       } else if (!hasStateVariable && stateValueNames.length > 1) {
-        console.log(template + " is ambiguous and can refer to: " + 
+        console.log(`${template} is ambiguous and can refer to: ` + 
           stateValueNames.join(', '));
         continue;
       }
@@ -157,7 +157,7 @@ function getEligibleActionsFromEntity(eligibleActions,
   actions, entity, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log('Maximum recursion depth exceeded.');
+    console.log(contants.MAX_RECURSION_MESSAGE);
     return eligibleActions;
   }
 

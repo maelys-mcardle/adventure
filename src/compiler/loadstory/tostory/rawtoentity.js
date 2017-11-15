@@ -99,7 +99,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       entity.states[stateName] = state;
 
     } else {
-      console.log("Could not find state " + stateName + " of configs.");
+      console.log(`Could not find state ${stateName} of configs.`);
     }
   }
   
@@ -110,7 +110,7 @@ function loadConfigCurrentValue(state, config) {
   if ('start' in config) {
     state.currentValue = config.start;
   } else {
-    console.log(state.name + " has no start value specified in config.");
+    console.log(`${state.name} has no start value specified in config.`);
   }
   return state;
 }
@@ -121,7 +121,7 @@ function loadConfigActions(state, actions, config) {
       if (action in actions) {
         state.actions.push(action);
       } else {
-        console.log(action + " for " + state.name + " hasn't been defined.");
+        console.log(`${action} for ${state.name} hasn't been defined.`);
       }
     }
   }
@@ -134,8 +134,8 @@ function loadConfigDisabled(state, config) {
       if (disabledStateValue in state.values) {
         state.values[disabledStateValue].disabled = true;
       } else {
-        console.log("Disabled value " + disabledStateValue + " for " + state.name +
-                    " does not exist.");
+        console.log(`Disabled value ${disabledStateValue} for ${state.name} ` +
+                    `does not exist.`);
       }
     }
   }
@@ -154,7 +154,7 @@ function loadConfigRules(state, config) {
         if (trigger.left in state.values) {
           state.values[trigger.left].rules = triggerRules;
         } else {
-          console.log("Could not find " + trigger.left + " to apply rule to.");
+          console.log(`Could not find ${trigger.left} to apply rule to.`);
         }
   
       } else {
@@ -224,8 +224,7 @@ function parseRawEntityText(entity, rawText) {
 function addTextToState(entity, stateName, rawTrigger, text) {
 
   if (!(stateName in entity.states)) {
-    console.log('Could not find state ' + stateName + 
-      ' for trigger ' + rawTrigger);
+    console.log(`Could not find state ${stateName} for trigger ${rawTrigger}`);
     return entity;
   }
 
@@ -269,7 +268,7 @@ function setRelationshipValue(state, trigger, relationshipKey, relationshipValue
       relationship[relationshipKey] = relationshipValue;
       state.values[trigger.left].relationships[trigger.right] = relationship;
   } else {
-    console.log('Relationship ' + trigger.left + ' to ' + trigger.right + ' not defined.');
+    console.log(`Relationship ${trigger.left} to ${trigger.right} not defined.`);
   }
 
   // For bidirectional state transition (--).
@@ -280,8 +279,7 @@ function setRelationshipValue(state, trigger, relationshipKey, relationshipValue
         relationship[relationshipKey] = relationshipValue;
         state.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
-      console.log('Relationship ' + trigger.right + ' to ' + 
-        trigger.left + ' not defined.');
+      console.log(`Relationship ${trigger.right} to ${trigger.left} not defined.`);
     }
   }
 
