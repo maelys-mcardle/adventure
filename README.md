@@ -1,20 +1,25 @@
 # Adventure
 
-Adventure is a narrated game engine reminiscent of 1980's text adventure
-games.
+Adventure is a game engine reminiscent of 1980's interactive fiction.
+
+The language to create games with this engine is declarative and attempts
+to be as straight-forward as possible, as to reduce learning curves. 
 
 ## Installing adventure
 
 Make sure you have NodeJS installed. Then run:
 
-`npm install https://github.com/maelys-mcardle/adventure`
+`npm install -g https://github.com/maelys-mcardle/adventure`
 
 ## Launching a game
 
-Can be started with the command:
+An interactive console for the engine be started with the command:
 
-`npm run game`
+`adventure`
 
-The game will present a console. You can load a sample story with:
+The game will present an empty prompt. You can load a new story 
+with the `start` command:
 
 `> start samples/simple`
+
+Use the `help` command to get a listing of all possible commands.
