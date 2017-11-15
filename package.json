@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "game": "node ./src/cli/cli.js",
-    "compiler": "node ./src/compiler/compilercli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Maëlys McArdle",

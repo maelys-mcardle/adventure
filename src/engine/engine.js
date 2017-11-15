@@ -3,8 +3,10 @@
 const describeState = require('./text/describestate');
 const eligibleActions = require('./actions/eligibleactions');
 const executeActions = require('./actions/executeactions');
+const loadStory = require('./load/loadstory');
 
 module.exports = {
+  loadStory: loadStory.load,
   evaluateInput: evaluateInput,
   describeCurrentState: describeCurrentState,
   listActionExamples: listActionExamples

@@ -2,8 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-
-const loadStory = require('../compiler/loadstory/loadstory');
 const storyEngine = require('../engine/engine');
 
 module.exports = {
@@ -76,7 +74,7 @@ function evaluateInput(story, input) {
 }
 
 function startNewStory(story, storyDirectoryPath) {
-  let loadedStory = loadStory.load(storyDirectoryPath);
+  let loadedStory = storyEngine.loadStory(storyDirectoryPath);
   let output = getLoadedStoryOutput(loadedStory);
   return [loadedStory, output];
 }

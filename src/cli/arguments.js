@@ -1,6 +1,6 @@
 'use strict';
 
-const loadStory = require('../compiler/loadstory/loadstory');
+const storyEngine = require('../engine/engine');
 
 const argv = require('yargs')
   .usage('Usage: $0 [options]')
@@ -18,7 +18,7 @@ module.exports = {
 
 function loadStoryFromArguments() {
   if (argv.directory) {
-    let story = loadStory.load(argv.directory);
+    let story = storyEngine.loadStory(argv.directory);
     return story;
   }
   return null;
