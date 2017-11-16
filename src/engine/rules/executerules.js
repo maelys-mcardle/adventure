@@ -1,9 +1,9 @@
 'use strict';
 
-const constants = require('../../constants');
-const stateRules = require('./staterules');
+const constants = require('../constants');
 const getEntity = require('../entities/getentity');
 const updateEntity = require('../entities/updateentity');
+const stateRules = require('./staterules');
 
 module.exports = {
   before: executeTransitionRules,
