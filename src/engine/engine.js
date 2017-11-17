@@ -1,6 +1,6 @@
 "use strict";
 
-const describeState = require('./text/describestate');
+const getText = require('./text/gettext');
 const eligibleActions = require('./actions/eligibleactions');
 const executeActions = require('./actions/executeactions');
 const loadStory = require('./load/loadstory');
@@ -13,7 +13,7 @@ module.exports = {
 }
 
 function describeCurrentState(story) {
-  let output = describeState.getAll(story).join('\n\n');
+  let output = getText.getAll(story).join('\n\n');
   return output;
 }
 

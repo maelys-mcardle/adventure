@@ -1,6 +1,6 @@
 letter:
-  start: unread
+  start: notReading
   actions: [read]
   rules:
     read:
-      state: unread
+      state: reading

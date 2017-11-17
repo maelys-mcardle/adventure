@@ -47,7 +47,10 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
     if (oldValue != newValue) {
       let stateTransitionText = getTransitionText(oldState, oldValue, newValue);
       let stateValueText = getEntityText(newEntity);
-      text = text.concat(stateTransitionText).concat(stateValueText);
+      text = text.
+        concat(stateTransitionText).
+        concat(stateValueText).
+        filter(value => value != '');
     
     // Value same. See if child changed.
     } else {

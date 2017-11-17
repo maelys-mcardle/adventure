@@ -1,9 +1,9 @@
 # letter
 
-## unread
+## notReading
 
 A letter is on the bedside table.
 
-## read
+## reading
 
 The letter just says "You are loved."

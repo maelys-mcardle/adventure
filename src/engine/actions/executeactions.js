@@ -2,7 +2,7 @@
 
 const executeRules = require('../rules/executerules');
 const getEntity = require('../entities/getentity');
-const describeState = require('../text/describestate');
+const getText = require('../text/gettext');
 
 module.exports = {
   execute: executeAction,
@@ -36,7 +36,7 @@ function executeDescribeAction(story, entityName, entityPath, stateName) {
   }
 
   // Print the description.
-  let paragraphs = describeState.getEntityState(entityState);
+  let paragraphs = getText.getEntityState(entityState);
 
   // Concatenate the output.
   let output = paragraphs.join('\n\n');
@@ -57,21 +57,17 @@ function executeStateChangeAction(initialStory, action,
   //  - set new state
   //  - apply rules for transition
   [updatedStory, transitionMessages] = 
-    executeRules.before(
-      updatedStory, 
-      action, 
-      entityName, entityPath,
-      stateName, newStateValueName);
+    executeRules.execute(
+      updatedStory, action, entityName, entityPath,
+      stateName, newStateValueName, true);
 
   // Print the current delta.
-  let paragraphs = describeState.getDelta(initialStory, updatedStory);
+  let paragraphs = getText.getDelta(initialStory, updatedStory);
 
   // Apply rules for when in state.
-  [updatedStory, stateMessages] = executeRules.after(
-    updatedStory, 
-    action, 
-    entityName, entityPath,
-    stateName);
+  [updatedStory, stateMessages] = executeRules.execute(
+    updatedStory, action, entityName, entityPath,
+    stateName, null, false);
 
   // Concatenate the output.
   let output = 
