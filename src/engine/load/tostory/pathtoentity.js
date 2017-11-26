@@ -4,10 +4,10 @@ const constants = require('../../constants');
 
 module.exports = {
   entityPlaceholderToEntity: entityPlaceholderToEntity,
-  loadCurrentStateEntities: loadCurrentStateEntities
+  loadCurrentPropertyEntities: loadCurrentPropertyEntities
 };
 
-function loadCurrentStateEntities(story, entities) {
+function loadCurrentPropertyEntities(story, entities) {
 
   if (story.rootEntity == null) {
     console.log('Story has no entities specified.');
@@ -36,17 +36,17 @@ function updateEntityPlaceholders(entities, entity, recursion) {
     return entity;
   }
       
-  // Iterate over every entity's state.
+  // Iterate over every entity's property.
   for (let propertyName of Object.keys(entity.properties)) {
-    let state = entity.properties[propertyName];
+    let property = entity.properties[propertyName];
 
-    // Iterate over every entity's state values.
-    for (let stateValueName of Object.keys(state.values)) {
-      let stateValue = state.values[stateValueName];
+    // Iterate over every entity's property values.
+    for (let propertyValueName of Object.keys(property.values)) {
+      let propertyValue = property.values[propertyValueName];
 
-      // Iterate over all child entities in the state values.
-      for (let childIndex in stateValue.childEntities) {
-        let placeholder = stateValue.childEntities[childIndex];
+      // Iterate over all child entities in the property values.
+      for (let childIndex in propertyValue.childEntities) {
+        let placeholder = propertyValue.childEntities[childIndex];
         if (typeof(placeholder) === 'string') {
           let childEntity = getEntityFromPath(entities, placeholder);
 
@@ -54,21 +54,21 @@ function updateEntityPlaceholders(entities, entity, recursion) {
           childEntity = copyEntity(childEntity);
 
           // child path is:
-          //  parentPath.parentName.parentState.parentStateValue.childPath
+          //  parentPath.parentName.parentProperty.parentPropertyValue.childPath
           let childPath = 
-            [entity.path, entity.name, propertyName, stateValueName, 
+            [entity.path, entity.name, propertyName, propertyValueName, 
               childEntity.path].filter(s => s != '').join('.');
 
           childEntity.path = childPath;
           childEntity = updateEntityPlaceholders(entities, 
             childEntity, recursion + 1);
           
-          stateValue.childEntities[childIndex] = childEntity;
+          propertyValue.childEntities[childIndex] = childEntity;
         }
       }
-      state.values[stateValueName] = stateValue;
+      property.values[propertyValueName] = propertyValue;
     }
-    entity.properties[propertyName] = state;
+    entity.properties[propertyName] = property;
   }
   
   return entity;

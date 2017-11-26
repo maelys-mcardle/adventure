@@ -3,22 +3,22 @@
 const constants = require('../constants');
 
 module.exports = {
-  updateState: updateEntityState,
+  updateProperty: updateEntityProperty,
 }
 
-function updateEntityState(story, targetEntityName, targetEntityPath, 
-  targetStateName, updatedState) {
+function updateEntityProperty(story, targetEntityName, targetEntityPath, 
+  targetPropertyName, updatedProperty) {
 
   story.rootEntity = 
-    updateEntityStateByName(
+    updateEntityPropertyByName(
       story.rootEntity, targetEntityName, targetEntityPath, 
-      targetStateName, updatedState, 0);
+      targetPropertyName, updatedProperty, 0);
 
   return story;
 }
 
-function updateEntityStateByName(entity, targetEntityName, targetEntityPath, 
-targetStateName, updatedState, recursion) {
+function updateEntityPropertyByName(entity, targetEntityName, targetEntityPath, 
+targetPropertyName, updatedProperty, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(contants.MAX_RECURSION_MESSAGE);
@@ -27,23 +27,23 @@ targetStateName, updatedState, recursion) {
 
   // current entity matches.
   if (entity.name == targetEntityName && entity.path == targetEntityPath) {
-    entity.properties[targetStateName] = updatedState;
+    entity.properties[targetPropertyName] = updatedProperty;
 
   // search children.
   } else {
     for (let propertyName of Object.keys(entity.properties)) {
-      let state = entity.properties[propertyName];
-      let currentStateValue = state.values[state.currentValue];
-      for (let childEntityIndex in currentStateValue.childEntities) {
-        let childEntity = currentStateValue.childEntities[childEntityIndex];
+      let property = entity.properties[propertyName];
+      let currentPropertyValue = property.values[property.currentValue];
+      for (let childEntityIndex in currentPropertyValue.childEntities) {
+        let childEntity = currentPropertyValue.childEntities[childEntityIndex];
         
-        let updatedChildEntity = updateEntityStateByName(childEntity,
+        let updatedChildEntity = updateEntityPropertyByName(childEntity,
           targetEntityName, targetEntityPath, 
-          targetStateName, updatedState, recursion + 1);
+          targetPropertyName, updatedProperty, recursion + 1);
         
-        currentStateValue.childEntities[childEntityIndex] = updatedChildEntity;
+        currentPropertyValue.childEntities[childEntityIndex] = updatedChildEntity;
       }
-      entity.properties[propertyName].values[state.currentValue] = currentStateValue;
+      entity.properties[propertyName].values[property.currentValue] = currentPropertyValue;
     }
   }
 

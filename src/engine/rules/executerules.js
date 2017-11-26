@@ -9,146 +9,146 @@ module.exports = {
 }
 
 function executeRules(story, action, targetEntityName, 
-  targetEntityPath, targetStateName, newStateValueName, isTransition) {
+  targetEntityPath, targetPropertyName, newPropertyValueName, isTransition) {
 
   let messages = [];
   
   // Get entity state.
-  let entityState = 
+  let entityProperty = 
     getEntity.findProperty(story, targetEntityName, 
-      targetEntityPath, targetStateName);
+      targetEntityPath, targetPropertyName);
   
-  if (entityState == null) {
-    console.log(`Could not find ${targetEntityName} ${targetStateName}`);
+  if (entityProperty == null) {
+    console.log(`Could not find ${targetEntityName} ${targetPropertyName}`);
     return [story, messages];
   }
 
   // Apply rules to state.
   if (isTransition) {
-    [entityState, messages] = 
-      executeTransitionRules(action, entityState, newStateValueName);
+    [entityProperty, messages] = 
+      executeTransitionRules(action, entityProperty, newPropertyValueName);
   } else {
-    [entityState, messages] = 
-      executeStateRules(action, entityState);
+    [entityProperty, messages] = 
+      executeStateRules(action, entityProperty);
   }
 
   // Update entity.
-  story = updateEntity.updateState(story, targetEntityName, 
-    targetEntityPath, targetStateName, entityState);
+  story = updateEntity.updateProperty(story, targetEntityName, 
+    targetEntityPath, targetPropertyName, entityProperty);
 
   return [story, messages];
 }
 
-function executeTransitionRules(action, entityState, newStateValueName) {
+function executeTransitionRules(action, entityProperty, newPropertyValueName) {
   
   let messages = [];
   
   // Set state value.
-  let oldStateValueName = entityState.currentValue;
+  let oldPropertyValueName = entityProperty.currentValue;
 
   // Set state.
-  entityState.currentValue = newStateValueName;
+  entityProperty.currentValue = newPropertyValueName;
   
   // Execute transition rules.
   let stateTransitionRules = 
-    entityState.values[oldStateValueName].
-      relationships[newStateValueName].rules;
+    entityProperty.values[oldPropertyValueName].
+      relationships[newPropertyValueName].rules;
 
-  [entityState, messages] = 
-    applyRules(action, oldStateValueName, newStateValueName,
-      entityState, stateTransitionRules, 0);
+  [entityProperty, messages] = 
+    applyRules(action, oldPropertyValueName, newPropertyValueName,
+      entityProperty, stateTransitionRules, 0);
 
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
 
-function executeStateRules(action, entityState) {
+function executeStateRules(action, entityProperty) {
 
   let messages = [];
 
   // Set state value.
-  let newStateValueName = entityState.currentValue;
+  let newPropertyValueName = entityProperty.currentValue;
 
   // Execute state value rules.
-  let stateValueRules = entityState.values[newStateValueName].rules;
-  [entityState, messages] = 
-    applyRules(action, newStateValueName, newStateValueName,
-      entityState, stateValueRules, 0);
+  let stateValueRules = entityProperty.values[newPropertyValueName].rules;
+  [entityProperty, messages] = 
+    applyRules(action, newPropertyValueName, newPropertyValueName,
+      entityProperty, stateValueRules, 0);
   
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
   
-function applyRules(action, oldStateValueName, newStateValueName, 
-  entityState, rules, recursion) {
+function applyRules(action, oldPropertyValueName, newPropertyValueName, 
+  entityProperty, rules, recursion) {
 
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(contants.MAX_RECURSION_MESSAGE);
-    return [entityState, messages];
+    return [entityProperty, messages];
   }
 
-  entityState = applyRuleState(entityState, rules, oldStateValueName);
-  entityState = applyRuleDisable(entityState, rules);
-  entityState = applyRuleEnable(entityState, rules);
-  messages = applyRuleMessage(entityState, rules, messages);
+  entityProperty = applyRuleState(entityProperty, rules, oldPropertyValueName);
+  entityProperty = applyRuleDisable(entityProperty, rules);
+  entityProperty = applyRuleEnable(entityProperty, rules);
+  messages = applyRuleMessage(entityProperty, rules, messages);
 
-  [entityState, messages] = 
-    applyRuleIfBlock(action, entityState, rules, messages, 
-      oldStateValueName, newStateValueName, recursion);
+  [entityProperty, messages] = 
+    applyRuleIfBlock(action, entityProperty, rules, messages, 
+      oldPropertyValueName, newPropertyValueName, recursion);
 
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
 
-function applyRuleState(entityState, rules, oldStateValueName) {
+function applyRuleState(entityProperty, rules, oldPropertyValueName) {
 
   if ('state' in rules) {
     if (rules.state === '.last') {
-      entityState.currentValue = oldStateValueName;
-    } else if (rules.state in entityState.values) {
-      entityState.currentValue = rules.state;
+      entityProperty.currentValue = oldPropertyValueName;
+    } else if (rules.state in entityProperty.values) {
+      entityProperty.currentValue = rules.state;
     } else {
       console.log(`${rules.state} not found.`);
     }
   }
 
-  return entityState;
+  return entityProperty;
 }
 
-function applyRuleDisable(entityState, rules) {
+function applyRuleDisable(entityProperty, rules) {
   
   if ('disable' in rules) {
     for (let disableStateValue of rules.disable) {
-      if (disableStateValue in entityState.values) {
-        entityState.values[disableStateValue].disabled = true;
+      if (disableStateValue in entityProperty.values) {
+        entityProperty.values[disableStateValue].disabled = true;
       } else {
         console.log(`${disableStateValue} not found.`);
       }
     }
   }
 
-  return entityState;
+  return entityProperty;
 }
 
-function applyRuleEnable(entityState, rules) {
+function applyRuleEnable(entityProperty, rules) {
 
   if ('enable' in rules) {
     for (let enableStateValue of rules.enable) {
-      if (enableStateValue in entityState.values) {
-        entityState.values[enableStateValue].disabled = false;
+      if (enableStateValue in entityProperty.values) {
+        entityProperty.values[enableStateValue].disabled = false;
       } else {
         console.log(`${enableStateValue} not found.`);
       }
     }
   }
 
-  return entityState;
+  return entityProperty;
 }
 
-function applyRuleMessage(entityState, rules, messages) {
+function applyRuleMessage(entityProperty, rules, messages) {
 
   if ('message' in rules) {
-    if (rules.message in entityState.messages) {
-      let message = entityState.messages[rules.message];
+    if (rules.message in entityProperty.messages) {
+      let message = entityProperty.messages[rules.message];
       messages.push(message);
     } else {
       console.log(`${rules.message} not found.`);
@@ -158,8 +158,8 @@ function applyRuleMessage(entityState, rules, messages) {
   return messages;
 }
 
-function applyRuleIfBlock(action, entityState, rules, messages, 
-  oldStateValueName, newStateValueName, recursion) {
+function applyRuleIfBlock(action, entityProperty, rules, messages, 
+  oldPropertyValueName, newPropertyValueName, recursion) {
 
   for (let trigger of Object.keys(rules)) {
     let words = trigger.split(' ');
@@ -169,23 +169,23 @@ function applyRuleIfBlock(action, entityState, rules, messages,
       let ifActionMessages = [];
       let ifStateMessages = [];
 
-      [entityState, ifActionMessages] = applyRuleIfAction(action, 
-        entityState, rules, oldStateValueName, newStateValueName,
+      [entityProperty, ifActionMessages] = applyRuleIfAction(action, 
+        entityProperty, rules, oldPropertyValueName, newPropertyValueName,
         words, childRules, recursion);
 
-      [entityState, ifStateMessages] = applyRuleIfState(action, 
-        entityState, rules, oldStateValueName, newStateValueName, 
+      [entityProperty, ifStateMessages] = applyRuleIfState(action, 
+        entityProperty, rules, oldPropertyValueName, newPropertyValueName, 
         words, childRules, recursion);
 
       messages = messages.concat(ifActionMessages).concat(ifStateMessages);
     }
   }
 
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
 
 function applyRuleIfAction(action, 
-  entityState, rules, oldStateValueName, newStateValueName,
+  entityProperty, rules, oldPropertyValueName, newPropertyValueName,
   words, childRules, recursion) {
 
   let messages = [];
@@ -195,16 +195,16 @@ function applyRuleIfAction(action,
     words[1] == 'action' && 
     words[2] == action.name) {
         
-    [entityState, messages] = 
-      applyRules(action, oldStateValueName, newStateValueName,
-        entityState, childRules, recursion + 1) 
+    [entityProperty, messages] = 
+      applyRules(action, oldPropertyValueName, newPropertyValueName,
+        entityProperty, childRules, recursion + 1) 
   }
 
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
 
 function applyRuleIfState(action, 
-  entityState, rules, oldStateValueName, newStateValueName,
+  entityProperty, rules, oldPropertyValueName, newPropertyValueName,
   words, childRules, recursion) {
 
   let messages = [];
@@ -219,15 +219,15 @@ function applyRuleIfState(action,
 
     // Look at current state value, but also child entities of either
     // state value.
-    if (isStateValue(entityState, '', targetState, targetStateValue, 0)) {
+    if (isStateValue(entityProperty, '', targetState, targetStateValue, 0)) {
 
-      [entityState, messages] = 
-        applyRules(action, oldStateValueName, newStateValueName,
-          entityState, childRules, recursion + 1);
+      [entityProperty, messages] = 
+        applyRules(action, oldPropertyValueName, newPropertyValueName,
+          entityProperty, childRules, recursion + 1);
     }
   }
 
-  return [entityState, messages];
+  return [entityProperty, messages];
 }
 
 function isStateValue(state, statePrefix, targetState, targetStateValue, recursion) {

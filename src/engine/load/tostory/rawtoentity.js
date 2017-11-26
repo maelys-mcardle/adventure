@@ -41,7 +41,7 @@ function parseEntities(rawStoryEntities, story) {
   entities = pathToEntity.entityPlaceholderToEntity(entities);
 
   // Load active entities into the current state.
-  story = pathToEntity.loadCurrentStateEntities(story, entities);
+  story = pathToEntity.loadCurrentPropertyEntities(story, entities);
 
   return story;
 }
