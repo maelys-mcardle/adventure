@@ -161,8 +161,8 @@ function getEligibleActionsFromEntity(eligibleActions,
     return eligibleActions;
   }
 
-  for (let stateName of Object.keys(entity.states)) {
-    let state = entity.states[stateName];
+  for (let stateName of Object.keys(entity.properties)) {
+    let state = entity.properties[stateName];
     for (let actionName of state.actions) {
       let action = actions[actionName];
       let currentStateValue = state.values[state.currentValue];

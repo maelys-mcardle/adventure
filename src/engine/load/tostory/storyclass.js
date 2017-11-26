@@ -30,7 +30,7 @@ class Entity {
   constructor(name, path) {
     this.name = name;
     this.path = path;
-    this.states = {};
+    this.properties = {};
   }
 
   newProperty(name) {
@@ -38,7 +38,7 @@ class Entity {
   }
 
   addProperty(property) {
-    this.states[property.name] = property;
+    this.properties[property.name] = property;
   }
 }
 

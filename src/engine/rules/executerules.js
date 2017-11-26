@@ -250,8 +250,8 @@ function isStateValue(state, statePrefix, targetState, targetStateValue, recursi
     for (let stateValue of Object.keys(state.values)) {
       for (let childEntity of state.values[stateValue].childEntities) {
         let prefix = getStatePrefix(childEntity);
-        for (let stateName of Object.keys(childEntity.states)) {
-          let state = childEntity.states[stateName];
+        for (let stateName of Object.keys(childEntity.properties)) {
+          let state = childEntity.properties[stateName];
           if (isStateValue(state, prefix, 
               targetState, targetStateValue, recursion + 1)) {
             return true;

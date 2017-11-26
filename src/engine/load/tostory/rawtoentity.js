@@ -21,7 +21,7 @@ function parseEntities(rawStoryEntities, story) {
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
-    for (let rawEntityStates of rawEntity.states) {
+    for (let rawEntityStates of rawEntity.properties) {
       entity = parseRawEntityStates(entity, rawEntityStates);
     }
 
@@ -87,10 +87,10 @@ function parseRawEntityStates(entity, rawStates)
 function parseRawEntityConfig(entity, actions, rawConfig) {
 
   for (let stateName of Object.keys(rawConfig.contents)) {
-    if (stateName in entity.states) {
+    if (stateName in entity.properties) {
 
       let config = rawConfig.contents[stateName];
-      let state = entity.states[stateName];
+      let state = entity.properties[stateName];
 
       state = loadConfigCurrentValue(state, config);
       state = loadConfigActions(state, actions, config);
@@ -98,7 +98,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       state = loadConfigRules(state, config);
       state = loadConfigChildEntities(state, config);
 
-      entity.states[stateName] = state;
+      entity.properties[stateName] = state;
 
     } else {
       console.log(`Could not find state ${stateName} of configs.`);
@@ -225,12 +225,12 @@ function parseRawEntityText(entity, rawText) {
 
 function addTextToState(entity, stateName, rawTrigger, text) {
 
-  if (!(stateName in entity.states)) {
+  if (!(stateName in entity.properties)) {
     console.log(`Could not find state ${stateName} for trigger ${rawTrigger}`);
     return entity;
   }
 
-  let state = entity.states[stateName];
+  let state = entity.properties[stateName];
 
   // Triggers have the format:
   //  left -- right (isTransition, isBidirectional)
@@ -256,7 +256,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 
   }
 
-  entity.states[stateName] = state;
+  entity.properties[stateName] = state;
   return entity;
 }
 

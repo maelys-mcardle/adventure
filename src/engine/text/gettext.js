@@ -37,9 +37,9 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
     return text;
   }
 
-  for (let stateName of Object.keys(oldEntity.states)) {
-    let oldState = oldEntity.states[stateName];
-    let newState = newEntity.states[stateName]; 
+  for (let stateName of Object.keys(oldEntity.properties)) {
+    let oldState = oldEntity.properties[stateName];
+    let newState = newEntity.properties[stateName]; 
     let oldValue = oldState.currentValue;
     let newValue = newState.currentValue;
 
@@ -86,8 +86,8 @@ function getEntityTextRecursive(entity, recursion) {
     return text;
   }
 
-  for (let stateName of Object.keys(entity.states)) {
-    let state = entity.states[stateName];
+  for (let stateName of Object.keys(entity.properties)) {
+    let state = entity.properties[stateName];
     let stateText = getEntityStateTextRecursive(state, recursion);
     text = text.concat(stateText);
   }

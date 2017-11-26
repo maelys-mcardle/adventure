@@ -56,12 +56,18 @@ function parseStoryConfigFile(file) {
 }
 
 function parseEntityFile(entities, file) {
+  
   if (file.isYaml() && file.name === CONFIG_FILE_NAME) {
-    return parseEntityFileWithFunction(entities, file, yaml.load, 'config');
+    return parseEntityFileWithFunction(entities, file, 
+      yaml.load, 'config');
+
   } else if (file.isMarkdown()) {
-    return parseEntityFileWithFunction(entities, file, markdown.parse, 'text');
+    return parseEntityFileWithFunction(entities, file, 
+      markdown.parse, 'text');
+
   } else if (file.isDot()) {
-    return parseEntityFileWithFunction(entities, file, dot.readMany, 'states');
+    return parseEntityFileWithFunction(entities, file, 
+      dot.readMany, 'properties');
   }
 
   return entities;
@@ -111,7 +117,7 @@ class RawEntity {
   constructor() {
     this.name;
     this.path;
-    this.states = [];
+    this.properties = [];
     this.text = [];
     this.config = [];
   }

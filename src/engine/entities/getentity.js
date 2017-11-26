@@ -31,7 +31,7 @@ function getEntityStateByName(rootEntity, targetEntityName, targetEntityPath,
     getEntityByName(rootEntity, targetEntityName, targetEntityPath, 0);
   
   if (entity != null) {
-    return entity.states[targetStateName];
+    return entity.properties[targetStateName];
   }
 
   return null;
@@ -51,8 +51,8 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
 
   // search children.
   } else {
-    for (let stateName of Object.keys(entity.states)) {
-      let state = entity.states[stateName];
+    for (let stateName of Object.keys(entity.properties)) {
+      let state = entity.properties[stateName];
       let currentStateValue = state.values[state.currentValue];
       for (let childEntity of currentStateValue.childEntities) {
         let foundEntity = getEntityByName(childEntity,

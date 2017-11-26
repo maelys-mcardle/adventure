@@ -37,8 +37,8 @@ function updateEntityPlaceholders(entities, entity, recursion) {
   }
       
   // Iterate over every entity's state.
-  for (let stateName of Object.keys(entity.states)) {
-    let state = entity.states[stateName];
+  for (let stateName of Object.keys(entity.properties)) {
+    let state = entity.properties[stateName];
 
     // Iterate over every entity's state values.
     for (let stateValueName of Object.keys(state.values)) {
@@ -68,7 +68,7 @@ function updateEntityPlaceholders(entities, entity, recursion) {
       }
       state.values[stateValueName] = stateValue;
     }
-    entity.states[stateName] = state;
+    entity.properties[stateName] = state;
   }
   
   return entity;
