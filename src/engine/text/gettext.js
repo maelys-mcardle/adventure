@@ -4,7 +4,7 @@ module.exports = {
   getAll: getStoryText,
   getDelta: getStoryDeltaText,
   getEntity: getEntityText,
-  getEntityState: getEntityStateText,
+  getEntityProperty: getEntityPropertyText,
 }
 
 const constants = require('../constants');
@@ -38,25 +38,29 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   }
 
   for (let propertyName of Object.keys(oldEntity.properties)) {
-    let oldState = oldEntity.properties[propertyName];
-    let newState = newEntity.properties[propertyName]; 
-    let oldValue = oldState.currentValue;
-    let newValue = newState.currentValue;
+    let oldProperty = oldEntity.properties[propertyName];
+    let newProperty = newEntity.properties[propertyName]; 
+    let oldValue = oldProperty.currentValue;
+    let newValue = newProperty.currentValue;
 
     // Value changed. Describe everything.
     if (oldValue != newValue) {
-      let stateTransitionText = getTransitionText(oldState, oldValue, newValue);
-      let stateValueText = getEntityText(newEntity);
+      
+      let propertyTransitionText = 
+        getTransitionText(oldProperty, oldValue, newValue);
+
+      let propertyValueText = getEntityText(newEntity);
+
       text = text.
-        concat(stateTransitionText).
-        concat(stateValueText).
+        concat(propertyTransitionText).
+        concat(propertyValueText).
         filter(value => value != '');
     
     // Value same. See if child changed.
     } else {
-      for (let childIndex in newState.values[newValue].childEntities) {
-        let oldChild = oldState.values[oldValue].childEntities[childIndex];
-        let newChild = newState.values[newValue].childEntities[childIndex];
+      for (let childIndex in newProperty.values[newValue].childEntities) {
+        let oldChild = oldProperty.values[oldValue].childEntities[childIndex];
+        let newChild = newProperty.values[newValue].childEntities[childIndex];
         let childText = getEntityDeltaText(oldChild, newChild, recursion + 1);
         text = text.concat(childText);
       }
@@ -66,16 +70,16 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   return text;
 }
 
-function getTransitionText(state, fromValue, toValue) {
-  return state.values[fromValue].relationships[toValue].text;
+function getTransitionText(property, fromValue, toValue) {
+  return property.values[fromValue].relationships[toValue].text;
 }
 
 function getEntityText(entity) {
   return getEntityTextRecursive(entity, 0);
 }
 
-function getEntityStateText(state) {
-  return getEntityStateTextRecursive(state, 0);
+function getEntityPropertyText(property) {
+  return getEntityPropertyTextRecursive(property, 0);
 }
 
 function getEntityTextRecursive(entity, recursion) {
@@ -87,23 +91,23 @@ function getEntityTextRecursive(entity, recursion) {
   }
 
   for (let propertyName of Object.keys(entity.properties)) {
-    let state = entity.properties[propertyName];
-    let stateText = getEntityStateTextRecursive(state, recursion);
-    text = text.concat(stateText);
+    let property = entity.properties[propertyName];
+    let propertyText = getEntityPropertyTextRecursive(property, recursion);
+    text = text.concat(propertyText);
   }
 
   return text;
 }
 
-function getEntityStateTextRecursive(state, recursion) {
+function getEntityPropertyTextRecursive(property, recursion) {
   let text = [];
 
-  let value = state.currentValue;
+  let value = property.currentValue;
 
-  let stateValueText = state.values[value].text;
-  text.push(stateValueText);
+  let propertyValueText = property.values[value].text;
+  text.push(propertyValueText);
 
-  for (let childEntity of state.values[value].childEntities) {
+  for (let childEntity of property.values[value].childEntities) {
     let childEntityText = getEntityTextRecursive(childEntity, recursion + 1);
     text = text.concat(childEntityText);
   }
