@@ -9,63 +9,62 @@ module.exports = {
 }
 
 function executeAction(story, actionName, 
-  entityName, entityPath, propertyName, newStateValueName) {
+  entityName, entityPath, propertyName, newPropertyValueName) {
 
   let action = story.actions[actionName];
   let description = [];
 
-  if (action.changesStateValue) { 
-    return executeStateChangeAction(story, action, 
-      entityName, entityPath, propertyName, newStateValueName);
+  if (action.changesPropertyValue) { 
+    return changeValue(story, action, entityName, entityPath, 
+      propertyName, newPropertyValueName);
   }
 
-  else if (action.describesEntityState) {
-    description = 
-      executeDescribeAction(story, entityName, entityPath, propertyName);
+  else if (action.describesEntityProperty) {
+    description = describe(story, entityName, entityPath, propertyName);
   }
 
   return [story, description];
 }
 
-function executeDescribeAction(story, entityName, entityPath, propertyName) {
+function describe(story, entityName, entityPath, propertyName) {
 
   let paragraphs = [];
 
-  // Get entity.
-  let entityState = 
+  // Get entity property.
+  let property = 
     getEntity.findProperty(story, entityName, entityPath, propertyName);
 
-  if (entityState == null) {
+  if (property == null) {
     return paragraphs;
   }
 
   // Print the description.
-  paragraphs = getText.getEntityProperty(entityState);
+  paragraphs = getText.getEntityProperty(property);
   return paragraphs;
 }
 
-function executeStateChangeAction(initialStory, action, 
-  entityName, entityPath, propertyName, newStateValueName) {
+function changeValue(initialStory, action, 
+  entityName, entityPath, propertyName, newPropertyValueName) {
 
   let transitionMessages = [];
-  let stateMessages = [];
+  let newValueMessages = [];
   
   // Copy story.
   let updatedStory = createCopy(initialStory);
 
-  // Transition to new state:
-  //  - set new state
+  // Transition to new value:
+  //  - set new value
   //  - apply rules for transition
   [updatedStory, transitionMessages] = 
     executeRules.execute(
       updatedStory, action, entityName, entityPath,
-      propertyName, newStateValueName, true);
+      propertyName, newPropertyValueName, true);
 
   // Print the current delta.
   let paragraphs = getText.getDelta(initialStory, updatedStory);
 
-  // Apply rules for when in state.
-  [updatedStory, stateMessages] = executeRules.execute(
+  // Apply rules for when in new value.
+  [updatedStory, newValueMessages] = executeRules.execute(
     updatedStory, action, entityName, entityPath,
     propertyName, null, false);
 
@@ -73,7 +72,7 @@ function executeStateChangeAction(initialStory, action,
   let output = 
     transitionMessages.
       concat(paragraphs).
-      concat(stateMessages);
+      concat(newValueMessages);
   
   return [updatedStory, output];
 }

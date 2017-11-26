@@ -1,9 +1,9 @@
 description: speak to a character
 do: transition
 templates:
-  - say @state
-  - say @entity @state
-  - say to @entity @state
+  - say @value
+  - say @entity @value
+  - say to @entity @value
 synonyms:
   say:
     - tell

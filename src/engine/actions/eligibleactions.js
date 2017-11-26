@@ -66,7 +66,7 @@ function getEligibleInputs(story, firstTemplateOnly) {
 function getInputsWithTemplate(template, eligibleAction) {
 
   let validInputs = [];
-  let hasStateVariable = template.includes('@state');
+  let hasPropertyVariable = template.includes('@value');
   let hasEntityVariable = template.includes('@entity');
   let eligibleActionEntitiesNames = Object.keys(eligibleAction.entities);
 
@@ -80,33 +80,33 @@ function getInputsWithTemplate(template, eligibleAction) {
 
   for (let entityName of eligibleActionEntitiesNames) {
     let entity = eligibleAction.entities[entityName];
-    let stateValues = entity.eligibleStateValues;
-    let stateValueNames = Object.keys(stateValues);
+    let propertyValues = entity.eligiblePropertyValues;
+    let propertyValueNames = Object.keys(propertyValues);
     let templateWithEntity = template.replace('@entity', entity.entityName);
 
-    if (eligibleAction.action.changesStateValue) {
-      if (stateValueNames.length === 0) {
+    if (eligibleAction.action.changesPropertyValue) {
+      if (propertyValueNames.length === 0) {
         continue;
-      } else if (!hasStateVariable && stateValueNames.length > 1) {
+      } else if (!hasPropertyVariable && propertyValueNames.length > 1) {
         console.log(`${template} is ambiguous and can refer to: ` + 
-          stateValueNames.join(', '));
+          propertyValueNames.join(', '));
         continue;
       }
 
-      for (let stateValueName of stateValueNames) {
-        let stateValue = stateValues[stateValueName];
-        let templateWithState = 
-          templateWithEntity.replace('@state', stateValue.readableName);
+      for (let propertyValueName of propertyValueNames) {
+        let propertyValue = propertyValues[propertyValueName];
+        let templateWithValue = 
+          templateWithEntity.replace('@value', propertyValue.readableName);
 
         let eligibleInput =
-          EligibleInputChangeState(
-            templateWithState, eligibleAction, entity, stateValueName);
+          EligibleInputChangeValue(
+            templateWithValue, eligibleAction, entity, propertyValueName);
         
         validInputs.push(eligibleInput);
       }
     }
 
-    if (eligibleAction.action.describesEntityState) {
+    if (eligibleAction.action.describesEntityProperty) {
     
       let eligibleInput = 
         EligibleInputDescribeEntity(
@@ -119,8 +119,8 @@ function getInputsWithTemplate(template, eligibleAction) {
   return validInputs;
 }
 
-function EligibleInputChangeState(matchString, eligibleAction, entity, 
-  stateValueName) {
+function EligibleInputChangeValue(matchString, eligibleAction, entity, 
+  propertyValueName) {
 
   let eligibleInput = new EligibleInput();
   eligibleInput.text = matchString;
@@ -128,7 +128,7 @@ function EligibleInputChangeState(matchString, eligibleAction, entity,
   eligibleInput.entityName = entity.entityName;
   eligibleInput.entityPath = entity.entityPath;
   eligibleInput.propertyName = entity.propertyName;
-  eligibleInput.stateValueName = stateValueName;
+  eligibleInput.propertyValueName = propertyValueName;
   return eligibleInput;
 }
 
@@ -142,8 +142,8 @@ function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
   return eligibleInput;
 }
 
-/** Lists the actions that can be performed on the current state, 
- * and the states and entities they can be performed on.
+/** Lists the actions that can be performed on the current property, 
+ * and the propertys and entities they can be performed on.
  */
 function getEligibleActions(story) {
 
@@ -162,30 +162,30 @@ function getEligibleActionsFromEntity(eligibleActions,
   }
 
   for (let propertyName of Object.keys(entity.properties)) {
-    let state = entity.properties[propertyName];
-    for (let actionName of state.actions) {
+    let property = entity.properties[propertyName];
+    for (let actionName of property.actions) {
       let action = actions[actionName];
-      let currentStateValue = state.values[state.currentValue];
-      let eligibleStateValuesNames = 
-        Object.keys(currentStateValue.relationships);
-      let eligibleStateValues = {};
+      let currentPropertyValue = property.values[property.currentValue];
+      let eligiblePropertyValuesNames = 
+        Object.keys(currentPropertyValue.relationships);
+      let eligiblePropertyValues = {};
 
-      // Action for changing the state value.
-      if (action.changesStateValue) {
-        for (let valueName of eligibleStateValuesNames) {
-          let value = state.values[valueName];
-          // Disabled states won't show up.
-          // Only show enabled states.
+      // Action for changing the property value.
+      if (action.changesPropertyValue) {
+        for (let valueName of eligiblePropertyValuesNames) {
+          let value = property.values[valueName];
+          // Disabled propertys won't show up.
+          // Only show enabled propertys.
           if (!value.disabled) {
-            eligibleStateValues[value.name] = value;
+            eligiblePropertyValues[value.name] = value;
           }
         } 
       }
 
       eligibleActions = addEligibleAction(eligibleActions, action,
-        entity, propertyName, state.currentValue, eligibleStateValues);
+        entity, propertyName, property.currentValue, eligiblePropertyValues);
 
-      for (let childEntity of currentStateValue.childEntities) {
+      for (let childEntity of currentPropertyValue.childEntities) {
         eligibleActions = 
           getEligibleActionsFromEntity(eligibleActions, 
             actions, childEntity, recursion + 1);
@@ -197,7 +197,7 @@ function getEligibleActionsFromEntity(eligibleActions,
 }
 
 function addEligibleAction(eligibleActions, action, 
-  entity, propertyName, currentStateValue, eligibleStateValues) {
+  entity, propertyName, currentPropertyValue, eligiblePropertyValues) {
 
   if (!(action.name in eligibleActions)) {
     eligibleActions[action.name] = new EligibleAction(action);
@@ -206,8 +206,8 @@ function addEligibleAction(eligibleActions, action,
   let eligibleEntity = new EligibleActionEntity(
     entity.name, entity.path, propertyName);
 
-  eligibleEntity.eligibleStateValues = eligibleStateValues;
-  eligibleEntity.currentStateValue = currentStateValue;
+  eligibleEntity.eligiblePropertyValues = eligiblePropertyValues;
+  eligibleEntity.currentPropertyValue = currentPropertyValue;
   eligibleActions[action.name].entities[entity.name] = eligibleEntity;
 
   return eligibleActions;
@@ -230,7 +230,7 @@ class EligibleInput {
     this.entityName;
     this.entityPath;
     this.propertyName;
-    this.stateValueName;
+    this.propertyValueName;
   }
 }
 
@@ -246,7 +246,7 @@ class EligibleActionEntity {
     this.entityName = entityName;
     this.entityPath = entityPath;
     this.propertyName = propertyName;
-    this.currentStateValue = null;
-    this.eligibleStateValue = {};
+    this.currentPropertyValue = null;
+    this.eligiblePropertyValue = {};
   }
 }

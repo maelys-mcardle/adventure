@@ -33,7 +33,7 @@ function evaluateInput(story, input) {
       inputMatch.match.entityName,
       inputMatch.match.entityPath,
       inputMatch.match.propertyName,
-      inputMatch.match.stateValueName);
+      inputMatch.match.propertyValueName);
     
     if (!inputMatch.isExactMatch) {
       output.shift('Understood "' + inputMatch.match.text);

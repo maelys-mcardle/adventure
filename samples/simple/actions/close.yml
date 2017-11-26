@@ -7,4 +7,4 @@ synonyms:
   close:
     - shut
 default:
-  state: closed
+  value: closed

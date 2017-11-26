@@ -94,9 +94,9 @@ class Action {
     this.path = path;
     this.description = '';
     this.templates = [];
-    this.defaultStateValue = null;
-    this.changesStateValue = false;
-    this.describesEntityState = false;
+    this.defaultPropertyValue = null;
+    this.changesPropertyValue = false;
+    this.describesEntityProperty = false;
   }
 
   addTemplate(template) {

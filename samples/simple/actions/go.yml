@@ -1,9 +1,9 @@
 description: travel from place to place
 do: transition
 templates:
-  - go to the @state
-  - go to @state
-  - go @state
+  - go to the @value
+  - go to @value
+  - go @value
 synonyms:
   go:
     - travel

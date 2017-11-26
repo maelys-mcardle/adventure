@@ -22,17 +22,17 @@ function parseActions(rawActions, story) {
     }
 
     if ('default' in config) {
-      if ('state' in config.default) {
-        action.defaultStateValue = config.default.state;
+      if ('value' in config.default) {
+        action.defaultPropertyValue = config.default.value;
       }
     }
 
     if ('do' in config) {
       if ('transition' == config.do) {
-        action.changesStateValue = true;
+        action.changesPropertyValue = true;
       }
       if ('describe' == config.do) {
-        action.describesEntityState = true;
+        action.describesEntityProperty = true;
       }
     }
 

@@ -4,4 +4,4 @@ templates:
   - open the @entity
   - open @entity
 default:
-  state: open
+  value: open
