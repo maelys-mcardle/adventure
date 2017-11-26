@@ -4,4 +4,4 @@ templates:
   - read the @entity
   - read @entity
 default:
-  state: read
+  state: reading
