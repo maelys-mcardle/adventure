@@ -52,7 +52,7 @@ class EntityProperty {
   }
 
   newValue(name) {
-    return new EntityStateValue(name);
+    return new EntityPropertyValue(name);
   }
 
   addValue(value) {
@@ -60,7 +60,7 @@ class EntityProperty {
   }
 }
 
-class EntityStateValue {
+class EntityPropertyValue {
   constructor(name) {
     this.name = name;
     this.readableName = name;
@@ -71,18 +71,18 @@ class EntityStateValue {
     this.rules = {};
   }
 
-  newRelationship(toState) {
-    return new EntityStateRelationship(toState);
+  newRelationship(toValue) {
+    return new EntityPropertyValueRelationship(toValue);
   }
 
   addRelationship(relationship) {
-    this.relationships[relationship.toState] = relationship;
+    this.relationships[relationship.toValue] = relationship;
   }
 }
 
-class EntityStateRelationship {
-  constructor(toState) {
-    this.toState = toState;
+class EntityPropertyValueRelationship {
+  constructor(toValue) {
+    this.toValue = toValue;
     this.text = '';
     this.rules = [];
   }
