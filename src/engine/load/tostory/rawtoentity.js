@@ -21,8 +21,8 @@ function parseEntities(rawStoryEntities, story) {
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
-    for (let rawEntityStates of rawEntity.properties) {
-      entity = parseRawEntityStates(entity, rawEntityStates);
+    for (let rawEntityPropertys of rawEntity.properties) {
+      entity = parseRawEntityPropertys(entity, rawEntityPropertys);
     }
 
     for (let rawEntityText of rawEntity.text) {
@@ -40,26 +40,26 @@ function parseEntities(rawStoryEntities, story) {
   // All entities loaded. Replace placeholders.
   entities = pathToEntity.entityPlaceholderToEntity(entities);
 
-  // Load active entities into the current state.
+  // Load active entities into the current property.
   story = pathToEntity.loadCurrentPropertyEntities(story, entities);
 
   return story;
 }
 
-function parseRawEntityStates(entity, rawStates)
+function parseRawEntityPropertys(entity, rawPropertys)
 {
-  for (let graph of rawStates.contents) {
+  for (let graph of rawPropertys.contents) {
 
     let propertyName = graph.graph().id;
     let property = entity.newProperty(propertyName);
 
-    // Load all the possible state values.
+    // Load all the possible property values.
     for (let propertyValue of graph.nodes()) {
       property.addValue(property.newValue(propertyValue));
     }
 
-    // Load all relationships each state value can have;
-    // in other words, the list of acceptable states it
+    // Load all relationships each property value can have;
+    // in other words, the list of acceptable propertys it
     // can transition to.
     for (let relationship of graph.edges()) {
       let fromPropertyValue = relationship.v;
@@ -69,7 +69,7 @@ function parseRawEntityStates(entity, rawStates)
         property.values[fromPropertyValue].newRelationship(
           toPropertyValue));
 
-      // Relationships between states are one-way in
+      // Relationships between propertys are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
         property.values[toPropertyValue].addRelationship(
@@ -90,61 +90,61 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
     if (propertyName in entity.properties) {
 
       let config = rawConfig.contents[propertyName];
-      let state = entity.properties[propertyName];
+      let property = entity.properties[propertyName];
 
-      state = loadConfigCurrentValue(state, config);
-      state = loadConfigActions(state, actions, config);
-      state = loadConfigDisabled(state, config);
-      state = loadConfigRules(state, config);
-      state = loadConfigChildEntities(state, config);
+      property = loadConfigCurrentValue(property, config);
+      property = loadConfigActions(property, actions, config);
+      property = loadConfigDisabled(property, config);
+      property = loadConfigRules(property, config);
+      property = loadConfigChildEntities(property, config);
 
-      entity.properties[propertyName] = state;
+      entity.properties[propertyName] = property;
 
     } else {
-      console.log(`Could not find state ${propertyName} of configs.`);
+      console.log(`Could not find property ${propertyName} of configs.`);
     }
   }
   
   return entity;
 }
 
-function loadConfigCurrentValue(state, config) {
+function loadConfigCurrentValue(property, config) {
   if ('start' in config) {
-    state.currentValue = config.start;
+    property.currentValue = config.start;
   } else {
-    console.log(`${state.name} has no start value specified in config.`);
+    console.log(`${property.name} has no start value specified in config.`);
   }
-  return state;
+  return property;
 }
 
-function loadConfigActions(state, actions, config) {
+function loadConfigActions(property, actions, config) {
   if ('actions' in config) {
     for (let action of config.actions) {
       if (action in actions) {
-        state.actions.push(action);
+        property.actions.push(action);
       } else {
-        console.log(`${action} for ${state.name} hasn't been defined.`);
+        console.log(`${action} for ${property.name} hasn't been defined.`);
       }
     }
   }
-  return state;
+  return property;
 }
 
-function loadConfigDisabled(state, config) {
+function loadConfigDisabled(property, config) {
   if ('disable' in config) {
-    for (let disabledStateValue of config.disable) {
-      if (disabledStateValue in state.values) {
-        state.values[disabledStateValue].disabled = true;
+    for (let disabledPropertyValue of config.disable) {
+      if (disabledPropertyValue in property.values) {
+        property.values[disabledPropertyValue].disabled = true;
       } else {
-        console.log(`Disabled value ${disabledStateValue} for ${state.name} ` +
+        console.log(`Disabled value ${disabledPropertyValue} for ${property.name} ` +
                     `does not exist.`);
       }
     }
   }
-  return state;
+  return property;
 }
 
-function loadConfigRules(state, config) {
+function loadConfigRules(property, config) {
   if ('rules' in config) {
     for (let rawTrigger of Object.keys(config.rules)) {
       let trigger = parseTrigger(rawTrigger);
@@ -152,38 +152,38 @@ function loadConfigRules(state, config) {
 
       if (!trigger.isTransition) {
         
-        // For state.
-        if (trigger.left in state.values) {
-          state.values[trigger.left].rules = triggerRules;
+        // For property.
+        if (trigger.left in property.values) {
+          property.values[trigger.left].rules = triggerRules;
         } else {
           console.log(`Could not find ${trigger.left} to apply rule to.`);
         }
   
       } else {
 
-        state = setRelationshipValue(state, trigger, 'rules', triggerRules);
+        property = setRelationshipValue(property, trigger, 'rules', triggerRules);
 
       }
     }
   }
 
-  return state;
+  return property;
 }
 
-function loadConfigChildEntities(state, config) {
+function loadConfigChildEntities(property, config) {
   if ('entities' in config) {
-    for (let parentStateValue of Object.keys(config.entities)) {
-      for (let childEntityName of config.entities[parentStateValue]) {
-        state.values[parentStateValue].childEntities.push(childEntityName);
+    for (let parentPropertyValue of Object.keys(config.entities)) {
+      for (let childEntityName of config.entities[parentPropertyValue]) {
+        property.values[parentPropertyValue].childEntities.push(childEntityName);
       }
     }
   }
-  return state;
+  return property;
 }
 
 function parseRawEntityText(entity, rawText) {
 
-  let state;
+  let property;
   let trigger;
   let text;
 
@@ -206,7 +206,7 @@ function parseRawEntityText(entity, rawText) {
       let headerText = entry[2];
       
       if (entry[1].level === 1) {
-        state = headerText;
+        property = headerText;
         text = '';
       } else {
         trigger = headerText;
@@ -214,23 +214,23 @@ function parseRawEntityText(entity, rawText) {
       }
     
     // Paragraph. 
-    } else if (entryType === 'para' && state && trigger) {
+    } else if (entryType === 'para' && property && trigger) {
       text += '\n' + entry[1];
-      entity = addTextToState(entity, state, trigger, text.trim());
+      entity = addTextToProperty(entity, property, trigger, text.trim());
     }
   }
 
   return entity;
 }
 
-function addTextToState(entity, propertyName, rawTrigger, text) {
+function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!(propertyName in entity.properties)) {
-    console.log(`Could not find state ${propertyName} for trigger ${rawTrigger}`);
+    console.log(`Could not find property ${propertyName} for trigger ${rawTrigger}`);
     return entity;
   }
 
-  let state = entity.properties[propertyName];
+  let property = entity.properties[propertyName];
 
   // Triggers have the format:
   //  left -- right (isTransition, isBidirectional)
@@ -240,52 +240,52 @@ function addTextToState(entity, propertyName, rawTrigger, text) {
 
   if (!trigger.isTransition) {
 
-      // For state.
-      if (trigger.left in state.values) {
-        state.values[trigger.left].text = text;
-        state.values[trigger.left].readableName = trigger.readableName;
+      // For property.
+      if (trigger.left in property.values) {
+        property.values[trigger.left].text = text;
+        property.values[trigger.left].readableName = trigger.readableName;
 
       // For message.
       } else {
-        state.messages[trigger.left] = text;
+        property.messages[trigger.left] = text;
       }
 
   } else {
 
-    state = setRelationshipValue(state, trigger, 'text', text);
+    property = setRelationshipValue(property, trigger, 'text', text);
 
   }
 
-  entity.properties[propertyName] = state;
+  entity.properties[propertyName] = property;
   return entity;
 }
 
 
-function setRelationshipValue(state, trigger, relationshipKey, relationshipValue) {
+function setRelationshipValue(property, trigger, relationshipKey, relationshipValue) {
   
-  // For unidirectional state transition (->).
-  if (trigger.left in state.values &&
-    trigger.right in state.values[trigger.left].relationships) {
-      let relationship = state.values[trigger.left].relationships[trigger.right];
+  // For unidirectional property transition (->).
+  if (trigger.left in property.values &&
+    trigger.right in property.values[trigger.left].relationships) {
+      let relationship = property.values[trigger.left].relationships[trigger.right];
       relationship[relationshipKey] = relationshipValue;
-      state.values[trigger.left].relationships[trigger.right] = relationship;
+      property.values[trigger.left].relationships[trigger.right] = relationship;
   } else {
     console.log(`Relationship ${trigger.left} to ${trigger.right} not defined.`);
   }
 
-  // For bidirectional state transition (--).
+  // For bidirectional property transition (--).
   if (trigger.isBidirectional) {
-    if (trigger.right in state.values &&
-      trigger.left in state.values[trigger.right].relationships) {
-        let relationship = state.values[trigger.right].relationships[trigger.left];
+    if (trigger.right in property.values &&
+      trigger.left in property.values[trigger.right].relationships) {
+        let relationship = property.values[trigger.right].relationships[trigger.left];
         relationship[relationshipKey] = relationshipValue;
-        state.values[trigger.right].relationships[trigger.left] = relationship;
+        property.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
       console.log(`Relationship ${trigger.right} to ${trigger.left} not defined.`);
     }
   }
 
-  return state;
+  return property;
 }
 
 function parseTrigger(trigger) {
