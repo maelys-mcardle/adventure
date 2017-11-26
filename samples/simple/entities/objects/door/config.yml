@@ -5,8 +5,8 @@ door:
     open -> closed: 
       if action open:
         message: doorAlreadyOpen
-        state: open
+        value: open
     closed -> open:
       if action close:
         message: doorAlreadyClosed
-        state: closed
+        value: closed

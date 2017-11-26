@@ -8,12 +8,12 @@ conversation:
   disable: [whoAreYouReally]
   rules:
     hello:
-      state: nothing
+      value: nothing
     whoAreYou:
       disable: [whoAreYou]
       enable: [whoAreYouReally]
-      state: nothing
+      value: nothing
     whoAreYouReally:
-      state: nothing
+      value: nothing
     whereAmI:
-      state: nothing
+      value: nothing

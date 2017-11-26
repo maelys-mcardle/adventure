@@ -3,4 +3,4 @@ letter:
   actions: [read]
   rules:
     reading:
-      state: notReading
+      value: notReading

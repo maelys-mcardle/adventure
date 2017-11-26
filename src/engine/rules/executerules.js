@@ -13,7 +13,7 @@ function executeRules(story, action, targetEntityName,
 
   let messages = [];
   
-  // Get entity state.
+  // Get entity property.
   let entityProperty = 
     getEntity.findProperty(story, targetEntityName, 
       targetEntityPath, targetPropertyName);
@@ -23,13 +23,13 @@ function executeRules(story, action, targetEntityName,
     return [story, messages];
   }
 
-  // Apply rules to state.
+  // Apply rules to property.
   if (isTransition) {
     [entityProperty, messages] = 
       executeTransitionRules(action, entityProperty, newPropertyValueName);
   } else {
     [entityProperty, messages] = 
-      executeStateRules(action, entityProperty);
+      executePropertyRules(action, entityProperty);
   }
 
   // Update entity.
@@ -43,36 +43,36 @@ function executeTransitionRules(action, entityProperty, newPropertyValueName) {
   
   let messages = [];
   
-  // Set state value.
+  // Set property value.
   let oldPropertyValueName = entityProperty.currentValue;
 
-  // Set state.
+  // Set property.
   entityProperty.currentValue = newPropertyValueName;
   
   // Execute transition rules.
-  let stateTransitionRules = 
+  let propertyTransitionRules = 
     entityProperty.values[oldPropertyValueName].
       relationships[newPropertyValueName].rules;
 
   [entityProperty, messages] = 
     applyRules(action, oldPropertyValueName, newPropertyValueName,
-      entityProperty, stateTransitionRules, 0);
+      entityProperty, propertyTransitionRules, 0);
 
   return [entityProperty, messages];
 }
 
-function executeStateRules(action, entityProperty) {
+function executePropertyRules(action, entityProperty) {
 
   let messages = [];
 
-  // Set state value.
+  // Set property value.
   let newPropertyValueName = entityProperty.currentValue;
 
-  // Execute state value rules.
-  let stateValueRules = entityProperty.values[newPropertyValueName].rules;
+  // Execute property value rules.
+  let propertyValueRules = entityProperty.values[newPropertyValueName].rules;
   [entityProperty, messages] = 
     applyRules(action, newPropertyValueName, newPropertyValueName,
-      entityProperty, stateValueRules, 0);
+      entityProperty, propertyValueRules, 0);
   
   return [entityProperty, messages];
 }
@@ -87,7 +87,7 @@ function applyRules(action, oldPropertyValueName, newPropertyValueName,
     return [entityProperty, messages];
   }
 
-  entityProperty = applyRuleState(entityProperty, rules, oldPropertyValueName);
+  entityProperty = applyRuleValue(entityProperty, rules, oldPropertyValueName);
   entityProperty = applyRuleDisable(entityProperty, rules);
   entityProperty = applyRuleEnable(entityProperty, rules);
   messages = applyRuleMessage(entityProperty, rules, messages);
@@ -99,15 +99,15 @@ function applyRules(action, oldPropertyValueName, newPropertyValueName,
   return [entityProperty, messages];
 }
 
-function applyRuleState(entityProperty, rules, oldPropertyValueName) {
+function applyRuleValue(entityProperty, rules, oldPropertyValueName) {
 
-  if ('state' in rules) {
-    if (rules.state === '.last') {
+  if ('value' in rules) {
+    if (rules.value === '.last') {
       entityProperty.currentValue = oldPropertyValueName;
-    } else if (rules.state in entityProperty.values) {
-      entityProperty.currentValue = rules.state;
+    } else if (rules.value in entityProperty.values) {
+      entityProperty.currentValue = rules.value;
     } else {
-      console.log(`${rules.state} not found.`);
+      console.log(`${rules.value} not found.`);
     }
   }
 
@@ -117,11 +117,11 @@ function applyRuleState(entityProperty, rules, oldPropertyValueName) {
 function applyRuleDisable(entityProperty, rules) {
   
   if ('disable' in rules) {
-    for (let disableStateValue of rules.disable) {
-      if (disableStateValue in entityProperty.values) {
-        entityProperty.values[disableStateValue].disabled = true;
+    for (let disablePropertyValue of rules.disable) {
+      if (disablePropertyValue in entityProperty.values) {
+        entityProperty.values[disablePropertyValue].disabled = true;
       } else {
-        console.log(`${disableStateValue} not found.`);
+        console.log(`${disablePropertyValue} not found.`);
       }
     }
   }
@@ -132,11 +132,11 @@ function applyRuleDisable(entityProperty, rules) {
 function applyRuleEnable(entityProperty, rules) {
 
   if ('enable' in rules) {
-    for (let enableStateValue of rules.enable) {
-      if (enableStateValue in entityProperty.values) {
-        entityProperty.values[enableStateValue].disabled = false;
+    for (let enablePropertyValue of rules.enable) {
+      if (enablePropertyValue in entityProperty.values) {
+        entityProperty.values[enablePropertyValue].disabled = false;
       } else {
-        console.log(`${enableStateValue} not found.`);
+        console.log(`${enablePropertyValue} not found.`);
       }
     }
   }
@@ -167,17 +167,17 @@ function applyRuleIfBlock(action, entityProperty, rules, messages,
 
       let childRules = rules[trigger];
       let ifActionMessages = [];
-      let ifStateMessages = [];
+      let ifPropertyMessages = [];
 
       [entityProperty, ifActionMessages] = applyRuleIfAction(action, 
         entityProperty, rules, oldPropertyValueName, newPropertyValueName,
         words, childRules, recursion);
 
-      [entityProperty, ifStateMessages] = applyRuleIfState(action, 
+      [entityProperty, ifPropertyMessages] = applyRuleIfValue(action, 
         entityProperty, rules, oldPropertyValueName, newPropertyValueName, 
         words, childRules, recursion);
 
-      messages = messages.concat(ifActionMessages).concat(ifStateMessages);
+      messages = messages.concat(ifActionMessages).concat(ifPropertyMessages);
     }
   }
 
@@ -203,23 +203,23 @@ function applyRuleIfAction(action,
   return [entityProperty, messages];
 }
 
-function applyRuleIfState(action, 
+function applyRuleIfValue(action, 
   entityProperty, rules, oldPropertyValueName, newPropertyValueName,
   words, childRules, recursion) {
 
   let messages = [];
 
-  // if state X is Y
+  // if property X is Y
   if (words.length == 5 &&
-    words[1] == 'state' &&
+    words[1] == 'property' &&
     words[3] == 'is') {
 
-    let targetState = words[2];
-    let targetStateValue = words[4];
+    let targetProperty = words[2];
+    let targetPropertyValue = words[4];
 
-    // Look at current state value, but also child entities of either
-    // state value.
-    if (isStateValue(entityProperty, '', targetState, targetStateValue, 0)) {
+    // Look at current property value, but also child entities of either
+    // property value.
+    if (isPropertyValue(entityProperty, '', targetProperty, targetPropertyValue, 0)) {
 
       [entityProperty, messages] = 
         applyRules(action, oldPropertyValueName, newPropertyValueName,
@@ -230,30 +230,30 @@ function applyRuleIfState(action,
   return [entityProperty, messages];
 }
 
-function isStateValue(state, statePrefix, targetState, targetStateValue, recursion) {
+function isPropertyValue(property, propertyPrefix, targetProperty, targetPropertyValue, recursion) {
 
-  // state can be:
-  //  state
-  //  state.childEntity.childState
-  //  state.childEntity.childState.[..].childState
+  // property can be:
+  //  property
+  //  property.childEntity.childProperty
+  //  property.childEntity.childProperty.[..].childProperty
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(contants.MAX_RECURSION_MESSAGE);
     return false;
   }
 
-  let currentStateName = statePrefix + state.name;
-  if (currentStateName.endsWith(targetState) && 
-      state.currentValue == targetStateValue) {
+  let currentPropertyName = propertyPrefix + property.name;
+  if (currentPropertyName.endsWith(targetProperty) && 
+      property.currentValue == targetPropertyValue) {
     return true;
   } else {
-    for (let stateValue of Object.keys(state.values)) {
-      for (let childEntity of state.values[stateValue].childEntities) {
-        let prefix = getStatePrefix(childEntity);
+    for (let propertyValue of Object.keys(property.values)) {
+      for (let childEntity of property.values[propertyValue].childEntities) {
+        let prefix = getPropertyPrefix(childEntity);
         for (let propertyName of Object.keys(childEntity.properties)) {
-          let state = childEntity.properties[propertyName];
-          if (isStateValue(state, prefix, 
-              targetState, targetStateValue, recursion + 1)) {
+          let property = childEntity.properties[propertyName];
+          if (isPropertyValue(property, prefix, 
+              targetProperty, targetPropertyValue, recursion + 1)) {
             return true;
           }
         }
@@ -264,6 +264,6 @@ function isStateValue(state, statePrefix, targetState, targetStateValue, recursi
   return false;
 }
 
-function getStatePrefix(entity) {
+function getPropertyPrefix(entity) {
   return entity.path + '.' + entity.name + '.';
 }
