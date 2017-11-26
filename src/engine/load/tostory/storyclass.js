@@ -33,16 +33,16 @@ class Entity {
     this.states = {};
   }
 
-  newState(name) {
-    return new EntityState(name);
+  newProperty(name) {
+    return new EntityProperty(name);
   }
 
-  addState(state) {
-    this.states[state.name] = state;
+  addProperty(property) {
+    this.states[property.name] = property;
   }
 }
 
-class EntityState {
+class EntityProperty {
   constructor(name) {
     this.name = name;
     this.messages = {};

@@ -50,35 +50,37 @@ function parseRawEntityStates(entity, rawStates)
 {
   for (let graph of rawStates.contents) {
 
-    let stateName = graph.graph().id;
-    let state = entity.newState(stateName);
+    let propertyName = graph.graph().id;
+    let property = entity.newProperty(propertyName);
 
     // Load all the possible state values.
-    for (let stateValue of graph.nodes()) {
-      state.addValue(state.newValue(stateValue));
+    for (let propertyValue of graph.nodes()) {
+      property.addValue(property.newValue(propertyValue));
     }
 
     // Load all relationships each state value can have;
     // in other words, the list of acceptable states it
     // can transition to.
-    for (let stateRelationship of graph.edges()) {
-      let fromStateValue = stateRelationship.v;
-      let toStateValue = stateRelationship.w;
+    for (let relationship of graph.edges()) {
+      let fromPropertyValue = relationship.v;
+      let toPropertyValue = relationship.w;
 
-      state.values[fromStateValue].addRelationship(
-        state.values[fromStateValue].newRelationship(toStateValue));
+      property.values[fromPropertyValue].addRelationship(
+        property.values[fromPropertyValue].newRelationship(
+          toPropertyValue));
 
       // Relationships between states are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
-        state.values[toStateValue].addRelationship(
-          state.values[toStateValue].newRelationship(fromStateValue));
+        property.values[toPropertyValue].addRelationship(
+          property.values[toPropertyValue].newRelationship(
+            fromPropertyValue));
       }
     }
 
-    entity.addState(state);
-
+    entity.addProperty(property);
   }
+
   return entity;
 }
 
