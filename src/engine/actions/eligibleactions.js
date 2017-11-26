@@ -127,7 +127,7 @@ function EligibleInputChangeState(matchString, eligibleAction, entity,
   eligibleInput.actionName = eligibleAction.action.name;
   eligibleInput.entityName = entity.entityName;
   eligibleInput.entityPath = entity.entityPath;
-  eligibleInput.stateName = entity.stateName;
+  eligibleInput.propertyName = entity.propertyName;
   eligibleInput.stateValueName = stateValueName;
   return eligibleInput;
 }
@@ -138,7 +138,7 @@ function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
   eligibleInput.actionName = eligibleAction.action.name;
   eligibleInput.entityName = entity.entityName;
   eligibleInput.entityPath = entity.entityPath;
-  eligibleInput.stateName = entity.stateName;
+  eligibleInput.propertyName = entity.propertyName;
   return eligibleInput;
 }
 
@@ -161,8 +161,8 @@ function getEligibleActionsFromEntity(eligibleActions,
     return eligibleActions;
   }
 
-  for (let stateName of Object.keys(entity.properties)) {
-    let state = entity.properties[stateName];
+  for (let propertyName of Object.keys(entity.properties)) {
+    let state = entity.properties[propertyName];
     for (let actionName of state.actions) {
       let action = actions[actionName];
       let currentStateValue = state.values[state.currentValue];
@@ -183,7 +183,7 @@ function getEligibleActionsFromEntity(eligibleActions,
       }
 
       eligibleActions = addEligibleAction(eligibleActions, action,
-        entity, stateName, state.currentValue, eligibleStateValues);
+        entity, propertyName, state.currentValue, eligibleStateValues);
 
       for (let childEntity of currentStateValue.childEntities) {
         eligibleActions = 
@@ -197,14 +197,14 @@ function getEligibleActionsFromEntity(eligibleActions,
 }
 
 function addEligibleAction(eligibleActions, action, 
-  entity, stateName, currentStateValue, eligibleStateValues) {
+  entity, propertyName, currentStateValue, eligibleStateValues) {
 
   if (!(action.name in eligibleActions)) {
     eligibleActions[action.name] = new EligibleAction(action);
   }
 
   let eligibleEntity = new EligibleActionEntity(
-    entity.name, entity.path, stateName);
+    entity.name, entity.path, propertyName);
 
   eligibleEntity.eligibleStateValues = eligibleStateValues;
   eligibleEntity.currentStateValue = currentStateValue;
@@ -229,7 +229,7 @@ class EligibleInput {
     this.actionName;
     this.entityName;
     this.entityPath;
-    this.stateName;
+    this.propertyName;
     this.stateValueName;
   }
 }
@@ -242,10 +242,10 @@ class EligibleAction {
 }
 
 class EligibleActionEntity {
-  constructor(entityName, entityPath, stateName) {
+  constructor(entityName, entityPath, propertyName) {
     this.entityName = entityName;
     this.entityPath = entityPath;
-    this.stateName = stateName;
+    this.propertyName = propertyName;
     this.currentStateValue = null;
     this.eligibleStateValue = {};
   }

@@ -37,8 +37,8 @@ function updateEntityPlaceholders(entities, entity, recursion) {
   }
       
   // Iterate over every entity's state.
-  for (let stateName of Object.keys(entity.properties)) {
-    let state = entity.properties[stateName];
+  for (let propertyName of Object.keys(entity.properties)) {
+    let state = entity.properties[propertyName];
 
     // Iterate over every entity's state values.
     for (let stateValueName of Object.keys(state.values)) {
@@ -56,7 +56,7 @@ function updateEntityPlaceholders(entities, entity, recursion) {
           // child path is:
           //  parentPath.parentName.parentState.parentStateValue.childPath
           let childPath = 
-            [entity.path, entity.name, stateName, stateValueName, 
+            [entity.path, entity.name, propertyName, stateValueName, 
               childEntity.path].filter(s => s != '').join('.');
 
           childEntity.path = childPath;
@@ -68,7 +68,7 @@ function updateEntityPlaceholders(entities, entity, recursion) {
       }
       state.values[stateValueName] = stateValue;
     }
-    entity.properties[stateName] = state;
+    entity.properties[propertyName] = state;
   }
   
   return entity;

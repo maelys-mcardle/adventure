@@ -9,31 +9,31 @@ module.exports = {
 }
 
 function executeAction(story, actionName, 
-  entityName, entityPath, stateName, newStateValueName) {
+  entityName, entityPath, propertyName, newStateValueName) {
 
   let action = story.actions[actionName];
   let description = [];
 
   if (action.changesStateValue) { 
     return executeStateChangeAction(story, action, 
-      entityName, entityPath, stateName, newStateValueName);
+      entityName, entityPath, propertyName, newStateValueName);
   }
 
   else if (action.describesEntityState) {
     description = 
-      executeDescribeAction(story, entityName, entityPath, stateName);
+      executeDescribeAction(story, entityName, entityPath, propertyName);
   }
 
   return [story, description];
 }
 
-function executeDescribeAction(story, entityName, entityPath, stateName) {
+function executeDescribeAction(story, entityName, entityPath, propertyName) {
 
   let paragraphs = [];
 
   // Get entity.
   let entityState = 
-    getEntity.findState(story, entityName, entityPath, stateName);
+    getEntity.findState(story, entityName, entityPath, propertyName);
 
   if (entityState == null) {
     return paragraphs;
@@ -45,7 +45,7 @@ function executeDescribeAction(story, entityName, entityPath, stateName) {
 }
 
 function executeStateChangeAction(initialStory, action, 
-  entityName, entityPath, stateName, newStateValueName) {
+  entityName, entityPath, propertyName, newStateValueName) {
 
   let transitionMessages = [];
   let stateMessages = [];
@@ -59,7 +59,7 @@ function executeStateChangeAction(initialStory, action,
   [updatedStory, transitionMessages] = 
     executeRules.execute(
       updatedStory, action, entityName, entityPath,
-      stateName, newStateValueName, true);
+      propertyName, newStateValueName, true);
 
   // Print the current delta.
   let paragraphs = getText.getDelta(initialStory, updatedStory);
@@ -67,7 +67,7 @@ function executeStateChangeAction(initialStory, action,
   // Apply rules for when in state.
   [updatedStory, stateMessages] = executeRules.execute(
     updatedStory, action, entityName, entityPath,
-    stateName, null, false);
+    propertyName, null, false);
 
   // Concatenate the output.
   let output = 

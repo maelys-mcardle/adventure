@@ -51,8 +51,8 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
 
   // search children.
   } else {
-    for (let stateName of Object.keys(entity.properties)) {
-      let state = entity.properties[stateName];
+    for (let propertyName of Object.keys(entity.properties)) {
+      let state = entity.properties[propertyName];
       let currentStateValue = state.values[state.currentValue];
       for (let childEntity of currentStateValue.childEntities) {
         let foundEntity = getEntityByName(childEntity,

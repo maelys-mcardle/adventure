@@ -32,7 +32,7 @@ function evaluateInput(story, input) {
       inputMatch.match.actionName,
       inputMatch.match.entityName,
       inputMatch.match.entityPath,
-      inputMatch.match.stateName,
+      inputMatch.match.propertyName,
       inputMatch.match.stateValueName);
     
     if (!inputMatch.isExactMatch) {

@@ -86,11 +86,11 @@ function parseRawEntityStates(entity, rawStates)
 
 function parseRawEntityConfig(entity, actions, rawConfig) {
 
-  for (let stateName of Object.keys(rawConfig.contents)) {
-    if (stateName in entity.properties) {
+  for (let propertyName of Object.keys(rawConfig.contents)) {
+    if (propertyName in entity.properties) {
 
-      let config = rawConfig.contents[stateName];
-      let state = entity.properties[stateName];
+      let config = rawConfig.contents[propertyName];
+      let state = entity.properties[propertyName];
 
       state = loadConfigCurrentValue(state, config);
       state = loadConfigActions(state, actions, config);
@@ -98,10 +98,10 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       state = loadConfigRules(state, config);
       state = loadConfigChildEntities(state, config);
 
-      entity.properties[stateName] = state;
+      entity.properties[propertyName] = state;
 
     } else {
-      console.log(`Could not find state ${stateName} of configs.`);
+      console.log(`Could not find state ${propertyName} of configs.`);
     }
   }
   
@@ -223,14 +223,14 @@ function parseRawEntityText(entity, rawText) {
   return entity;
 }
 
-function addTextToState(entity, stateName, rawTrigger, text) {
+function addTextToState(entity, propertyName, rawTrigger, text) {
 
-  if (!(stateName in entity.properties)) {
-    console.log(`Could not find state ${stateName} for trigger ${rawTrigger}`);
+  if (!(propertyName in entity.properties)) {
+    console.log(`Could not find state ${propertyName} for trigger ${rawTrigger}`);
     return entity;
   }
 
-  let state = entity.properties[stateName];
+  let state = entity.properties[propertyName];
 
   // Triggers have the format:
   //  left -- right (isTransition, isBidirectional)
@@ -256,7 +256,7 @@ function addTextToState(entity, stateName, rawTrigger, text) {
 
   }
 
-  entity.properties[stateName] = state;
+  entity.properties[propertyName] = state;
   return entity;
 }
 

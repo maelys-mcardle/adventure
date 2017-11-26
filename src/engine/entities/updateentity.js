@@ -31,8 +31,8 @@ targetStateName, updatedState, recursion) {
 
   // search children.
   } else {
-    for (let stateName of Object.keys(entity.properties)) {
-      let state = entity.properties[stateName];
+    for (let propertyName of Object.keys(entity.properties)) {
+      let state = entity.properties[propertyName];
       let currentStateValue = state.values[state.currentValue];
       for (let childEntityIndex in currentStateValue.childEntities) {
         let childEntity = currentStateValue.childEntities[childEntityIndex];
@@ -43,7 +43,7 @@ targetStateName, updatedState, recursion) {
         
         currentStateValue.childEntities[childEntityIndex] = updatedChildEntity;
       }
-      entity.properties[stateName].values[state.currentValue] = currentStateValue;
+      entity.properties[propertyName].values[state.currentValue] = currentStateValue;
     }
   }
 
