@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const constants = require('../../constants');
 
@@ -10,7 +10,7 @@ module.exports = {
 function loadCurrentStateEntities(story, entities) {
 
   if (story.rootEntity == null) {
-    console.log("Story has no entities specified.");
+    console.log('Story has no entities specified.');
   }
 
   story.rootEntity = getEntityFromPath(entities, story.rootEntity);

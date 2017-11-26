@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const pathToEntity = require('./pathtoentity');
 
@@ -186,9 +186,9 @@ function parseRawEntityText(entity, rawText) {
   let text;
 
   // The markdown parser provides an array of items. The first is the
-  // string "markdown".
+  // string 'markdown'.
   if (rawText.contents.length === 0 || 
-      rawText.contents[0] !== "markdown") {
+      rawText.contents[0] !== 'markdown') {
     return parsedText;
   }
 
@@ -199,20 +199,20 @@ function parseRawEntityText(entity, rawText) {
     let entryType = entry[0];
 
     // Header.
-    if (entryType === "header") {
+    if (entryType === 'header') {
       let headerLevel = entry[1].level;
       let headerText = entry[2];
       
       if (entry[1].level === 1) {
         state = headerText;
-        text = "";
+        text = '';
       } else {
         trigger = headerText;
-        text = "";
+        text = '';
       }
     
     // Paragraph. 
-    } else if (entryType === "para" && state && trigger) {
+    } else if (entryType === 'para' && state && trigger) {
       text += '\n' + entry[1];
       entity = addTextToState(entity, state, trigger, text.trim());
     }

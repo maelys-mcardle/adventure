@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const rawToConfig = require('./rawtoconfig');
 const rawToEntity = require('./rawtoentity');

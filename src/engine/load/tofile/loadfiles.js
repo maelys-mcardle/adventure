@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const walk = require('walk');
 const fs = require('fs');
@@ -72,13 +72,13 @@ class File {
 
   stringToFileExtension(extension) {
     switch(extension.toLowerCase()) {
-      case ".yaml":
+      case '.yaml':
         return FileExtension.YAML;
-      case ".yml":
+      case '.yml':
         return FileExtension.YAML;
-      case ".dot":
+      case '.dot':
         return FileExtension.DOT;
-      case ".md":
+      case '.md':
         return FileExtension.MARKDOWN;
       default:
         return FileExtension.UNKNOWN;

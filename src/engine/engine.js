@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const getText = require('./text/gettext');
 const eligibleActions = require('./actions/eligibleactions');

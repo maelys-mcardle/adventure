@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const loadFiles = require('./tofile/loadfiles');
 const fileToRaw = require('./toraw/filetoraw');

@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 const yaml = require('js-yaml');
 const markdown = require('markdown').markdown;
 const dot = require('graphlib-dot');
 const path = require('path');
 
-const CONFIG_FILE_NAME = "config";
+const CONFIG_FILE_NAME = 'config';
 
 module.exports = {
   parse: parseFiles
@@ -19,13 +19,13 @@ function parseFiles(storyFiles) {
   for (let file of storyFiles) {
     if (file.directory.length > 0) {
       switch(file.directory[0]) {
-        case "actions":
+        case 'actions':
           storyActions = parseActionFile(storyActions, file);
           break;
-        case "entities":
+        case 'entities':
           storyEntities = parseEntityFile(storyEntities, file);
           break;
-        case "":
+        case '':
           if (file.name === CONFIG_FILE_NAME && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
             break;

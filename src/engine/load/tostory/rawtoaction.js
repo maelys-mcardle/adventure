@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 module.exports = {
   parse: parseActions
@@ -37,8 +37,8 @@ function parseActions(rawActions, story) {
     }
 
     // Synonyms are alternative words that can be used in the
-    // templates. So like "say" can have the synonym "speak",
-    // "talk". Explicitly list all templates including these
+    // templates. So like 'say' can have the synonym 'speak',
+    // 'talk'. Explicitly list all templates including these
     // synonyms.
     if ('synonyms' in config) {
       let synonymTemplates = [];
