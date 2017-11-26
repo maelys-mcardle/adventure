@@ -12,36 +12,36 @@ function executeAction(story, actionName,
   entityName, entityPath, stateName, newStateValueName) {
 
   let action = story.actions[actionName];
+  let description = [];
 
   if (action.changesStateValue) { 
     return executeStateChangeAction(story, action, 
       entityName, entityPath, stateName, newStateValueName);
   }
 
-  if (action.describesEntityState) {
-    return executeDescribeAction(story, entityName, entityPath, stateName);
+  else if (action.describesEntityState) {
+    description = 
+      executeDescribeAction(story, entityName, entityPath, stateName);
   }
 
-  return [story, ''];
+  return [story, description];
 }
 
 function executeDescribeAction(story, entityName, entityPath, stateName) {
+
+  let paragraphs = [];
 
   // Get entity.
   let entityState = 
     getEntity.findState(story, entityName, entityPath, stateName);
 
   if (entityState == null) {
-    return [story, ''];
+    return paragraphs;
   }
 
   // Print the description.
-  let paragraphs = getText.getEntityState(entityState);
-
-  // Concatenate the output.
-  let output = paragraphs.join('\n\n');
-  
-  return [story, output];
+  paragraphs = getText.getEntityState(entityState);
+  return paragraphs;
 }
 
 function executeStateChangeAction(initialStory, action, 
@@ -73,8 +73,7 @@ function executeStateChangeAction(initialStory, action,
   let output = 
     transitionMessages.
       concat(paragraphs).
-      concat(stateMessages).
-      join('\n\n');
+      concat(stateMessages);
   
   return [updatedStory, output];
 }

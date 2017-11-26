@@ -23,3 +23,9 @@ with the `start` command:
 `> start samples/simple`
 
 Use the `help` command to get a listing of all possible commands.
+
+## Developing adventure
+
+To start adventure while developing:
+
+`npm run adventure`

@@ -89,7 +89,7 @@ function loadStoryProgress(story, savePath) {
 function getLoadedStoryOutput(story) {
   let output = 
     `Loaded ${story.title}\n\n` +
-    `${storyEngine.describeCurrentState(story)}\n\n` +
+    `${describeCurrentState(story)}\n\n` +
     listEligibleActions(story);
   return output;
 }
@@ -121,7 +121,7 @@ function dumpStoryState(story, argument) {
 }
 
 function refresh(story, entity) {
-  let output = storyEngine.describeCurrentState(story);
+  let output = describeCurrentState(story);
   return [story, output];
 }
 
@@ -131,9 +131,10 @@ function runAction(story, input) {
     return [story, 'Command not recognized.']
   }
 
-  let [updatedStory, output] = storyEngine.evaluateInput(story, input);
+  let [updatedStory, paragraphs] = storyEngine.evaluateInput(story, input);
 
-  output += '\n\n' + listEligibleActions(updatedStory);
+  let output = paragraphs.join('\n\n') + '\n\n' + 
+    listEligibleActions(updatedStory);
 
   return [updatedStory, output];
 }
@@ -158,6 +159,10 @@ function help(story, argument) {
 
 function quit(story, argument) {
   process.exit();
+}
+
+function describeCurrentState(story) {
+  return storyEngine.describeCurrentState(story).join('\n\n');
 }
 
 function writeFile(path, contents) {

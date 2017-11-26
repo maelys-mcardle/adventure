@@ -13,7 +13,7 @@ module.exports = {
 }
 
 function describeCurrentState(story) {
-  let output = getText.getAll(story).join('\n\n');
+  let output = getText.getAll(story);
   return output;
 }
 
@@ -23,7 +23,7 @@ function listActionExamples(story) {
 }
 
 function evaluateInput(story, input) {
-  let output = 'Command not recognized.';
+  let output = ['Command not recognized.'];
   let inputMatch = eligibleActions.matchInput(story, input);
 
   if (inputMatch.hasMatch) {
@@ -36,11 +36,11 @@ function evaluateInput(story, input) {
       inputMatch.match.stateValueName);
     
     if (!inputMatch.isExactMatch) {
-      output = 'Understood "' + inputMatch.match.text + '"\n\n' + output;
+      output.shift('Understood "' + inputMatch.match.text);
     }
 
   } else if (inputMatch.hasSuggestion) {
-    output = 'Did you mean "' + inputMatch.suggestion + '"?';
+    output = ['Did you mean "' + inputMatch.suggestion + '"?'];
   }
 
   return [story, output];
