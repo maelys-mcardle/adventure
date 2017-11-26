@@ -33,14 +33,14 @@ function executeDescribeAction(story, entityName, entityPath, propertyName) {
 
   // Get entity.
   let entityState = 
-    getEntity.findState(story, entityName, entityPath, propertyName);
+    getEntity.findProperty(story, entityName, entityPath, propertyName);
 
   if (entityState == null) {
     return paragraphs;
   }
 
   // Print the description.
-  paragraphs = getText.getEntityState(entityState);
+  paragraphs = getText.getEntityProperty(entityState);
   return paragraphs;
 }
 

@@ -4,7 +4,7 @@ const constants = require('../constants');
 
 module.exports = {
   find: findEntity,
-  findState: findEntityState,
+  findProperty: findEntityProperty,
 }
 
 function findEntity(story, targetEntityName, targetEntityPath) {
@@ -15,23 +15,23 @@ function findEntity(story, targetEntityName, targetEntityPath) {
   return foundEntity;
 }
 
-function findEntityState(story, targetEntityName, targetEntityPath, 
-  targetStateName) {
+function findEntityProperty(story, targetEntityName, targetEntityPath, 
+  targetPropertyName) {
 
-  let entityState = getEntityStateByName(story.rootEntity, 
-    targetEntityName, targetEntityPath, targetStateName);
+  let entityProperty = getEntityPropertyByName(story.rootEntity, 
+    targetEntityName, targetEntityPath, targetPropertyName);
 
-  return entityState;
+  return entityProperty;
 }
 
-function getEntityStateByName(rootEntity, targetEntityName, targetEntityPath, 
-  targetStateName) {
+function getEntityPropertyByName(rootEntity, targetEntityName, targetEntityPath, 
+  targetPropertyName) {
 
   let entity = 
     getEntityByName(rootEntity, targetEntityName, targetEntityPath, 0);
   
   if (entity != null) {
-    return entity.properties[targetStateName];
+    return entity.properties[targetPropertyName];
   }
 
   return null;
@@ -52,9 +52,9 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
   // search children.
   } else {
     for (let propertyName of Object.keys(entity.properties)) {
-      let state = entity.properties[propertyName];
-      let currentStateValue = state.values[state.currentValue];
-      for (let childEntity of currentStateValue.childEntities) {
+      let property = entity.properties[propertyName];
+      let currentPropertyValue = property.values[property.currentValue];
+      for (let childEntity of currentPropertyValue.childEntities) {
         let foundEntity = getEntityByName(childEntity,
           targetEntityName, targetEntityPath, recursion + 1);
         if (foundEntity != null) {

@@ -15,7 +15,7 @@ function executeRules(story, action, targetEntityName,
   
   // Get entity state.
   let entityState = 
-    getEntity.findState(story, targetEntityName, 
+    getEntity.findProperty(story, targetEntityName, 
       targetEntityPath, targetStateName);
   
   if (entityState == null) {
