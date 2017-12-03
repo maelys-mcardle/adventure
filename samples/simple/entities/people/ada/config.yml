@@ -1,9 +1,9 @@
 appearance:
   actions: [describe]
-  start: floating
+  value: floating
 
 conversation:
-  start: hello
+  value: hello
   actions: [say]
   disable: [whoAreYouReally]
   rules:

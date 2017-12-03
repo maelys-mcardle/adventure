@@ -1,5 +1,5 @@
 letter:
-  start: notReading
+  value: notReading
   actions: [read]
   rules:
     reading:

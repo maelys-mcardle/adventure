@@ -109,10 +109,10 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
 }
 
 function loadConfigCurrentValue(property, config) {
-  if ('start' in config) {
-    property.currentValue = config.start;
+  if ('value' in config) {
+    property.currentValue = config.value;
   } else {
-    console.log(`${property.name} has no start value specified in config.`);
+    console.log(`${property.name} has no initial value specified in config.`);
   }
   return property;
 }
