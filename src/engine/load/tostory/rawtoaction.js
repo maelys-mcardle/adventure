@@ -4,6 +4,8 @@ module.exports = {
   parse: parseActions
 };
 
+const strings = require('../../strings');
+
 function parseActions(rawActions, story) {
 
   for (let rawActionId in rawActions) {
@@ -50,7 +52,7 @@ function parseActions(rawActions, story) {
                 template.replace(word, synonym)
               )
             } else {
-              console.log(`Word ${word} not found in template ${template}`);
+              console.log(strings.ERROR_WORD_NOT_IN_TEMPLATE(word, template));
             }
           }
         }

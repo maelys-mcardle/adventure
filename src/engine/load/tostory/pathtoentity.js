@@ -11,7 +11,7 @@ module.exports = {
 function loadCurrentPropertyEntities(story, entities) {
 
   if (story.rootEntity == null) {
-    console.log('Story has no entities specified.');
+    console.log(strings.ERROR_NO_ENTITIES_IN_STORY);
   }
 
   story.rootEntity = getEntityFromPath(entities, story.rootEntity);
@@ -91,7 +91,7 @@ function getEntityFromPath(entities, path) {
     }
   }
 
-  console.log(`Child entity ${path} could not be found.`);
+  console.log(strings.ERROR_CHILD_ENTITY_NOT_FOUND(path));
   return path;
 }
 

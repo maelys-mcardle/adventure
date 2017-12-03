@@ -73,8 +73,8 @@ function getInputsWithTemplate(template, eligibleAction) {
   if (eligibleActionEntitiesNames.length === 0) {
     return validInputs;
   } else if (!hasEntityVariable && eligibleActionEntitiesNames.length > 1) {
-    console.log(`${template} is ambiguous and can refer to: ` +
-      eligibleActionEntitiesNames.join(', '));
+    console.log(strings.ERROR_TEMPLATE_AMBIGUOUS(
+      template, eligibleActionEntitiesNames.join(', ')));
     return validInputs;
   }
 
@@ -88,8 +88,8 @@ function getInputsWithTemplate(template, eligibleAction) {
       if (propertyValueNames.length === 0) {
         continue;
       } else if (!hasPropertyVariable && propertyValueNames.length > 1) {
-        console.log(`${template} is ambiguous and can refer to: ` + 
-          propertyValueNames.join(', '));
+        console.log(strings.ERROR_TEMPLATE_AMBIGUOUS(
+          template, propertyValueNames.join(', ')));
         continue;
       }
 

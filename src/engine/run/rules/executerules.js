@@ -20,7 +20,8 @@ function executeRules(story, action, targetEntityName,
       targetEntityPath, targetPropertyName);
   
   if (entityProperty == null) {
-    console.log(`Could not find ${targetEntityName} ${targetPropertyName}`);
+    console.log(strings.ERROR_ENTITY_PROPERTY_NOT_FOUND(
+      targetEntityName, targetPropertyName));
     return [story, messages];
   }
 
@@ -108,7 +109,7 @@ function applyRuleValue(entityProperty, rules, oldPropertyValueName) {
     } else if (rules.value in entityProperty.values) {
       entityProperty.currentValue = rules.value;
     } else {
-      console.log(`${rules.value} not found.`);
+      console.log(strings.ERROR_NOT_FOUND(rules.value));
     }
   }
 
@@ -122,7 +123,7 @@ function applyRuleDisable(entityProperty, rules) {
       if (disablePropertyValue in entityProperty.values) {
         entityProperty.values[disablePropertyValue].disabled = true;
       } else {
-        console.log(`${disablePropertyValue} not found.`);
+        console.log(strings.ERROR_NOT_FOUND(disablePropertyValue));
       }
     }
   }
@@ -137,7 +138,7 @@ function applyRuleEnable(entityProperty, rules) {
       if (enablePropertyValue in entityProperty.values) {
         entityProperty.values[enablePropertyValue].disabled = false;
       } else {
-        console.log(`${enablePropertyValue} not found.`);
+        console.log(strings.ERROR_NOT_FOUND(enablePropertyValue));
       }
     }
   }
@@ -152,7 +153,7 @@ function applyRuleMessage(entityProperty, rules, messages) {
       let message = entityProperty.messages[rules.message];
       messages.push(message);
     } else {
-      console.log(`${rules.message} not found.`);
+      console.log(strings.ERROR_NOT_FOUND(rules.message));
     }
   }
 

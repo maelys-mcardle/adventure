@@ -13,7 +13,7 @@ const strings = require('../../strings');
 function getStoryText(story) {
 
   if (story.rootEntity == null) {
-    console.log('Root entity is not defined.');
+    console.log(strings.ERROR_ROOT_ENTITY_UNDEFINED);
     return '';
   }
 

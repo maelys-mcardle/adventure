@@ -1,6 +1,7 @@
 'use strict';
 
 const pathToEntity = require('./pathtoentity');
+const strings = require('../../strings');
 
 module.exports = {
   parse: parseEntities
@@ -101,7 +102,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       entity.properties[propertyName] = property;
 
     } else {
-      console.log(`Could not find property ${propertyName} of configs.`);
+      console.log(strings.ERROR_NO_PROPERTY_IN_CONFIG(propertyName));
     }
   }
   
@@ -112,7 +113,7 @@ function loadConfigCurrentValue(property, config) {
   if ('value' in config) {
     property.currentValue = config.value;
   } else {
-    console.log(`${property.name} has no initial value specified in config.`);
+    console.log(strings.ERROR_NO_VALUE_IN_CONFIG(property.name));
   }
   return property;
 }
@@ -123,7 +124,7 @@ function loadConfigActions(property, actions, config) {
       if (action in actions) {
         property.actions.push(action);
       } else {
-        console.log(`${action} for ${property.name} hasn't been defined.`);
+        console.log(strings.ERROR_ACTION_UNDEFINED(action, property.name));
       }
     }
   }
@@ -136,8 +137,8 @@ function loadConfigDisabled(property, config) {
       if (disabledPropertyValue in property.values) {
         property.values[disabledPropertyValue].disabled = true;
       } else {
-        console.log(`Disabled value ${disabledPropertyValue} for ${property.name} ` +
-                    `does not exist.`);
+        console.log(strings.ERROR_DISABLED_VALUE_DOES_NOT_EXIST(
+          disabledPropertyValue, property.name));
       }
     }
   }
@@ -156,7 +157,7 @@ function loadConfigRules(property, config) {
         if (trigger.left in property.values) {
           property.values[trigger.left].rules = triggerRules;
         } else {
-          console.log(`Could not find ${trigger.left} to apply rule to.`);
+          console.log(strings.ERROR_TRIGGER_NOT_FOUND(trigger.left));
         }
   
       } else {
@@ -226,7 +227,7 @@ function parseRawEntityText(entity, rawText) {
 function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!(propertyName in entity.properties)) {
-    console.log(`Could not find property ${propertyName} for trigger ${rawTrigger}`);
+    console.log(strings.ERROR_NO_PROPERTY_FOR_TRIGGER(propertyName, rawTrigger));
     return entity;
   }
 
@@ -270,7 +271,7 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
       relationship[relationshipKey] = relationshipValue;
       property.values[trigger.left].relationships[trigger.right] = relationship;
   } else {
-    console.log(`Relationship ${trigger.left} to ${trigger.right} not defined.`);
+    console.log(strings.ERROR_RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
   }
 
   // For bidirectional property transition (--).
@@ -281,7 +282,7 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
         relationship[relationshipKey] = relationshipValue;
         property.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
-      console.log(`Relationship ${trigger.right} to ${trigger.left} not defined.`);
+      console.log(strings.ERROR_RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
     }
   }
 

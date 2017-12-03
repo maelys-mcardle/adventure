@@ -3,6 +3,7 @@
 const walk = require('walk');
 const fs = require('fs');
 const path = require('path');
+const strings = require('../../strings');
 
 module.exports = {
   load: loadFiles
@@ -25,7 +26,7 @@ function getFilePaths(rootDirectory) {
         next(); 
       },
       errors: function(fileDirectory, nodeStats, next) {
-        console.log(`Error listing file in ${fileDirectory}`);
+        console.log(strings.ERROR_LISTING_FILE(fileDirectory));
         next(); 
       }
     }
