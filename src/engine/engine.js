@@ -4,6 +4,7 @@ const loadStory = require('./load/loadstory');
 const getText = require('./run/text/gettext');
 const eligibleActions = require('./run/actions/eligibleactions');
 const executeActions = require('./run/actions/executeactions');
+const strings = require('./strings');
 
 module.exports = {
   loadStory: loadStory.load,
@@ -23,7 +24,7 @@ function listActionExamples(story) {
 }
 
 function evaluateInput(story, input) {
-  let output = ['Command not recognized.'];
+  let output = [strings.INPUT_UNRECOGNIZED];
   let inputMatch = eligibleActions.matchInput(story, input);
 
   if (inputMatch.hasMatch) {
@@ -36,11 +37,11 @@ function evaluateInput(story, input) {
       inputMatch.match.propertyValueName);
     
     if (!inputMatch.isExactMatch) {
-      output.shift('Understood "' + inputMatch.match.text);
+      output.unshift(strings.INPUT_UNDERSTOOD_AS(inputMatch.match.text));
     }
 
   } else if (inputMatch.hasSuggestion) {
-    output = ['Did you mean "' + inputMatch.suggestion + '"?'];
+    output = [strings.INPUT_SUGGESTION(inputMatch.suggestion)];
   }
 
   return [story, output];

@@ -8,6 +8,7 @@ module.exports = {
 }
 
 const constants = require('../../constants');
+const strings = require('../../strings');
 
 function getStoryText(story) {
 
@@ -33,7 +34,7 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   let text = [];
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return text;
   }
 
@@ -86,7 +87,7 @@ function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return text;
   }
 

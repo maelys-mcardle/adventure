@@ -1,6 +1,7 @@
 'use strict';
 
 const constants = require('../../constants');
+const strings = require('../../strings');
 
 module.exports = {
   entityPlaceholderToEntity: entityPlaceholderToEntity,
@@ -32,7 +33,7 @@ function entityPlaceholderToEntity(entities) {
 function updateEntityPlaceholders(entities, entity, recursion) {
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return entity;
   }
       

@@ -1,6 +1,7 @@
 'use strict';
 
 const constants = require('../../constants');
+const strings = require('../../strings');
 const getEntity = require('../entities/getentity');
 const updateEntity = require('../entities/updateentity');
 
@@ -83,7 +84,7 @@ function applyRules(action, oldPropertyValueName, newPropertyValueName,
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return [entityProperty, messages];
   }
 
@@ -238,7 +239,7 @@ function isPropertyValue(property, propertyPrefix, targetProperty, targetPropert
   //  property.childEntity.childProperty.[..].childProperty
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return false;
   }
 

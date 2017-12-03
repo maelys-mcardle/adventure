@@ -1,8 +1,8 @@
 'use strict';
 
 const stringSimilarity = require('string-similarity');
-
 const constants = require('../../constants');
+const strings = require('../../strings');
 
 module.exports = {
   matchInput: matchInputToAction,
@@ -157,7 +157,7 @@ function getEligibleActionsFromEntity(eligibleActions,
   actions, entity, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(contants.MAX_RECURSION_MESSAGE);
+    console.log(strings.ERROR_MAX_RECURSION);
     return eligibleActions;
   }
 
