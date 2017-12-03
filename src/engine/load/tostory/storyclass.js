@@ -1,5 +1,7 @@
 'use strict';
 
+const constants = require('../../constants');
+
 class Story {
   constructor(name) {
     this.title = 'Untitled';
@@ -7,6 +9,7 @@ class Story {
     this.description = '';
     this.rootEntity = null;
     this.actions = {};
+    this.version = constants.STORY_OBJECT_VERSION;
   }
 
   newEntity(name, path) {
