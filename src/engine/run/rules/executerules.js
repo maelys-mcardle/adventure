@@ -20,7 +20,7 @@ function executeRules(story, action, targetEntityName,
       targetEntityPath, targetPropertyName);
   
   if (entityProperty == null) {
-    console.log(strings.ERROR_ENTITY_PROPERTY_NOT_FOUND(
+    console.log(errors.ENTITY_PROPERTY_NOT_FOUND(
       targetEntityName, targetPropertyName));
     return [story, messages];
   }
@@ -85,7 +85,7 @@ function applyRules(action, oldPropertyValueName, newPropertyValueName,
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return [entityProperty, messages];
   }
 
@@ -109,7 +109,7 @@ function applyRuleValue(entityProperty, rules, oldPropertyValueName) {
     } else if (rules.value in entityProperty.values) {
       entityProperty.currentValue = rules.value;
     } else {
-      console.log(strings.ERROR_NOT_FOUND(rules.value));
+      console.log(errors.NOT_FOUND(rules.value));
     }
   }
 
@@ -123,7 +123,7 @@ function applyRuleDisable(entityProperty, rules) {
       if (disablePropertyValue in entityProperty.values) {
         entityProperty.values[disablePropertyValue].disabled = true;
       } else {
-        console.log(strings.ERROR_NOT_FOUND(disablePropertyValue));
+        console.log(errors.NOT_FOUND(disablePropertyValue));
       }
     }
   }
@@ -138,7 +138,7 @@ function applyRuleEnable(entityProperty, rules) {
       if (enablePropertyValue in entityProperty.values) {
         entityProperty.values[enablePropertyValue].disabled = false;
       } else {
-        console.log(strings.ERROR_NOT_FOUND(enablePropertyValue));
+        console.log(errors.NOT_FOUND(enablePropertyValue));
       }
     }
   }
@@ -153,7 +153,7 @@ function applyRuleMessage(entityProperty, rules, messages) {
       let message = entityProperty.messages[rules.message];
       messages.push(message);
     } else {
-      console.log(strings.ERROR_NOT_FOUND(rules.message));
+      console.log(errors.NOT_FOUND(rules.message));
     }
   }
 
@@ -240,7 +240,7 @@ function isPropertyValue(property, propertyPrefix, targetProperty, targetPropert
   //  property.childEntity.childProperty.[..].childProperty
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return false;
   }
 

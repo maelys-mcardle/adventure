@@ -13,7 +13,7 @@ const errors = require('../../errors');
 function getStoryText(story) {
 
   if (story.rootEntity == null) {
-    console.log(strings.ERROR_ROOT_ENTITY_UNDEFINED);
+    console.log(errors.ROOT_ENTITY_UNDEFINED);
     return '';
   }
 
@@ -34,7 +34,7 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   let text = [];
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return text;
   }
 
@@ -87,7 +87,7 @@ function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return text;
   }
 
