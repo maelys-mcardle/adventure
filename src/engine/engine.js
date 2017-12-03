@@ -1,9 +1,9 @@
 'use strict';
 
-const getText = require('./text/gettext');
-const eligibleActions = require('./actions/eligibleactions');
-const executeActions = require('./actions/executeactions');
 const loadStory = require('./load/loadstory');
+const getText = require('./run/text/gettext');
+const eligibleActions = require('./run/actions/eligibleactions');
+const executeActions = require('./run/actions/executeactions');
 
 module.exports = {
   loadStory: loadStory.load,

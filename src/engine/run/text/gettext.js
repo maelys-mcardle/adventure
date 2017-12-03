@@ -7,7 +7,7 @@ module.exports = {
   getEntityProperty: getEntityPropertyText,
 }
 
-const constants = require('../constants');
+const constants = require('../../constants');
 
 function getStoryText(story) {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const constants = require('../constants');
+const constants = require('../../constants');
 const getEntity = require('../entities/getentity');
 const updateEntity = require('../entities/updateentity');
 
