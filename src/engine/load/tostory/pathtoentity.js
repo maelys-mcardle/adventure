@@ -1,7 +1,7 @@
 'use strict';
 
 const constants = require('../../constants');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 module.exports = {
   entityPlaceholderToEntity: entityPlaceholderToEntity,
@@ -11,7 +11,7 @@ module.exports = {
 function loadCurrentPropertyEntities(story, entities) {
 
   if (story.rootEntity == null) {
-    console.log(strings.ERROR_NO_ENTITIES_IN_STORY);
+    console.log(errors.NO_ENTITIES_IN_STORY);
   }
 
   story.rootEntity = getEntityFromPath(entities, story.rootEntity);
@@ -33,7 +33,7 @@ function entityPlaceholderToEntity(entities) {
 function updateEntityPlaceholders(entities, entity, recursion) {
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return entity;
   }
       
@@ -91,7 +91,7 @@ function getEntityFromPath(entities, path) {
     }
   }
 
-  console.log(strings.ERROR_CHILD_ENTITY_NOT_FOUND(path));
+  console.log(errors.CHILD_ENTITY_NOT_FOUND(path));
   return path;
 }
 

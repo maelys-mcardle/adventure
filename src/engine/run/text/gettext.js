@@ -8,7 +8,7 @@ module.exports = {
 }
 
 const constants = require('../../constants');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 function getStoryText(story) {
 

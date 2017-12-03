@@ -4,7 +4,7 @@ module.exports = {
   parse: parseActions
 };
 
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 function parseActions(rawActions, story) {
 
@@ -52,7 +52,7 @@ function parseActions(rawActions, story) {
                 template.replace(word, synonym)
               )
             } else {
-              console.log(strings.ERROR_WORD_NOT_IN_TEMPLATE(word, template));
+              console.log(errors.WORD_NOT_IN_TEMPLATE(word, template));
             }
           }
         }

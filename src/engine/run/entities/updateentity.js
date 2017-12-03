@@ -1,7 +1,7 @@
 'use strict';
 
 const constants = require('../../constants');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 module.exports = {
   updateProperty: updateEntityProperty,
@@ -22,7 +22,7 @@ function updateEntityPropertyByName(entity, targetEntityName, targetEntityPath,
 targetPropertyName, updatedProperty, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return entity;
   }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const constants = require('../../constants');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 module.exports = {
   find: findEntity,
@@ -42,7 +42,7 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
    recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return null;
   }
 

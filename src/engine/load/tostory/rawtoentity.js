@@ -1,7 +1,7 @@
 'use strict';
 
 const pathToEntity = require('./pathtoentity');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 module.exports = {
   parse: parseEntities
@@ -102,7 +102,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       entity.properties[propertyName] = property;
 
     } else {
-      console.log(strings.ERROR_NO_PROPERTY_IN_CONFIG(propertyName));
+      console.log(errors.NO_PROPERTY_IN_CONFIG(propertyName));
     }
   }
   
@@ -113,7 +113,7 @@ function loadConfigCurrentValue(property, config) {
   if ('value' in config) {
     property.currentValue = config.value;
   } else {
-    console.log(strings.ERROR_NO_VALUE_IN_CONFIG(property.name));
+    console.log(errors.NO_VALUE_IN_CONFIG(property.name));
   }
   return property;
 }
@@ -124,7 +124,7 @@ function loadConfigActions(property, actions, config) {
       if (action in actions) {
         property.actions.push(action);
       } else {
-        console.log(strings.ERROR_ACTION_UNDEFINED(action, property.name));
+        console.log(errors.ACTION_UNDEFINED(action, property.name));
       }
     }
   }
@@ -137,7 +137,7 @@ function loadConfigDisabled(property, config) {
       if (disabledPropertyValue in property.values) {
         property.values[disabledPropertyValue].disabled = true;
       } else {
-        console.log(strings.ERROR_DISABLED_VALUE_DOES_NOT_EXIST(
+        console.log(errors.DISABLED_VALUE_DOES_NOT_EXIST(
           disabledPropertyValue, property.name));
       }
     }
@@ -157,7 +157,7 @@ function loadConfigRules(property, config) {
         if (trigger.left in property.values) {
           property.values[trigger.left].rules = triggerRules;
         } else {
-          console.log(strings.ERROR_TRIGGER_NOT_FOUND(trigger.left));
+          console.log(errors.TRIGGER_NOT_FOUND(trigger.left));
         }
   
       } else {
@@ -227,7 +227,7 @@ function parseRawEntityText(entity, rawText) {
 function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!(propertyName in entity.properties)) {
-    console.log(strings.ERROR_NO_PROPERTY_FOR_TRIGGER(propertyName, rawTrigger));
+    console.log(errors.NO_PROPERTY_FOR_TRIGGER(propertyName, rawTrigger));
     return entity;
   }
 
@@ -271,7 +271,7 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
       relationship[relationshipKey] = relationshipValue;
       property.values[trigger.left].relationships[trigger.right] = relationship;
   } else {
-    console.log(strings.ERROR_RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
+    console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
   }
 
   // For bidirectional property transition (--).
@@ -282,7 +282,7 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
         relationship[relationshipKey] = relationshipValue;
         property.values[trigger.right].relationships[trigger.left] = relationship;
     } else {
-      console.log(strings.ERROR_RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
+      console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
     }
   }
 

@@ -2,7 +2,7 @@
 
 const stringSimilarity = require('string-similarity');
 const constants = require('../../constants');
-const strings = require('../../strings');
+const errors = require('../../errors');
 
 module.exports = {
   matchInput: matchInputToAction,
@@ -73,7 +73,7 @@ function getInputsWithTemplate(template, eligibleAction) {
   if (eligibleActionEntitiesNames.length === 0) {
     return validInputs;
   } else if (!hasEntityVariable && eligibleActionEntitiesNames.length > 1) {
-    console.log(strings.ERROR_TEMPLATE_AMBIGUOUS(
+    console.log(errors.TEMPLATE_AMBIGUOUS(
       template, eligibleActionEntitiesNames.join(', ')));
     return validInputs;
   }
@@ -88,7 +88,7 @@ function getInputsWithTemplate(template, eligibleAction) {
       if (propertyValueNames.length === 0) {
         continue;
       } else if (!hasPropertyVariable && propertyValueNames.length > 1) {
-        console.log(strings.ERROR_TEMPLATE_AMBIGUOUS(
+        console.log(errors.TEMPLATE_AMBIGUOUS(
           template, propertyValueNames.join(', ')));
         continue;
       }
@@ -157,7 +157,7 @@ function getEligibleActionsFromEntity(eligibleActions,
   actions, entity, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(strings.ERROR_MAX_RECURSION);
+    console.log(errors.MAX_RECURSION);
     return eligibleActions;
   }
 
