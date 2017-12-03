@@ -1,11 +1,11 @@
 'use strict';
 
 const loadStory = require('./load/loadstory');
-const runStory = require('./run/runstory');
+const playStory = require('./play/playstory');
 
 module.exports = {
   loadStory: loadStory.load,
-  evaluateInput: runStory.evaluateInput,
-  describeCurrentState: runStory.describeCurrentState,
-  listActionExamples: runStory.listActionExamples
+  evaluateInput: playStory.evaluateInput,
+  describeCurrentState: playStory.describeCurrentState,
+  listActionExamples: playStory.listActionExamples
 }
