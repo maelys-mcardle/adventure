@@ -3,6 +3,8 @@
 const stringSimilarity = require('string-similarity');
 const constants = require('../../constants');
 const errors = require('../../errors');
+const {MatchingInput, EligibleInput, EligibleAction, EligibleActionEntity} =
+  require('./actionclass');
 
 module.exports = {
   matchInput: matchInputToAction,
@@ -211,42 +213,4 @@ function addEligibleAction(eligibleActions, action,
   eligibleActions[action.name].entities[entity.name] = eligibleEntity;
 
   return eligibleActions;
-}
-
-class MatchingInput {
-  constructor() {
-    this.match;
-    this.hasMatch = false;
-    this.isExactMatch = false;
-    this.hasSuggestion = false;
-    this.suggestion = '';
-  }
-}
-
-class EligibleInput {
-  constructor() {
-    this.text;
-    this.actionName;
-    this.entityName;
-    this.entityPath;
-    this.propertyName;
-    this.propertyValueName;
-  }
-}
-
-class EligibleAction {
-  constructor(action) {
-    this.action = action;
-    this.entities = {};
-  }
-}
-
-class EligibleActionEntity {
-  constructor(entityName, entityPath, propertyName) {
-    this.entityName = entityName;
-    this.entityPath = entityPath;
-    this.propertyName = propertyName;
-    this.currentPropertyValue = null;
-    this.eligiblePropertyValue = {};
-  }
 }
