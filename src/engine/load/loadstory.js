@@ -1,12 +1,11 @@
 'use strict';
 
-const loadFiles = require('./tofile/loadfiles');
-const fileToRaw = require('./toraw/filetoraw');
-const rawToStory = require('./tostory/rawtostory');
+const loadFiles = require('./file/loadfiles');
+const fileToRaw = require('./raw/filetoraw');
+const rawToStory = require('./story/rawtostory');
 
 module.exports = {
-  load: loadStory,
-  loadJson: loadStoryAsJson
+  load: loadStory
 };
 
 function loadStory(storyDirectory) {
@@ -21,15 +20,4 @@ function loadStory(storyDirectory) {
   let story = rawToStory.parse(rawStory);
 
   return story;
-}
-
-function loadStoryAsJson(directory) {
-
-  // Load the story.
-  let story = loadStory(directory);
-
-  // Serialize the story.
-  let storyAsJson = JSON.stringify(story, null, 2);
-
-  return storyAsJson;
 }
