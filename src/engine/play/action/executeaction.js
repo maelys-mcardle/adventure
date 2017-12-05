@@ -5,10 +5,10 @@ const getEntity = require('../entities/getentity');
 const getText = require('../text/gettext');
 
 module.exports = {
-  execute: excuteAction,
+  execute: executeAction,
 }
 
-function excuteAction(story, actionName, entityName, entityPath, 
+function executeAction(story, actionName, entityName, entityPath, 
     propertyName, newPropertyValueName) {
 
   let action = story.actions[actionName];
