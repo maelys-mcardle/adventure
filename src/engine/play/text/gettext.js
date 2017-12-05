@@ -1,14 +1,14 @@
 'use strict';
 
+const constants = require('../../constants');
+const errors = require('../../errors');
+
 module.exports = {
   getAll: getStoryText,
   getDelta: getStoryDeltaText,
   getEntity: getEntityText,
-  getEntityProperty: getEntityPropertyText,
+  getProperty: getPropertyText,
 }
-
-const constants = require('../../constants');
-const errors = require('../../errors');
 
 function getStoryText(story) {
 
@@ -79,8 +79,8 @@ function getEntityText(entity) {
   return getEntityTextRecursive(entity, 0);
 }
 
-function getEntityPropertyText(property) {
-  return getEntityPropertyTextRecursive(property, 0);
+function getPropertyText(property) {
+  return getPropertyTextRecursive(property, 0);
 }
 
 function getEntityTextRecursive(entity, recursion) {
@@ -93,14 +93,14 @@ function getEntityTextRecursive(entity, recursion) {
 
   for (let propertyName of Object.keys(entity.properties)) {
     let property = entity.properties[propertyName];
-    let propertyText = getEntityPropertyTextRecursive(property, recursion);
+    let propertyText = getPropertyTextRecursive(property, recursion);
     text = text.concat(propertyText);
   }
 
   return text;
 }
 
-function getEntityPropertyTextRecursive(property, recursion) {
+function getPropertyTextRecursive(property, recursion) {
   let text = [];
 
   let value = property.currentValue;

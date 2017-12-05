@@ -1,8 +1,9 @@
 'use strict';
 
 const getText = require('./text/gettext');
-const eligibleActions = require('./actions/eligibleactions');
-const executeActions = require('./actions/executeactions');
+const eligibleInputs = require('./input/eligibleinputs');
+const matchInput = require('./input/matchinput');
+const executeInput = require('./input/executeinput');
 const strings = require('../strings');
 
 module.exports = {
@@ -13,11 +14,11 @@ module.exports = {
 
 function evaluateInput(story, input) {
   let output = [strings.INPUT_UNRECOGNIZED];
-  let inputMatch = eligibleActions.matchInput(story, input);
+  let inputMatch = matchInput.match(story, input);
 
   if (inputMatch.hasMatch) {
 
-    [story, output] = executeActions.execute(story, 
+    [story, output] = executeInput.execute(story, 
       inputMatch.match.actionName,
       inputMatch.match.entityName,
       inputMatch.match.entityPath,
@@ -41,6 +42,6 @@ function describeCurrentState(story) {
 }
 
 function listActionExamples(story) {
-  let output = eligibleActions.listExamples(story);
+  let output = eligibleInputs.listExamples(story);
   return output;
 }

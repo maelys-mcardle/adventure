@@ -4,8 +4,8 @@ const yaml = require('js-yaml');
 const markdown = require('markdown').markdown;
 const dot = require('graphlib-dot');
 const path = require('path');
-
-const CONFIG_FILE_NAME = 'config';
+const {RawAction, RawEntity, RawParsedFile, RawStory} = require('./rawclass');
+const constants = require('../../constants');
 
 module.exports = {
   parse: parseFiles
@@ -19,17 +19,21 @@ function parseFiles(storyFiles) {
   for (let file of storyFiles) {
     if (file.directory.length > 0) {
       switch(file.directory[0]) {
-        case 'actions':
+
+        case constants.ACTIONS_DIRECTORY:
           storyActions = parseActionFile(storyActions, file);
           break;
-        case 'entities':
+
+        case constants.ENTITIES_DIRECTORY:
           storyEntities = parseEntityFile(storyEntities, file);
           break;
-        case '':
-          if (file.name === CONFIG_FILE_NAME && file.isYaml()) {
+
+        case constants.CONFIG_DIRECTORY:
+          if (file.name === constants.CONFIG_FILE_NAME && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
             break;
           }
+
         default:
           break;
       }
@@ -57,7 +61,7 @@ function parseStoryConfigFile(file) {
 
 function parseEntityFile(entities, file) {
   
-  if (file.isYaml() && file.name === CONFIG_FILE_NAME) {
+  if (file.isYaml() && file.name === constants.CONFIG_FILE_NAME) {
     return parseEntityFileWithFunction(entities, file, 
       yaml.load, 'config');
 
@@ -111,39 +115,4 @@ function actionPath(file) {
 
 function actionName(file) {
   return file.name;
-}
-
-class RawEntity {
-  constructor() {
-    this.name;
-    this.path;
-    this.properties = [];
-    this.text = [];
-    this.config = [];
-  }
-}
-
-class RawAction {
-  constructor() {
-    this.name;
-    this.path;
-    this.action;
-  }
-}
-
-class RawStory {
-  constructor(config, actions, entities) {
-    this.name;
-    this.path;
-    this.config = config;
-    this.actions = actions;
-    this.entities = entities;
-  }
-}
-
-class RawParsedFile {
-  constructor(name, contents) {
-    this.name = name;
-    this.contents = contents;
-  }
 }
