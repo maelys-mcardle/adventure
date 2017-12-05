@@ -3,13 +3,13 @@
 const getText = require('./text/gettext');
 const eligibleInputs = require('./input/eligibleinputs');
 const matchInput = require('./input/matchinput');
-const executeInput = require('./input/executeinput');
+const executeAction = require('./action/executeaction');
 const strings = require('../strings');
 
 module.exports = {
   evaluateInput: evaluateInput,
   describeCurrentState: describeCurrentState,
-  listActionExamples: listActionExamples
+  listInputExamples: listInputExamples
 }
 
 function evaluateInput(story, input) {
@@ -18,7 +18,7 @@ function evaluateInput(story, input) {
 
   if (inputMatch.hasMatch) {
 
-    [story, output] = executeInput.execute(story, 
+    [story, output] = executeAction.execute(story, 
       inputMatch.match.actionName,
       inputMatch.match.entityName,
       inputMatch.match.entityPath,
@@ -41,7 +41,7 @@ function describeCurrentState(story) {
   return output;
 }
 
-function listActionExamples(story) {
+function listInputExamples(story) {
   let output = eligibleInputs.listExamples(story);
   return output;
 }

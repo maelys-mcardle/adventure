@@ -7,5 +7,5 @@ module.exports = {
   loadStory: loadStory.load,
   evaluateInput: playStory.evaluateInput,
   describeCurrentState: playStory.describeCurrentState,
-  listActionExamples: playStory.listActionExamples
+  listInputExamples: playStory.listInputExamples
 }
