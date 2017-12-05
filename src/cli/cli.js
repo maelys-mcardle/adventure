@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 'use strict';
 
-const args = require('./arguments');
 const commands = require('./commands');
 const repl = require('repl');
 
 /** Evaluating input. Wrapped in closure for persistence of story. */
 function evaluateInput() {
-  let story = args.loadStory();
+  let story = null;
   return (command, context, filename, callback) => {
     let output = '';
     [story, output] = commands.evaluate(story, command);
