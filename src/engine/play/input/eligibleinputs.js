@@ -1,7 +1,7 @@
 'use strict';
 
 const {EligibleInput, EligibleAction, EligibleActionEntity} =
-  require('./inputclass');
+  require('./eligibleclass');
 const constants = require('../../constants');
 const errors = require('../../errors');
 

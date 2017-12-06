@@ -1,15 +1,5 @@
 'use strict';
 
-class MatchingInput {
-  constructor() {
-    this.match;
-    this.hasMatch = false;
-    this.isExactMatch = false;
-    this.hasSuggestion = false;
-    this.suggestion = '';
-  }
-}
-
 class EligibleInput {
   constructor() {
     this.text;
@@ -38,7 +28,6 @@ class EligibleActionEntity {
   }
 }
 
-exports.MatchingInput = MatchingInput;
 exports.EligibleInput = EligibleInput;
 exports.EligibleAction = EligibleAction;
 exports.EligibleActionEntity = EligibleActionEntity;

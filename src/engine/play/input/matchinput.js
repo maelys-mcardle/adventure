@@ -2,7 +2,7 @@
 
 const stringSimilarity = require('string-similarity');
 const eligibleInputs = require('./eligibleinputs');
-const {MatchingInput} = require('./inputclass');
+const {MatchingInput} = require('./matchclass');
 
 module.exports = {
   match: matchInput

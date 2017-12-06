@@ -3,7 +3,7 @@
 const getText = require('./text/gettext');
 const eligibleInputs = require('./input/eligibleinputs');
 const matchInput = require('./input/matchinput');
-const executeAction = require('./action/executeaction');
+const doAction = require('./doaction');
 const strings = require('../strings');
 
 module.exports = {
@@ -18,7 +18,7 @@ function evaluateInput(story, input) {
 
   if (inputMatch.hasMatch) {
 
-    [story, output] = executeAction.execute(story, 
+    [story, output] = doAction.do(story, 
       inputMatch.match.actionName,
       inputMatch.match.entityName,
       inputMatch.match.entityPath,

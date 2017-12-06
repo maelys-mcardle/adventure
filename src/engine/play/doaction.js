@@ -1,14 +1,14 @@
 'use strict';
 
-const executeRules = require('../rules/executerules');
-const getEntity = require('../entities/getentity');
-const getText = require('../text/gettext');
+const executeRules = require('./rules/executerules');
+const getEntity = require('./entities/getentity');
+const getText = require('./text/gettext');
 
 module.exports = {
-  execute: executeAction,
+  do: applyActionToProperty,
 }
 
-function executeAction(story, actionName, entityName, entityPath, 
+function applyActionToProperty(story, actionName, entityName, entityPath, 
     propertyName, newPropertyValueName) {
 
   let action = story.actions[actionName];
