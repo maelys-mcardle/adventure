@@ -1,7 +1,6 @@
 'use strict';
 
-const {EligibleInput, EligibleAction, EligibleActionEntity} =
-  require('./eligibleclass');
+const {EligibleInput, EligibleAction} = require('./eligibleclass');
 const constants = require('../../constants');
 const errors = require('../../errors');
 
@@ -177,12 +176,17 @@ function addEligibleAction(eligibleActions, action,
     eligibleActions[action.name] = new EligibleAction(action);
   }
 
-  let eligibleEntity = new EligibleActionEntity(
-    entity.name, entity.path, propertyName);
+  let eligibleAction = eligibleActions[action.name];
+  let eligibleEntity = eligibleAction.newEligibleEntity();
 
+  eligibleEntity.entityName = entity.name;
+  eligibleEntity.entityPath = entity.path;
+  eligibleEntity.propertyName = propertyName;
   eligibleEntity.eligiblePropertyValues = eligiblePropertyValues;
   eligibleEntity.currentPropertyValue = currentPropertyValue;
-  eligibleActions[action.name].entities[entity.name] = eligibleEntity;
+  
+  eligibleAction.addEligibleEntity(eligibleEntity);
+  eligibleActions[action.name] = eligibleAction;
 
   return eligibleActions;
 }

@@ -16,13 +16,21 @@ class EligibleAction {
     this.action = action;
     this.entities = {};
   }
+
+  newEligibleEntity() {
+    return new EligibleActionEntity();
+  }
+
+  addEligibleEntity(eligibleEntity) {
+    this.entities[eligibleEntity.entityName] = eligibleEntity;
+  }
 }
 
 class EligibleActionEntity {
-  constructor(entityName, entityPath, propertyName) {
-    this.entityName = entityName;
-    this.entityPath = entityPath;
-    this.propertyName = propertyName;
+  constructor() {
+    this.entityName = '';
+    this.entityPath = '';
+    this.propertyName = '';
     this.currentPropertyValue = null;
     this.eligiblePropertyValue = {};
   }
@@ -30,4 +38,3 @@ class EligibleActionEntity {
 
 exports.EligibleInput = EligibleInput;
 exports.EligibleAction = EligibleAction;
-exports.EligibleActionEntity = EligibleActionEntity;

@@ -39,7 +39,7 @@ function describe(story, entityName, entityPath, propertyName) {
   }
 
   // Print the description.
-  paragraphs = getText.getEntityProperty(property);
+  paragraphs = getText.getProperty(property);
   return paragraphs;
 }
 
