@@ -19,11 +19,9 @@ function evaluateInput(story, input) {
   if (inputMatch.hasMatch) {
 
     [story, output] = doAction.do(story, 
-      inputMatch.match.actionName,
-      inputMatch.match.entityName,
-      inputMatch.match.entityPath,
-      inputMatch.match.propertyName,
-      inputMatch.match.propertyValueName);
+      inputMatch.match.action,
+      inputMatch.match.target,
+      inputMatch.match.value);
     
     if (!inputMatch.isExactMatch) {
       output.unshift(strings.INPUT_UNDERSTOOD_AS(inputMatch.match.text));

@@ -97,21 +97,21 @@ function EligibleInputChangeValue(matchString, eligibleAction, entity,
 
   let eligibleInput = new EligibleInput();
   eligibleInput.text = matchString;
-  eligibleInput.actionName = eligibleAction.action.name;
-  eligibleInput.entityName = entity.entityName;
-  eligibleInput.entityPath = entity.entityPath;
-  eligibleInput.propertyName = entity.propertyName;
-  eligibleInput.propertyValueName = propertyValueName;
+  eligibleInput.action = eligibleAction.action.name;
+  eligibleInput.target.entity = entity.entityName;
+  eligibleInput.target.path = entity.entityPath;
+  eligibleInput.target.property = entity.propertyName;
+  eligibleInput.value = propertyValueName;
   return eligibleInput;
 }
 
 function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
   let eligibleInput = new EligibleInput();
   eligibleInput.text = matchString;
-  eligibleInput.actionName = eligibleAction.action.name;
-  eligibleInput.entityName = entity.entityName;
-  eligibleInput.entityPath = entity.entityPath;
-  eligibleInput.propertyName = entity.propertyName;
+  eligibleInput.action = eligibleAction.action.name;
+  eligibleInput.target.entity = entity.entityName;
+  eligibleInput.target.path = entity.entityPath;
+  eligibleInput.target.property = entity.propertyName;
   return eligibleInput;
 }
 
@@ -184,7 +184,7 @@ function addEligibleAction(eligibleActions, action,
   eligibleEntity.propertyName = propertyName;
   eligibleEntity.eligiblePropertyValues = eligiblePropertyValues;
   eligibleEntity.currentPropertyValue = currentPropertyValue;
-  
+
   eligibleAction.addEligibleEntity(eligibleEntity);
   eligibleActions[action.name] = eligibleAction;
 

@@ -8,31 +8,29 @@ module.exports = {
   do: applyActionToProperty,
 }
 
-function applyActionToProperty(story, actionName, entityName, entityPath, 
-    propertyName, newPropertyValueName) {
+function applyActionToProperty(story, actionName, target, value) {
 
   let action = story.actions[actionName];
   let description = [];
 
   if (action.changesPropertyValue) { 
-    return changeValue(story, action, entityName, entityPath, 
-      propertyName, newPropertyValueName);
+    return changeValue(story, action, target, value);
   }
 
   else if (action.describesEntityProperty) {
-    description = describe(story, entityName, entityPath, propertyName);
+    description = describe(story, target);
   }
 
   return [story, description];
 }
 
-function describe(story, entityName, entityPath, propertyName) {
+function describe(story, target) {
 
   let paragraphs = [];
 
   // Get entity property.
   let property = 
-    getEntity.findProperty(story, entityName, entityPath, propertyName);
+    getEntity.findProperty(story, target.entity, target.path, target.property);
 
   if (property == null) {
     return paragraphs;
@@ -43,8 +41,7 @@ function describe(story, entityName, entityPath, propertyName) {
   return paragraphs;
 }
 
-function changeValue(initialStory, action, 
-  entityName, entityPath, propertyName, newPropertyValueName) {
+function changeValue(initialStory, action, target, value) {
 
   let transitionMessages = [];
   let newValueMessages = [];
@@ -57,16 +54,16 @@ function changeValue(initialStory, action,
   //  - apply rules for transition
   [updatedStory, transitionMessages] = 
     executeRules.execute(
-      updatedStory, action, entityName, entityPath,
-      propertyName, newPropertyValueName, true);
+      updatedStory, action, target.entity, target.path,
+      target.property, value, true);
 
   // Print the current delta.
   let paragraphs = getText.getDelta(initialStory, updatedStory);
 
   // Apply rules for when in new value.
   [updatedStory, newValueMessages] = executeRules.execute(
-    updatedStory, action, entityName, entityPath,
-    propertyName, null, false);
+    updatedStory, action, target.entity, target.path,
+    target.property, null, false);
 
   // Concatenate the output.
   let output = 

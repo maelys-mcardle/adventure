@@ -2,12 +2,14 @@
 
 class EligibleInput {
   constructor() {
-    this.text;
-    this.actionName;
-    this.entityName;
-    this.entityPath;
-    this.propertyName;
-    this.propertyValueName;
+    this.text = null;
+    this.action = null;
+    this.target = {
+      entity: null,
+      path: null,
+      property: null,
+    };
+    this.value = null;
   }
 }
 
@@ -28,9 +30,9 @@ class EligibleAction {
 
 class EligibleActionEntity {
   constructor() {
-    this.entityName = '';
-    this.entityPath = '';
-    this.propertyName = '';
+    this.entityName = null;
+    this.entityPath = null;
+    this.propertyName = null;
     this.currentPropertyValue = null;
     this.eligiblePropertyValue = {};
   }
