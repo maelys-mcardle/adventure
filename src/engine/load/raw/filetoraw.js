@@ -20,15 +20,15 @@ function parseFiles(storyFiles) {
     if (file.directory.length > 0) {
       switch(file.directory[0]) {
 
-        case constants.ACTIONS_DIRECTORY:
+        case constants.DIRECTORY_ACTIONS:
           storyActions = parseActionFile(storyActions, file);
           break;
 
-        case constants.ENTITIES_DIRECTORY:
+        case constants.DIRECTORY_ENTITIES:
           storyEntities = parseEntityFile(storyEntities, file);
           break;
 
-        case constants.CONFIG_DIRECTORY:
+        case constants.DIRECTORY_CONFIG:
           if (file.name === constants.CONFIG_FILE_NAME && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
             break;

@@ -1,25 +1,27 @@
 'use strict';
 
+const constants = require('../../constants');
+
 module.exports = {
   parse: parseConfig
 };
 
 function parseConfig(rawConfig, story) {
 
-  if ('title' in rawConfig) {
-    story.title = rawConfig.title;
+  if (constants.CONFIG_TITLE in rawConfig) {
+    story.title = rawConfig[constants.CONFIG_TITLE];
   }
 
-  if ('author' in rawConfig) {
-    story.author = rawConfig.author;
+  if (constants.CONFIG_AUTHOR in rawConfig) {
+    story.author = rawConfig[constants.CONFIG_AUTHOR];
   }
 
-  if ('description' in rawConfig) {
-    story.description = rawConfig.description;
+  if (constants.CONFIG_DESCRIPTION in rawConfig) {
+    story.description = rawConfig[constants.CONFIG_DESCRIPTION];
   }
 
-  if ('entity' in rawConfig) {
-    story.rootEntity = rawConfig.entity;
+  if (constants.CONFIG_ENTITY in rawConfig) {
+    story.rootEntity = rawConfig[constants.CONFIG_ENTITY];
   }
   
   return story;

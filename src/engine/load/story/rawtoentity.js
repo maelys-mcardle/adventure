@@ -1,6 +1,7 @@
 'use strict';
 
 const pathToEntity = require('./pathtoentity');
+const constants = require('../../constants');
 const errors = require('../../errors');
 
 module.exports = {
@@ -110,8 +111,8 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
 }
 
 function loadConfigCurrentValue(property, config) {
-  if ('value' in config) {
-    property.currentValue = config.value;
+  if (constants.CONFIG_VALUE in config) {
+    property.currentValue = config[constants.CONFIG_VALUE];
   } else {
     console.log(errors.NO_VALUE_IN_CONFIG(property.name));
   }
@@ -119,8 +120,8 @@ function loadConfigCurrentValue(property, config) {
 }
 
 function loadConfigActions(property, actions, config) {
-  if ('actions' in config) {
-    for (let action of config.actions) {
+  if (constants.CONFIG_ACTIONS in config) {
+    for (let action of config[constants.CONFIG_ACTIONS]) {
       if (action in actions) {
         property.actions.push(action);
       } else {
@@ -132,8 +133,8 @@ function loadConfigActions(property, actions, config) {
 }
 
 function loadConfigDisabled(property, config) {
-  if ('disable' in config) {
-    for (let disabledPropertyValue of config.disable) {
+  if (constants.CONFIG_DISABLE in config) {
+    for (let disabledPropertyValue of config[constants.CONFIG_DISABLE]) {
       if (disabledPropertyValue in property.values) {
         property.values[disabledPropertyValue].disabled = true;
       } else {
@@ -146,8 +147,8 @@ function loadConfigDisabled(property, config) {
 }
 
 function loadConfigRules(property, config) {
-  if ('rules' in config) {
-    for (let rawTrigger of Object.keys(config.rules)) {
+  if (constants.CONFIG_RULES in config) {
+    for (let rawTrigger of Object.keys(config[constants.CONFIG_RULES])) {
       let trigger = parseTrigger(rawTrigger);
       let triggerRules = config.rules[rawTrigger];
 
@@ -172,8 +173,9 @@ function loadConfigRules(property, config) {
 }
 
 function loadConfigChildEntities(property, config) {
-  if ('entities' in config) {
-    for (let parentPropertyValue of Object.keys(config.entities)) {
+  if (constants.CONFIG_ENTITIES in config) {
+    let entityNames = Object.keys(config[constants.CONFIG_ENTITIES]);
+    for (let parentPropertyValue of entityNames) {
       for (let childEntityName of config.entities[parentPropertyValue]) {
         property.values[parentPropertyValue].childEntities.push(childEntityName);
       }

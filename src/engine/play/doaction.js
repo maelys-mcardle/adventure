@@ -8,17 +8,17 @@ module.exports = {
   do: applyActionToProperty,
 }
 
-function applyActionToProperty(story, actionName, target, value) {
+function applyActionToProperty(story, actionName, targetProperty, value) {
 
   let action = story.actions[actionName];
   let description = [];
 
   if (action.changesPropertyValue) { 
-    return changeValue(story, action, target, value);
+    return changeValue(story, action, targetProperty, value);
   }
 
   else if (action.describesEntityProperty) {
-    description = describe(story, target);
+    description = describe(story, targetProperty);
   }
 
   return [story, description];
