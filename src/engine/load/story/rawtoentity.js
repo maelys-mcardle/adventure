@@ -193,7 +193,7 @@ function parseRawEntityText(entity, rawText) {
   // The markdown parser provides an array of items. The first is the
   // string 'markdown'.
   if (rawText.contents.length === 0 || 
-      rawText.contents[0] !== 'markdown') {
+      rawText.contents[0] !== constants.MD_MARKDOWN) {
     return parsedText;
   }
 
@@ -204,7 +204,7 @@ function parseRawEntityText(entity, rawText) {
     let entryType = entry[0];
 
     // Header.
-    if (entryType === 'header') {
+    if (entryType === constants.MD_HEADER) {
       let headerLevel = entry[1].level;
       let headerText = entry[2];
       
@@ -217,7 +217,7 @@ function parseRawEntityText(entity, rawText) {
       }
     
     // Paragraph. 
-    } else if (entryType === 'para' && property && trigger) {
+    } else if (entryType === constants.MD_PARAGRAPH && property && trigger) {
       text += '\n' + entry[1];
       entity = addTextToProperty(entity, property, trigger, text.trim());
     }
