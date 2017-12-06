@@ -116,7 +116,7 @@ function EligibleInputDescribeEntity(matchString, eligibleAction, entity) {
 }
 
 /** Lists the actions that can be performed on the current property, 
- * and the propertys and entities they can be performed on.
+ * and the properties and entities they can be performed on.
  */
 function getEligibleActions(story) {
 
@@ -147,8 +147,8 @@ function getEligibleActionsFromEntity(eligibleActions,
       if (action.changesPropertyValue) {
         for (let valueName of eligiblePropertyValuesNames) {
           let value = property.values[valueName];
-          // Disabled propertys won't show up.
-          // Only show enabled propertys.
+          // Disabled properties won't show up.
+          // Only show enabled properties.
           if (!value.disabled) {
             eligiblePropertyValues[value.name] = value;
           }

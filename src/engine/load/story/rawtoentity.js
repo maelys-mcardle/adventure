@@ -22,8 +22,8 @@ function parseEntities(rawStoryEntities, story) {
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
-    for (let rawEntityPropertys of rawEntity.properties) {
-      entity = parseRawEntityPropertys(entity, rawEntityPropertys);
+    for (let rawEntityProperties of rawEntity.properties) {
+      entity = parseRawEntityProperties(entity, rawEntityProperties);
     }
 
     for (let rawEntityText of rawEntity.text) {
@@ -47,9 +47,9 @@ function parseEntities(rawStoryEntities, story) {
   return story;
 }
 
-function parseRawEntityPropertys(entity, rawPropertys)
+function parseRawEntityProperties(entity, rawProperties)
 {
-  for (let graph of rawPropertys.contents) {
+  for (let graph of rawProperties.contents) {
 
     let propertyName = graph.graph().id;
     let property = entity.newProperty(propertyName);
@@ -60,7 +60,7 @@ function parseRawEntityPropertys(entity, rawPropertys)
     }
 
     // Load all relationships each property value can have;
-    // in other words, the list of acceptable propertys it
+    // in other words, the list of acceptable properties it
     // can transition to.
     for (let relationship of graph.edges()) {
       let fromPropertyValue = relationship.v;
@@ -70,7 +70,7 @@ function parseRawEntityPropertys(entity, rawPropertys)
         property.values[fromPropertyValue].newRelationship(
           toPropertyValue));
 
-      // Relationships between propertys are one-way in
+      // Relationships between properties are one-way in
       // directed graphs, but two ways in undirected graphs.
       if (!graph.isDirected()) {
         property.values[toPropertyValue].addRelationship(
