@@ -29,7 +29,7 @@ function parseFiles(storyFiles) {
           break;
 
         case constants.DIRECTORY_CONFIG:
-          if (file.name === constants.CONFIG_FILE_NAME && file.isYaml()) {
+          if (file.name === constants.FILE_NAME_CONFIG && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
             break;
           }
@@ -61,7 +61,7 @@ function parseStoryConfigFile(file) {
 
 function parseEntityFile(entities, file) {
   
-  if (file.isYaml() && file.name === constants.CONFIG_FILE_NAME) {
+  if (file.isYaml() && file.name === constants.FILE_NAME_CONFIG) {
     return parseEntityFileWithFunction(entities, file, 
       yaml.load, 'config');
 

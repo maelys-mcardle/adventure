@@ -8,20 +8,20 @@ module.exports = {
 
 function parseConfig(rawConfig, story) {
 
-  if (constants.CONFIG_TITLE in rawConfig) {
-    story.title = rawConfig[constants.CONFIG_TITLE];
+  if (constants.KEY_TITLE in rawConfig) {
+    story.title = rawConfig[constants.KEY_TITLE];
   }
 
-  if (constants.CONFIG_AUTHOR in rawConfig) {
-    story.author = rawConfig[constants.CONFIG_AUTHOR];
+  if (constants.KEY_AUTHOR in rawConfig) {
+    story.author = rawConfig[constants.KEY_AUTHOR];
   }
 
-  if (constants.CONFIG_DESCRIPTION in rawConfig) {
-    story.description = rawConfig[constants.CONFIG_DESCRIPTION];
+  if (constants.KEY_DESCRIPTION in rawConfig) {
+    story.description = rawConfig[constants.KEY_DESCRIPTION];
   }
 
-  if (constants.CONFIG_ENTITY in rawConfig) {
-    story.rootEntity = rawConfig[constants.CONFIG_ENTITY];
+  if (constants.KEY_ENTITY in rawConfig) {
+    story.rootEntity = rawConfig[constants.KEY_ENTITY];
   }
   
   return story;

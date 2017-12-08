@@ -14,28 +14,28 @@ function parseActions(rawActions, story) {
     let config = rawAction.action.contents;
     let action = story.newAction(rawAction.name, rawAction.path); 
 
-    if (constants.CONFIG_DESCRIPTION in config) {
-      action.description = config[constants.CONFIG_DESCRIPTION];
+    if (constants.KEY_DESCRIPTION in config) {
+      action.description = config[constants.KEY_DESCRIPTION];
     }
 
-    if (constants.CONFIG_TEMPLATES in config) {
-      for (let template of config[constants.CONFIG_TEMPLATES]) {
+    if (constants.KEY_TEMPLATES in config) {
+      for (let template of config[constants.KEY_TEMPLATES]) {
         action.addTemplate(template);
       }
     }
 
-    if (constants.CONFIG_DEFAULT in config) {
-      if (constants.CONFIG_VALUE in config[constants.CONFIG_DEFAULT]) {
+    if (constants.KEY_DEFAULT in config) {
+      if (constants.KEY_VALUE in config[constants.KEY_DEFAULT]) {
         action.defaultPropertyValue = 
-          config[constants.CONFIG_DEFAULT][constants.CONFIG_VALUE];
+          config[constants.KEY_DEFAULT][constants.KEY_VALUE];
       }
     }
 
-    if (constants.CONFIG_DO in config) {
-      if (constants.CONFIG_TRANSITION == config[constants.CONFIG_DO]) {
+    if (constants.KEY_DO in config) {
+      if (constants.KEY_TRANSITION == config[constants.KEY_DO]) {
         action.changesPropertyValue = true;
       }
-      if (constants.CONFIG_DESCRIBE == config[constants.CONFIG_DO]) {
+      if (constants.KEY_DESCRIBE == config[constants.KEY_DO]) {
         action.describesEntityProperty = true;
       }
     }
@@ -44,9 +44,9 @@ function parseActions(rawActions, story) {
     // templates. So like 'say' can have the synonym 'speak',
     // 'talk'. Explicitly list all templates including these
     // synonyms.
-    if (constants.CONFIG_SYNONYM in config) {
+    if (constants.KEY_SYNONYM in config) {
       let synonymTemplates = [];
-      for (let word of Object.keys(config[constants.CONFIG_SYNONYM])) {
+      for (let word of Object.keys(config[constants.KEY_SYNONYM])) {
         for (let synonym of config.synonyms[word]) {
           for (let template of action.templates) {
             if (template.includes(word)) {

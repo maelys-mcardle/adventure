@@ -111,8 +111,8 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
 }
 
 function loadConfigCurrentValue(property, config) {
-  if (constants.CONFIG_VALUE in config) {
-    property.currentValue = config[constants.CONFIG_VALUE];
+  if (constants.KEY_VALUE in config) {
+    property.currentValue = config[constants.KEY_VALUE];
   } else {
     console.log(errors.NO_VALUE_IN_CONFIG(property.name));
   }
@@ -120,8 +120,8 @@ function loadConfigCurrentValue(property, config) {
 }
 
 function loadConfigActions(property, actions, config) {
-  if (constants.CONFIG_ACTIONS in config) {
-    for (let action of config[constants.CONFIG_ACTIONS]) {
+  if (constants.KEY_ACTIONS in config) {
+    for (let action of config[constants.KEY_ACTIONS]) {
       if (action in actions) {
         property.actions.push(action);
       } else {
@@ -133,8 +133,8 @@ function loadConfigActions(property, actions, config) {
 }
 
 function loadConfigDisabled(property, config) {
-  if (constants.CONFIG_DISABLE in config) {
-    for (let disabledPropertyValue of config[constants.CONFIG_DISABLE]) {
+  if (constants.KEY_DISABLE in config) {
+    for (let disabledPropertyValue of config[constants.KEY_DISABLE]) {
       if (disabledPropertyValue in property.values) {
         property.values[disabledPropertyValue].disabled = true;
       } else {
@@ -147,8 +147,8 @@ function loadConfigDisabled(property, config) {
 }
 
 function loadConfigRules(property, config) {
-  if (constants.CONFIG_RULES in config) {
-    for (let rawTrigger of Object.keys(config[constants.CONFIG_RULES])) {
+  if (constants.KEY_RULES in config) {
+    for (let rawTrigger of Object.keys(config[constants.KEY_RULES])) {
       let trigger = parseTrigger(rawTrigger);
       let triggerRules = config.rules[rawTrigger];
 
@@ -173,8 +173,8 @@ function loadConfigRules(property, config) {
 }
 
 function loadConfigChildEntities(property, config) {
-  if (constants.CONFIG_ENTITIES in config) {
-    let entityNames = Object.keys(config[constants.CONFIG_ENTITIES]);
+  if (constants.KEY_ENTITIES in config) {
+    let entityNames = Object.keys(config[constants.KEY_ENTITIES]);
     for (let parentPropertyValue of entityNames) {
       for (let childEntityName of config.entities[parentPropertyValue]) {
         property.values[parentPropertyValue].childEntities.push(childEntityName);
