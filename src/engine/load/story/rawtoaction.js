@@ -14,10 +14,6 @@ function parseActions(rawActions, story) {
     let config = rawAction.action.contents;
     let action = story.newAction(rawAction.name, rawAction.path); 
 
-    if (constants.KEY_DESCRIPTION in config) {
-      action.description = config[constants.KEY_DESCRIPTION];
-    }
-
     if (constants.KEY_TEMPLATES in config) {
       for (let template of config[constants.KEY_TEMPLATES]) {
         action.addTemplate(template);

@@ -1,4 +1,3 @@
-description: describes an object
 do: describe
 templates:
   - describe @entity

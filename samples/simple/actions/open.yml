@@ -1,4 +1,3 @@
-description: open an item
 do: transition
 templates:
   - open the @entity

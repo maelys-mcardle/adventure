@@ -150,9 +150,12 @@ function help(story, argument) {
   let output = 'BUILT-IN COMMANDS\n\n';
 
   for (let builtin of builtinCommands) {
-    output += ' ' + builtin.command +
-      (('argument' in builtin) ? ' [' + builtin.argument + ']\n' : '\n') +
-      '  ' + builtin.description + '\n\n';
+    if ('argument' in builtin) {
+      output += ` ${builtin.command} [${builtin.argument}]\n`;
+    } else {
+      output += ` ${builtin.command}\n`;
+    }
+    output += `  ${builtin.description}\n\n`;
   }
   return [story, output];
 }

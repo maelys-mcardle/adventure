@@ -95,7 +95,6 @@ class Action {
   constructor(name, path) {
     this.name = name;
     this.path = path;
-    this.description = '';
     this.templates = [];
     this.defaultPropertyValue = null;
     this.changesPropertyValue = false;
