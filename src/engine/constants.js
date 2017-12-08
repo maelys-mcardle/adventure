@@ -17,7 +17,7 @@ module.exports = {
   // Root config file name.
   FILE_NAME_CONFIG: 'config',
 
-  // Config keys.
+  // Keys.
   KEY_ACTIONS: 'actions',
   KEY_AUTHOR: 'author',
   KEY_DEFAULT: 'default',
@@ -25,8 +25,11 @@ module.exports = {
   KEY_DESCRIPTION: 'description',
   KEY_DISABLE: 'disable',
   KEY_DO: 'do',
+  KEY_ENABLE: 'enable',
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',
+  KEY_LAST: '.last',
+  KEY_MESSAGE: 'message',
   KEY_RULES: 'rules',
   KEY_SYNONYM: 'synonym',
   KEY_TEMPLATES: 'templates',

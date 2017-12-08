@@ -101,63 +101,67 @@ function applyRules(action, oldPropertyValueName, newPropertyValueName,
   return [entityProperty, messages];
 }
 
-function applyRuleValue(entityProperty, rules, oldPropertyValueName) {
+function applyRuleValue(property, rules, oldPropertyValue) {
 
-  if ('value' in rules) {
-    if (rules.value === '.last') {
-      entityProperty.currentValue = oldPropertyValueName;
-    } else if (rules.value in entityProperty.values) {
-      entityProperty.currentValue = rules.value;
+  if (constants.KEY_VALUE in rules) {
+    let propertyValue = rules[constants.KEY_VALUE];
+    if (propertyValue === constants.KEY_LAST) {
+      property.currentValue = oldPropertyValue;
+    } else if (propertyValue in property.values) {
+      property.currentValue = propertyValue;
     } else {
-      console.log(errors.NOT_FOUND(rules.value));
+      console.log(errors.NOT_FOUND(propertyValue));
     }
   }
 
-  return entityProperty;
+  return property;
 }
 
-function applyRuleDisable(entityProperty, rules) {
+function applyRuleDisable(property, rules) {
   
-  if ('disable' in rules) {
-    for (let disablePropertyValue of rules.disable) {
-      if (disablePropertyValue in entityProperty.values) {
-        entityProperty.values[disablePropertyValue].disabled = true;
+  if (constants.KEY_DISABLE in rules) {
+    let disablePropertyValues = rules[constants.KEY_DISABLE];
+    for (let disablePropertyValue of disablePropertyValues) {
+      if (disablePropertyValue in property.values) {
+        property.values[disablePropertyValue].disabled = true;
       } else {
         console.log(errors.NOT_FOUND(disablePropertyValue));
       }
     }
   }
 
-  return entityProperty;
+  return property;
 }
 
-function applyRuleEnable(entityProperty, rules) {
+function applyRuleEnable(property, rules) {
 
-  if ('enable' in rules) {
-    for (let enablePropertyValue of rules.enable) {
-      if (enablePropertyValue in entityProperty.values) {
-        entityProperty.values[enablePropertyValue].disabled = false;
+  if (constants.KEY_ENABLE in rules) {
+    let enablePropertyValues = rules[constants.KEY_ENABLE];
+    for (let enablePropertyValue of enablePropertyValues) {
+      if (enablePropertyValue in property.values) {
+        property.values[enablePropertyValue].disabled = false;
       } else {
         console.log(errors.NOT_FOUND(enablePropertyValue));
       }
     }
   }
 
-  return entityProperty;
+  return property;
 }
 
-function applyRuleMessage(entityProperty, rules, messages) {
+function applyRuleMessage(property, rules, messageQueue) {
 
-  if ('message' in rules) {
-    if (rules.message in entityProperty.messages) {
-      let message = entityProperty.messages[rules.message];
-      messages.push(message);
+  if (constants.KEY_MESSAGE in rules) {
+    let messageKey = rules[constants.KEY_MESSAGE];
+    if (messageKey in property.messages) {
+      let messageText = property.messages[messageKey];
+      messageQueue.push(messageText);
     } else {
-      console.log(errors.NOT_FOUND(rules.message));
+      console.log(errors.NOT_FOUND(messageKey));
     }
   }
 
-  return messages;
+  return messageQueue;
 }
 
 function applyRuleIfBlock(action, entityProperty, rules, messages, 

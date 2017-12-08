@@ -157,6 +157,7 @@ function help(story, argument) {
     }
     output += `  ${builtin.description}\n\n`;
   }
+  
   return [story, output];
 }
 
