@@ -26,17 +26,19 @@ Use the `help` command to get a listing of all possible commands.
 
 ## Developing for adventure
 
-Download the adventure source code:
+Make sure you have `git`, `npm` and `nodejs` installed. To retrieve
+the code and start developing, run the following:
 
 ```bash
+# Download the source code.
 git clone https://github.com/maelys-mcardle/adventure
 
+# Switch to the repository.
 cd adventure
+
+# Get the dependencies.
+npm install
 ```
-
-Get the dependencies:
-
-`npm install`
 
 To start adventure while developing:
 
