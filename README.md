@@ -28,8 +28,11 @@ Use the `help` command to get a listing of all possible commands.
 
 Download the adventure source code:
 
-`git clone https://github.com/maelys-mcardle/adventure`
-`cd adventure`
+```bash
+git clone https://github.com/maelys-mcardle/adventure
+
+cd adventure
+```
 
 Get the dependencies:
 
