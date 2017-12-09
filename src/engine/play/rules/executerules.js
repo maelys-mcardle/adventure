@@ -169,7 +169,7 @@ function applyRuleIfBlock(action, entityProperty, rules, messages,
 
   for (let trigger of Object.keys(rules)) {
     let words = trigger.split(' ');
-    if (words.length > 1 && words[0] == 'if') {
+    if (words.length > 1 && words[0] == constants.KEY_IF) {
 
       let childRules = rules[trigger];
       let ifActionMessages = [];
@@ -198,7 +198,7 @@ function applyRuleIfAction(action,
 
   // if action X
   if (words.length == 3 && 
-    words[1] == 'action' && 
+    words[1] == constants.KEY_ACTION && 
     words[2] == action.name) {
         
     [entityProperty, messages] = 
@@ -217,8 +217,8 @@ function applyRuleIfValue(action,
 
   // if property X is Y
   if (words.length == 5 &&
-    words[1] == 'property' &&
-    words[3] == 'is') {
+    words[1] == constants.KEY_PROPERTY &&
+    words[3] == constants.KEY_IS) {
 
     let targetProperty = words[2];
     let targetPropertyValue = words[4];

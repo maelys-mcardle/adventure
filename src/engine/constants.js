@@ -18,6 +18,7 @@ module.exports = {
   FILE_NAME_CONFIG: 'config',
 
   // Keys.
+  KEY_ACTION: 'action',
   KEY_ACTIONS: 'actions',
   KEY_AUTHOR: 'author',
   KEY_DEFAULT: 'default',
@@ -28,8 +29,11 @@ module.exports = {
   KEY_ENABLE: 'enable',
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',
+  KEY_IF: 'if',
+  KEY_IS: 'is',
   KEY_LAST: '.last',
   KEY_MESSAGE: 'message',
+  KEY_PROPERTY: 'property',
   KEY_RULES: 'rules',
   KEY_SYNONYM: 'synonym',
   KEY_TEMPLATES: 'templates',

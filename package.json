@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "bin" : { 
-    "adventure" : "./src/cli/cli.js" 
+  "bin": {
+    "adventure": "./src/cli/cli.js"
   },
   "scripts": {
     "adventure": "./src/cli/cli.js",
