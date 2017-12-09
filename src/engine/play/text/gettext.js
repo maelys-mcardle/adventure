@@ -101,12 +101,10 @@ function getEntityTextRecursive(entity, recursion) {
 }
 
 function getPropertyTextRecursive(property, recursion) {
-  let text = [];
 
   let value = property.currentValue;
-
   let propertyValueText = property.values[value].text;
-  text.push(propertyValueText);
+  let text = propertyValueText;
 
   for (let childEntity of property.values[value].childEntities) {
     let childEntityText = getEntityTextRecursive(childEntity, recursion + 1);

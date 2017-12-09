@@ -67,7 +67,7 @@ class EntityPropertyValue {
   constructor(name) {
     this.name = name;
     this.readableName = name;
-    this.text = '';
+    this.text = [];
     this.disabled = false;
     this.relationships = {};
     this.childEntities = [];
@@ -86,7 +86,7 @@ class EntityPropertyValue {
 class EntityPropertyValueRelationship {
   constructor(toValue) {
     this.toValue = toValue;
-    this.text = '';
+    this.text = [];
     this.rules = [];
   }
 }

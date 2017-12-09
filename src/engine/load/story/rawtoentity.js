@@ -210,16 +210,17 @@ function parseRawEntityText(entity, rawText) {
       
       if (entry[1].level === 1) {
         property = headerText;
-        text = '';
+        text = [];
       } else {
         trigger = headerText;
-        text = '';
+        text = [];
       }
     
     // Paragraph. 
     } else if (entryType === constants.MD_PARAGRAPH && property && trigger) {
-      text += '\n' + entry[1];
-      entity = addTextToProperty(entity, property, trigger, text.trim());
+      let paragraph = entry[1];
+      text.push(paragraph);
+      entity = addTextToProperty(entity, property, trigger, text);
     }
   }
 
