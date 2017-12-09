@@ -1,0 +1,11 @@
+do: reparent
+templates:
+  - take the @entity
+  - take @entity
+synonyms:
+  take:
+    - steal
+    - grab
+    - store
+default:
+  parent: inventory

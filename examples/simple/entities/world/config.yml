@@ -1,5 +1,5 @@
 location:
-  value: entrance
+  value: bedroom
   actions: [go, describe]
   rules:
     entrance -- lawn:
