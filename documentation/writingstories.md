@@ -2,33 +2,41 @@
 
 ## Basic Concepts
 
-### State Machines
+### Entities, Values, & Actions
 
-Stories in Adventure are nested state machines.
+Stories in Adventure are made up of things, called `entities`, and those
+things have a state. A door can be in the open state, or a closed state. 
+Entities can go between states in Adventure using `actions`. So the action
+of closing a door, is what gets the door from the open state, to the closed
+state. The entirety of all these states and being able to go between them is
+called a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 
-Things in the story are in a given state - a door is open. Those things
-can change to a different state - the door can become closed. 
+States, such as "open" and "closed" for the door are called `values` in 
+Adventure. Everything in Adventure is an entity. The world that the player
+moves around in is an entity, where each state is a location that the player
+can be in. The world contains entities, called `child entities`, such as doors 
+and non-playable characters. Each of these have their own set of states.
 
-Things in Adventure are called `entities`. Everything is an entity. The
-door is an entity. The house that contains the door is an entity. The player
-can be an entity.
+Stories in Adventure are, in short, nested state machines.
 
-The mechanism to go from one state to another - from the door being open to
-the door being closed - are called `actions`. 
+### Actions & Properties
 
-Stories are made up of things, those things can have multiple states, and
-actions are what make things go from one state to another. That is the 
-fundamental mechanism of this game engine.
+Often, things have more than one set of states. For instance, an entity like
+a vehicle can have states for having the engine on or off, but also being
+unlocked or locked. 
 
-### Actions & Entities
+To account for this, entities in Adventure have `properties` with these 
+properties being individual state machines. The car in this case has two 
+properties: one for the engine (with values on/off) and one for the lock 
+(with values locked/unlocked).
 
-### Everything is an Entity
+All entities in Adventure have at least one property. The door has at one
+property to track whether it is open, with two values: open/close. It could
+have more, perhaps to track whether it is damaged/undamaged.
 
-There are two
-
-### Everything has a State
-
-
+As such, actions apply to individual properties. Going back to the car example,
+the engine property would have an action to turn the car on/off, whereas the
+lock property would have an action to lock and another to unlock.
 
 ## Writing a Story
 
@@ -78,6 +86,5 @@ files and subdirectories:
     |- config.yml
 ```
 
-### Actions & Entities
+### Root Config
 
-The `actions` directory contains 
