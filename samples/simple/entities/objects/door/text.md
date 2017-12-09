@@ -15,11 +15,3 @@ You are closing the door.
 ## closed -> open
 
 You are opening the door.
-
-## doorAlreadyOpen
-
-The door is already open.
-
-## doorAlreadyClosed
-
-The door is already closed.

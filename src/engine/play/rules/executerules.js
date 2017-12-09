@@ -79,26 +79,27 @@ function executePropertyRules(action, entityProperty) {
   return [entityProperty, messages];
 }
   
-function applyRules(action, oldPropertyValueName, newPropertyValueName, 
-  entityProperty, rules, recursion) {
+function applyRules(action, oldPropertyValue, newPropertyValue, 
+  property, rules, recursion) {
 
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(errors.MAX_RECURSION);
-    return [entityProperty, messages];
+    return [property, messages];
   }
 
-  entityProperty = applyRuleValue(entityProperty, rules, oldPropertyValueName);
-  entityProperty = applyRuleDisable(entityProperty, rules);
-  entityProperty = applyRuleEnable(entityProperty, rules);
-  messages = applyRuleMessage(entityProperty, rules, messages);
+  property = applyRuleValue(property, rules, oldPropertyValue);
+  property = applyRuleDisable(property, rules);
+  property = applyRuleEnable(property, rules);
+  property = applyRuleActions(property, rules);
+  messages = applyRuleMessage(property, rules, messages);
 
-  [entityProperty, messages] = 
-    applyRuleIfBlock(action, entityProperty, rules, messages, 
-      oldPropertyValueName, newPropertyValueName, recursion);
+  [property, messages] = 
+    applyRuleIfBlock(action, property, rules, messages, 
+      oldPropertyValue, newPropertyValue, recursion);
 
-  return [entityProperty, messages];
+  return [property, messages];
 }
 
 function applyRuleValue(property, rules, oldPropertyValue) {
@@ -149,6 +150,14 @@ function applyRuleEnable(property, rules) {
   return property;
 }
 
+function applyRuleActions(property, rules) {
+  if (constants.KEY_ACTIONS in rules) {
+    let actionsToAccept = rules[constants.KEY_ACTIONS];
+    property.actions = actionsToAccept;
+  }
+  return property;
+}
+
 function applyRuleMessage(property, rules, messageQueue) {
 
   if (constants.KEY_MESSAGE in rules) {
@@ -169,7 +178,8 @@ function applyRuleIfBlock(action, entityProperty, rules, messages,
 
   for (let trigger of Object.keys(rules)) {
     let words = trigger.split(' ');
-    if (words.length > 1 && words[0] == constants.KEY_IF) {
+    if (words.length > 1 && 
+        words[0] == constants.KEY_IF) {
 
       let childRules = rules[trigger];
       let ifActionMessages = [];
@@ -198,8 +208,9 @@ function applyRuleIfAction(action,
 
   // if action X
   if (words.length == 3 && 
-    words[1] == constants.KEY_ACTION && 
-    words[2] == action.name) {
+      words[0] == constants.KEY_IF &&
+      words[1] == constants.KEY_ACTION && 
+      words[2] == action.name) {
         
     [entityProperty, messages] = 
       applyRules(action, oldPropertyValueName, newPropertyValueName,
@@ -217,8 +228,9 @@ function applyRuleIfValue(action,
 
   // if property X is Y
   if (words.length == 5 &&
-    words[1] == constants.KEY_PROPERTY &&
-    words[3] == constants.KEY_IS) {
+      words[0] == constants.KEY_IF &&
+      words[1] == constants.KEY_PROPERTY &&
+      words[3] == constants.KEY_IS) {
 
     let targetProperty = words[2];
     let targetPropertyValue = words[4];

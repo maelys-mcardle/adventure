@@ -1,12 +1,8 @@
 door:
   value: closed
-  actions: [open, close, describe]
+  actions: [open, describe]
   rules:
-    open -> closed: 
-      if action open:
-        message: doorAlreadyOpen
-        value: open
-    closed -> open:
-      if action close:
-        message: doorAlreadyClosed
-        value: closed
+    open:
+      actions: [close, describe]
+    closed:
+      actions: [open, describe]
