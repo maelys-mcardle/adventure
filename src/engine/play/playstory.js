@@ -12,6 +12,14 @@ module.exports = {
   listInputExamples: listInputExamples
 }
 
+/**
+ * Processes raw user input, updates the story accordingly, and returns
+ * the text to output back to the user.
+ * 
+ * @param {Story} story The story object.
+ * @param {string} input The raw user input.
+ * @returns {[Story, string[]]} The updated story and text output.
+ */
 function evaluateInput(story, input) {
   let output = [strings.INPUT_UNRECOGNIZED];
   let inputMatch = matchInput.match(story, input);
@@ -34,11 +42,21 @@ function evaluateInput(story, input) {
   return [story, output];
 }
 
+/**
+ * Gets the text for the story in its current state.
+ * @param {Story} story The story object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function describeCurrentState(story) {
   let output = getText.getAll(story);
   return output;
 }
 
+/**
+ * Gets a list of example inputs for the user.
+ * @param {Story} story The story object.
+ * @returns {string[]} The examples of commands.
+ */
 function listInputExamples(story) {
   let output = eligibleInputs.listExamples(story);
   return output;

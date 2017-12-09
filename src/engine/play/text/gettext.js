@@ -10,6 +10,11 @@ module.exports = {
   getProperty: getPropertyText,
 }
 
+/**
+ * Gets the text for the story in its current state.
+ * @param {Story} story The story object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getStoryText(story) {
 
   if (story.rootEntity == null) {
@@ -21,6 +26,12 @@ function getStoryText(story) {
   return text;
 }
 
+/**
+ * Gets only the text that changed for the story.
+ * @param {Story} oldStory The story object.
+ * @param {Story} newStory The story object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getStoryDeltaText(oldStory, newStory) {
 
   let oldEntity = oldStory.rootEntity;
@@ -30,6 +41,13 @@ function getStoryDeltaText(oldStory, newStory) {
   return text;
 }
 
+/**
+ * Gets only the text that changed for the entity.
+ * @param {Entity} oldEntity The entity object.
+ * @param {Entity} newEntity The entity object.
+ * @param {number} recursion Tracks recursive invocations of function.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getEntityDeltaText(oldEntity, newEntity, recursion) {
   let text = [];
   
@@ -71,18 +89,41 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   return text;
 }
 
+/**
+ * Gets only the text for the transition from one value to another.
+ * @param {Property} property The property object.
+ * @param {string} fromValue The entity object.
+ * @param {string} toValue The entity object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getTransitionText(property, fromValue, toValue) {
   return property.values[fromValue].relationships[toValue].text;
 }
 
+/**
+ * Gets all the text for the entity in its current state.
+ * @param {Entity} entity The entity object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getEntityText(entity) {
   return getEntityTextRecursive(entity, 0);
 }
 
+/**
+ * Gets all the text for the property in its current state.
+ * @param {Property} property The property object.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getPropertyText(property) {
   return getPropertyTextRecursive(property, 0);
 }
 
+/**
+ * Gets all the text for the entity in its current state.
+ * @param {Entity} entity The entity object.
+ * @param {number} recursion Tracks recursive invocations of function.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
@@ -100,6 +141,12 @@ function getEntityTextRecursive(entity, recursion) {
   return text;
 }
 
+/**
+ * Gets all the text for the property in its current state.
+ * @param {Property} property The property object.
+ * @param {number} recursion Tracks recursive invocations of function.
+ * @returns {string[]} The paragraphs of text.
+ */
 function getPropertyTextRecursive(property, recursion) {
 
   let value = property.currentValue;

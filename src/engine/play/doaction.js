@@ -5,26 +5,38 @@ const getEntity = require('./entities/getentity');
 const getText = require('./text/gettext');
 
 module.exports = {
-  do: applyActionToProperty,
+  do: applyAction,
 }
 
-function applyActionToProperty(story, actionName, targetProperty, value) {
+/**
+ * Applies an action to a specified target.
+ * @param {Story} story The story object.
+ * @param {string} actionName The action performed.
+ * @param {Target} target The entity and property to perform the action on.
+ * @param {string} value The value to change the property to.
+ * @returns {[Story, string[]]} The updated story and text output.
+ */
+function applyAction(story, actionName, target, value) {
 
   let action = story.actions[actionName];
-  let description = [];
+  let text = [];
 
   if (action.changesPropertyValue) { 
-    return changeValue(story, action, targetProperty, value);
+    [story, text] = changeValue(story, action, target, value);
+  } else if (action.describesEntityProperty) {
+    text = describeProperty(story, target);
   }
 
-  else if (action.describesEntityProperty) {
-    description = describe(story, targetProperty);
-  }
-
-  return [story, description];
+  return [story, text];
 }
 
-function describe(story, target) {
+/**
+ * Gets all the text for the property in its current state.
+ * @param {Story} story The story object.
+ * @param {Target} target The entity and property to get the text of.
+ * @returns {string[]} The paragraphs of text.
+ */
+function describeProperty(story, target) {
 
   let paragraphs = [];
 
@@ -41,12 +53,21 @@ function describe(story, target) {
   return paragraphs;
 }
 
+/**
+ * Changes the value of the target using the action.
+ * @param {Story} story The story object.
+ * @param {string} actionName The action performed.
+ * @param {Target} target The entity and property to perform the action on.
+ * @param {string} value The value to change the property to.
+ * @returns {[Story, string[]]} The updated story and text output.
+ */
 function changeValue(initialStory, action, target, value) {
 
   let transitionMessages = [];
   let newValueMessages = [];
   
-  // Copy story.
+  // Copy story. This is so changes to the initialStory is preserved,
+  // and doesn't get modified.
   let updatedStory = createCopy(initialStory);
 
   // Transition to new value:
@@ -74,6 +95,11 @@ function changeValue(initialStory, action, target, value) {
   return [updatedStory, output];
 }
 
+/**
+ * Deep-copies a Javascript object.
+ * @param {Object} object The object to copy.
+ * @returns {Object} The copy of the object.
+ */
 function createCopy(object) {
   return JSON.parse(JSON.stringify(object));
 }

@@ -4,12 +4,16 @@ class EligibleInput {
   constructor() {
     this.text = null;
     this.action = null;
-    this.target = {
-      entity: null,
-      path: null,
-      property: null,
-    };
+    this.target = new Target();
     this.value = null;
+  }
+}
+
+class Target {
+  constructor() {
+    this.entity = null;
+    this.path = null;
+    this.property = null;
   }
 }
 
