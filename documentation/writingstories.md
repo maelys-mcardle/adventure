@@ -2,19 +2,40 @@
 
 ## Basic Concepts
 
-### States
+### State Machines
+
+Stories in Adventure are nested state machines.
+
+Things in the story are in a given state - a door is open. Those things
+can change to a different state - the door can become closed. 
+
+Things in Adventure are called `entities`. Everything is an entity. The
+door is an entity. The house that contains the door is an entity. The player
+can be an entity.
+
+The mechanism to go from one state to another - from the door being open to
+the door being closed - are called `actions`. 
+
+Stories are made up of things, those things can have multiple states, and
+actions are what make things go from one state to another. That is the 
+fundamental mechanism of this game engine.
 
 ### Actions & Entities
+
+### Everything is an Entity
+
+There are two
+
+### Everything has a State
+
+
 
 ## Writing a Story
 
 ### Story Project Structure
 
-When writing stories there is a specific directory structure to be followed,
-otherwise the game engine won't understand how to parse it. 
-
-Each story project must have two directories: `actions` and 
-`entities`. There also needs to be a `config.yml` file:
+Stories are stored in a directory. This directory must have a `config.yml` file,
+as well as two sub-directories: `actions` and `entities`.
 
 ```
   story/
@@ -23,8 +44,8 @@ Each story project must have two directories: `actions` and
     |- config.yml
 ```
 
-Actual stories will have many more files and directories. Take this sample
-project:
+As stories become more complex, these directories will become populated with
+files and subdirectories:
 
 ```
   story/
