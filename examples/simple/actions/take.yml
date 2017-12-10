@@ -1,4 +1,4 @@
-do: reparent
+do: transfer
 templates:
   - take the @entity
   - take @entity
