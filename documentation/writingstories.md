@@ -14,8 +14,9 @@ called a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 States, such as "open" and "closed" for the door are called `values` in 
 Adventure. Everything in Adventure is an entity. The world that the player
 moves around in is an entity, where each state is a location that the player
-can be in. The world contains entities, called `child entities`, such as doors 
-and non-playable characters. Each of these have their own set of states.
+can be in. Any entity in Adventure can contain more entities. The world can 
+contain more entities such as doors and non-playable characters. All entities
+have their own set of states.
 
 Stories in Adventure are, in short, nested state machines.
 
@@ -46,13 +47,17 @@ lock property would have an action to lock and another to unlock.
                |                    |
                |                    ----> unlocked
                |
+               ----->  engine  ---------> on
+                                    |
+                                    ----> off
+
+  door   ----------->  status  ---------> open
+               |                    |
+               |                    ----> closed
+               |
                ----->  damage  ---------> damaged
                                     |
                                     ----> undamaged
-
-  door   ----------->  status  ---------> open
-                                    |
-                                    ----> closed
 ```
 
 ## Writing a Story
