@@ -74,17 +74,14 @@ function changeValue(initialStory, action, target, value) {
   //  - set new value
   //  - apply rules for transition
   [updatedStory, transitionMessages] = 
-    executeRules.execute(
-      updatedStory, action, target.entity, target.path,
-      target.property, value, true);
+    executeRules.execute(updatedStory, action, target, value, true);
 
   // Print the current delta.
   let paragraphs = getText.getDelta(initialStory, updatedStory);
 
   // Apply rules for when in new value.
   [updatedStory, newValueMessages] = executeRules.execute(
-    updatedStory, action, target.entity, target.path,
-    target.property, null, false);
+    updatedStory, action, target, null, false);
 
   // Concatenate the output.
   let output = 

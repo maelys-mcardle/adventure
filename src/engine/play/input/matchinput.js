@@ -8,7 +8,12 @@ module.exports = {
   match: matchInput
 }
 
-/** Matches user input to an action. */
+/**
+ * Matches user input to an action.
+ * @param {Story} story The story object.
+ * @param {string} input The raw user input.
+ * @returns {MatchingInput} Information about any match.
+ */
 function matchInput(story, input) {
 
   let matchingInput = new MatchingInput();

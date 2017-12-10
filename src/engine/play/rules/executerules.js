@@ -9,55 +9,53 @@ module.exports = {
   execute: executeRules,
 }
 
-function executeRules(story, action, targetEntityName, 
-  targetEntityPath, targetPropertyName, newPropertyValueName, isTransition) {
+function executeRules(story, action, target, newPropertyValue, isTransition) {
 
   let messages = [];
   
   // Get entity property.
   let entityProperty = 
-    getEntity.findProperty(story, targetEntityName, 
-      targetEntityPath, targetPropertyName);
+    getEntity.findProperty(story, target.entity, target.path, target.property);
   
   if (entityProperty == null) {
     console.log(errors.ENTITY_PROPERTY_NOT_FOUND(
-      targetEntityName, targetPropertyName));
+      target.entity, target.property));
     return [story, messages];
   }
 
   // Apply rules to property.
   if (isTransition) {
     [entityProperty, messages] = 
-      executeTransitionRules(action, entityProperty, newPropertyValueName);
+      executeTransitionRules(action, entityProperty, newPropertyValue);
   } else {
     [entityProperty, messages] = 
       executePropertyRules(action, entityProperty);
   }
 
   // Update entity.
-  story = updateEntity.updateProperty(story, targetEntityName, 
-    targetEntityPath, targetPropertyName, entityProperty);
+  story = updateEntity.updateProperty(story, target.entity, 
+    target.path, target.property, entityProperty);
 
   return [story, messages];
 }
 
-function executeTransitionRules(action, entityProperty, newPropertyValueName) {
+function executeTransitionRules(action, entityProperty, newPropertyValue) {
   
   let messages = [];
   
   // Set property value.
-  let oldPropertyValueName = entityProperty.currentValue;
+  let oldPropertyValue = entityProperty.currentValue;
 
   // Set property.
-  entityProperty.currentValue = newPropertyValueName;
+  entityProperty.currentValue = newPropertyValue;
   
   // Execute transition rules.
   let propertyTransitionRules = 
-    entityProperty.values[oldPropertyValueName].
-      relationships[newPropertyValueName].rules;
+    entityProperty.values[oldPropertyValue].
+      relationships[newPropertyValue].rules;
 
   [entityProperty, messages] = 
-    applyRules(action, oldPropertyValueName, newPropertyValueName,
+    applyRules(action, oldPropertyValue, newPropertyValue,
       entityProperty, propertyTransitionRules, 0);
 
   return [entityProperty, messages];
