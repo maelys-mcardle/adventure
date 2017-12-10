@@ -31,7 +31,7 @@ function parseActions(rawActions, story) {
       if (constants.KEY_TRANSITION == config[constants.KEY_DO]) {
         action.changesPropertyValue = true;
       }
-      if (constants.KEY_DESCRIBE == config[constants.KEY_DO]) {
+      if (constants.KEY_DESCRIPTION == config[constants.KEY_DO]) {
         action.describesEntityProperty = true;
       }
     }

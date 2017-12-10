@@ -1,4 +1,4 @@
-do: describe
+do: description
 templates:
   - describe @entity
   - describe at @entity

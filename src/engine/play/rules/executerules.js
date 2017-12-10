@@ -204,11 +204,10 @@ function applyRuleIfAction(action,
 
   let messages = [];
 
-  // if action X
-  if (words.length == 3 && 
+  // To handle "if {action}:"
+  if (words.length == 2 && 
       words[0] == constants.KEY_IF &&
-      words[1] == constants.KEY_ACTION && 
-      words[2] == action.name) {
+      words[1] == action.name) {
         
     [entityProperty, messages] = 
       applyRules(action, oldPropertyValueName, newPropertyValueName,
@@ -224,14 +223,13 @@ function applyRuleIfValue(action,
 
   let messages = [];
 
-  // if property X is Y
-  if (words.length == 5 &&
+  // To handle "if {property} is {value}:"
+  if (words.length == 4 &&
       words[0] == constants.KEY_IF &&
-      words[1] == constants.KEY_PROPERTY &&
-      words[3] == constants.KEY_IS) {
+      words[2] == constants.KEY_IS) {
 
-    let targetProperty = words[2];
-    let targetPropertyValue = words[4];
+    let targetProperty = words[1];
+    let targetPropertyValue = words[3];
 
     // Look at current property value, but also child entities of either
     // property value.
