@@ -38,6 +38,23 @@ As such, actions apply to individual properties. Going back to the car example,
 the engine property would have an action to turn the car on/off, whereas the
 lock property would have an action to lock and another to unlock.
 
+```
+  ENTITIES           PROPERTIES           VALUES
+  --------           ----------           ------
+
+  vehicle ---------->   lock   ---------> locked
+               |                    |
+               |                    ----> unlocked
+               |
+               ----->  damage  ---------> damaged
+                                    |
+                                    ----> undamaged
+
+  door   ----------->  status  ---------> open
+                                    |
+                                    ----> closed
+```
+
 ## Writing a Story
 
 ### Story Project Structure
