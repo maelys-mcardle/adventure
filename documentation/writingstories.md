@@ -2,42 +2,23 @@
 
 ## Basic Concepts
 
-### Entities, Values, & Actions
+### Entities, Properties and Values
 
-Stories in Adventure are made up of things, called `entities`, and those
-things have a state. A door can be in the open state, or a closed state. 
-Entities can go between states in Adventure using `actions`. So the action
-of closing a door, is what gets the door from the open state, to the closed
-state. The entirety of all these states and being able to go between them is
-called a [state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
+Stories in Adventure are made up of things, and in Adventure things are
+called `entities`. Everything is an entity in Adventure. The world the
+protagonist navigates is an entity. The door the protagonist might interact with
+is an entity. The protagonist's inventory is an entity. Entities can contain 
+more entities: the world (an entity) can contain a door (another entity).
 
-States, such as "open" and "closed" for the door are called `values` in 
-Adventure. Everything in Adventure is an entity. The world that the player
-moves around in is an entity, where each state is a location that the player
-can be in. Any entity in Adventure can contain more entities. The world can 
-contain more entities such as doors and non-playable characters. All entities
-have their own set of states.
+Entities can have multiple `properties`. These are bits of information about
+the entity. For instance, for a car, it might have one property that keeps 
+track of whether the engine is on or off, and another to keep track of whether
+its doors are locked or unlocked. These individual states (on or off, locked
+or unlocked) are called `values` in Adventure.
 
-Stories in Adventure are, in short, nested state machines.
-
-### Actions & Properties
-
-Often, things have more than one set of states. For instance, an entity like
-a vehicle can have states for having the engine on or off, but also being
-unlocked or locked. 
-
-To account for this, entities in Adventure have `properties` with these 
-properties being individual state machines. The car in this case has two 
-properties: one for the engine (with values on/off) and one for the lock 
-(with values locked/unlocked).
-
-All entities in Adventure have at least one property. The door has at one
-property to track whether it is open, with two values: open/close. It could
-have more, perhaps to track whether it is damaged/undamaged.
-
-As such, actions apply to individual properties. Going back to the car example,
-the engine property would have an action to turn the car on/off, whereas the
-lock property would have an action to lock and another to unlock.
+As another example, a door entity might have two properties: one to track
+whether the door is open/closed, and the other to track whether it is
+damaged/undamaged. 
 
 ```
   ENTITIES           PROPERTIES           VALUES
@@ -60,6 +41,33 @@ lock property would have an action to lock and another to unlock.
                                     ----> undamaged
 ```
 
+### Actions
+
+The stories in Adventure are made up of things. But for the story to progress,
+the protagonist has to be able to interact with these worlds. To navigate the 
+world, interact with objects, etc.
+
+The protagonist interacts with the world by using `actions`. Actions work
+by changing the values for the properties of entities. Take the `engine`
+property for the `vehicle` entity. It has two values: `on` and `off`.
+
+```
+  -- engine ---------------------------------------------
+  |                                                     |
+  |     |=====| ---------- start ----------> |====|     |
+  |     | OFF |                              | ON |     |
+  |     |=====| <---------- stop ----------- |====|     |
+  |                                                     |
+  -------------------------------------------------------
+```
+
+Actions can change the value for the property. If the value is `off`, the
+`start` action on the `engine` property can set its value to `on`. Likewise,
+the `stop` action can make the engine's value go from `on` to `off`.
+
+Examples so far have had two values for each property, but there can be an
+unlimited number of values for an unlimited number of properties. 
+
 ## Writing a Story
 
 ### Story Project Structure
@@ -75,7 +83,7 @@ as well as two sub-directories: `actions` and `entities`.
 ```
 
 As stories become more complex, these directories will become populated with
-files and subdirectories:
+more files and subdirectories and might look something like this:
 
 ```
   story/
@@ -108,5 +116,17 @@ files and subdirectories:
     |- config.yml
 ```
 
-### Root Config
+### First File
+
+The most important file for Adventure is the `config.yml` file that's in the
+main story directory. The file will contain something like the following:
+
+```yml
+title: Simple Story
+author: Maëlys McArdle
+description: A story to demonstrate the game engine.
+entity: world
+```
+
+
 

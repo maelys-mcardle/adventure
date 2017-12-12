@@ -7,7 +7,7 @@ to be as straight-forward as possible, as to reduce learning curves.
 
 ## Installing adventure
 
-Make sure you have NodeJS installed. Then run:
+Make sure you have [NodeJS](https://nodejs.org/) installed. Then run:
 
 `npm install -g https://github.com/maelys-mcardle/adventure`
 
