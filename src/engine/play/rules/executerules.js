@@ -279,5 +279,5 @@ function isPropertyValue(property, propertyPrefix, targetProperty, targetPropert
 }
 
 function getPropertyPrefix(entity) {
-  return entity.path + '.' + entity.name + '.';
+  return entity.path + constants.PATH_SEP + entity.name + constants.PATH_SEP;
 }

@@ -24,7 +24,7 @@ class Story {
     let key = 
       action.path === '' ? 
         action.name: 
-        action.path + '.' + action.name;
+        action.path + constants.PATH_SEP + action.name;
     this.actions[key] = action;
   }
 }

@@ -23,15 +23,15 @@ function parseEntities(rawStoryEntities, story) {
     // Translate the config from a representation created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
-    for (let rawEntityProperties of rawEntity.properties) {
+    for (let rawEntityProperties of rawEntity[constants.TYPE_DOT]) {
       entity = parseRawEntityProperties(entity, rawEntityProperties);
     }
 
-    for (let rawEntityText of rawEntity.text) {
+    for (let rawEntityText of rawEntity[constants.TYPE_MARKDOWN]) {
       entity = parseRawEntityText(entity, rawEntityText);
     }
 
-    for (let rawEntityConfig of rawEntity.config) {
+    for (let rawEntityConfig of rawEntity[constants.TYPE_YAML]) {
       entity = parseRawEntityConfig(entity, story.actions, rawEntityConfig);
     }
 

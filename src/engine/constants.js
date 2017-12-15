@@ -12,10 +12,10 @@ module.exports = {
   // Directories.
   DIRECTORY_ACTIONS: 'actions',
   DIRECTORY_ENTITIES: 'entities',
-  DIRECTORY_CONFIG: '',
+  DIRECTORY_ROOT: '',
   
   // Root config file name.
-  FILE_NAME_CONFIG: 'config',
+  FILE_NAME_STORY: 'story',
 
   // Keys.
   KEY_ACTIONS: 'actions',
@@ -38,8 +38,16 @@ module.exports = {
   KEY_TRANSITION: 'transition',
   KEY_VALUE: 'value',
 
+  // File types.
+  TYPE_DOT: 'dot',
+  TYPE_MARKDOWN: 'markdown',
+  TYPE_YAML: 'yaml',
+
   // Markdown parser strings.
   MD_MARKDOWN: 'markdown',
   MD_HEADER: 'header',
   MD_PARAGRAPH: 'para',
+
+  // Separator for paths.
+  PATH_SEP: '.'
 }

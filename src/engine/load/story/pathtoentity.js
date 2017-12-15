@@ -59,7 +59,7 @@ function updateEntityPlaceholders(entities, entity, recursion) {
           //  parentPath.parentName.parentProperty.parentPropertyValue.childPath
           let childPath = 
             [entity.path, entity.name, propertyName, propertyValueName, 
-              childEntity.path].filter(s => s != '').join('.');
+              childEntity.path].filter(s => s != '').join(constants.PATH_SEP);
 
           childEntity.path = childPath;
           childEntity = updateEntityPlaceholders(entities, 
@@ -77,12 +77,12 @@ function updateEntityPlaceholders(entities, entity, recursion) {
 }
 
 function getEntityFromPath(entities, path) {
-  let splitPath = path.split('.');
+  let splitPath = path.split(constants.PATH_SEP);
 
   if (splitPath.length > 0 ) {
    
     let searchName = splitPath.pop();
-    let searchPath = splitPath.join('.');
+    let searchPath = splitPath.join(constants.PATH_SEP);
 
     for (let entity of entities) {
       if (searchName == entity.name &&

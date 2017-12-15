@@ -1,12 +1,14 @@
 'use strict';
 
+const constants = require('../../constants');
+
 class RawEntity {
   constructor() {
     this.name;
     this.path;
-    this.properties = [];
-    this.text = [];
-    this.config = [];
+    this[constants.TYPE_DOT] = [];
+    this[constants.TYPE_MARKDOWN] = [];
+    this[constants.TYPE_YAML] = [];
   }
 }
 

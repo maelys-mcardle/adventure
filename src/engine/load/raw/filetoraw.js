@@ -28,8 +28,8 @@ function parseFiles(storyFiles) {
           storyEntities = parseEntityFile(storyEntities, file);
           break;
 
-        case constants.DIRECTORY_CONFIG:
-          if (file.name === constants.FILE_NAME_CONFIG && file.isYaml()) {
+        case constants.DIRECTORY_ROOT:
+          if (file.name === constants.FILE_NAME_STORY && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
             break;
           }
@@ -61,17 +61,17 @@ function parseStoryConfigFile(file) {
 
 function parseEntityFile(entities, file) {
   
-  if (file.isYaml() && file.name === constants.FILE_NAME_CONFIG) {
+  if (file.isYaml()) {
     return parseEntityFileWithFunction(entities, file, 
-      yaml.load, 'config');
+      yaml.load, constants.TYPE_YAML);
 
   } else if (file.isMarkdown()) {
     return parseEntityFileWithFunction(entities, file, 
-      markdown.parse, 'text');
+      markdown.parse, constants.TYPE_MARKDOWN);
 
   } else if (file.isDot()) {
     return parseEntityFileWithFunction(entities, file, 
-      dot.readMany, 'properties');
+      dot.readMany, constants.TYPE_DOT);
   }
 
   return entities;
@@ -94,11 +94,11 @@ function parseEntityFileWithFunction(entities, file, parseFunction, type) {
 }
 
 function entityIdentifier(file) {
-  return entityPath(file) + '.' + entityName(file);
+  return entityPath(file) + constants.PATH_SEP + entityName(file);
 }
 
 function entityPath(file) {
-  return file.directory.slice(1, -1).join('.');
+  return file.directory.slice(1, -1).join(constants.PATH_SEP);
 }
 
 function entityName(file) {
@@ -106,11 +106,11 @@ function entityName(file) {
 }
 
 function actionIdentifier(file) {
-  return actionPath(file) + '.' + actionName(file);
+  return actionPath(file) + constants.PATH_SEP + actionName(file);
 }
 
 function actionPath(file) {
-  return file.directory.slice(1).join('.');
+  return file.directory.slice(1).join(constants.PATH_SEP);
 }
 
 function actionName(file) {
