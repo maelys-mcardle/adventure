@@ -22,23 +22,23 @@ damaged/undamaged.
 
 ```
   ENTITIES           PROPERTIES           VALUES
-  --------           ----------           ------
+  ========           ==========           ======
 
-  vehicle ---------->   lock   ---------> locked
+  vehicle -----------   lock   ---------- locked
                |                    |
-               |                    ----> unlocked
+               |                    ----- unlocked
                |
-               ----->  engine  ---------> on
+               ------  engine  ---------- on
                                     |
-                                    ----> off
+                                    ----- off
 
-  door   ----------->  status  ---------> open
+  door   ------------  status  ---------- open
                |                    |
-               |                    ----> closed
+               |                    ----- closed
                |
-               ----->  damage  ---------> damaged
+               ------  damage  ---------- damaged
                                     |
-                                    ----> undamaged
+                                    ----- undamaged
 ```
 
 ### Actions
@@ -68,18 +68,18 @@ the `stop` action can make the engine's value go from `on` to `off`.
 Examples so far have had two values for each property, but there can be an
 unlimited number of values for an unlimited number of properties. 
 
-## Writing a Story
+## Writing Your First Story
 
-### Story Project Structure
+### Create a Directory
 
-Stories are stored in a directory. This directory must have a `config.yml` file,
+Stories are stored in a directory. This directory must have a `story.yml` file,
 as well as two sub-directories: `actions` and `entities`.
 
 ```
   story/
     |- actions/
     |- entities/
-    |- config.yml
+    |- story.yml
 ```
 
 As stories become more complex, these directories will become populated with
@@ -94,18 +94,18 @@ more files and subdirectories and might look something like this:
     |- entities/
     |     |- people/
     |     |    |- jay/
-    |     |    |   |- config.yml
-    |     |    |   |- state.dot
+    |     |    |   |- entity.yml
     |     |    |   |- text.md
+    |     |    |   |- values.dot
     |     |    |  
     |     |    |- joy/
     |     |        |- ...
     |     |
     |     |- world/
     |          |- house/
-    |          |   |- config.yml
-    |          |   |- state.dot
+    |          |   |- entity.yml
     |          |   |- text.md
+    |          |   |- values.dot
     |          | 
     |          |- street/
     |          |   |- ...
@@ -113,12 +113,16 @@ more files and subdirectories and might look something like this:
     |          |- mall/
     |              |- ...
     |
-    |- config.yml
+    |- story.yml
 ```
 
-### First File
+So go ahead and create a directory for your story. Then go into that
+directory, and create an empty `story.yml` file as well as two other
+directories `actions` and `entities`.
 
-The most important file for Adventure is the `config.yml` file that's in the
+### Edit the story.yml File
+
+The most important file for Adventure is the `story.yml` file that's in the
 main story directory. The file will contain something like the following:
 
 ```yml
