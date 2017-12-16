@@ -1,6 +1,7 @@
 'use strict';
 
 const placeholders = require('./placeholders');
+const {Trigger} = require('./triggerclass');
 const constants = require('../../constants');
 const errors = require('../../errors');
 
@@ -146,7 +147,7 @@ function loadConfigDisabled(property, config) {
 function loadConfigRules(property, config) {
   if (constants.KEY_RULES in config) {
     for (let rawTrigger of Object.keys(config[constants.KEY_RULES])) {
-      let trigger = parseTrigger(rawTrigger);
+      let trigger = new Trigger(rawTrigger);
       let triggerRules = config.rules[rawTrigger];
 
       if (!trigger.isTransition) {
@@ -237,7 +238,7 @@ function addTextToProperty(entity, propertyName, rawTrigger, text) {
   //  left -- right (isTransition, isBidirectional)
   //  left -> right (isTransition, !isBidirectional)
   //  left          (!isTransition)
-  let trigger = parseTrigger(rawTrigger);
+  let trigger = new Trigger(rawTrigger);
 
   if (!trigger.isTransition) {
 
@@ -288,44 +289,3 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
 
   return property;
 }
-
-function parseTrigger(trigger) {
-  let left;
-  let right;
-  let isTransition = false;
-  let isBidirectional = false;
-  let readableName;
-
-  // Triggers can be the following format:
-  //    left -- right (from left to right, right to left)
-  //    left -> right (from left to right)
-  //    left (for only left)
-  //    left: readableName
-
-  if (trigger.includes('--')) {
-    [left, right] = trigger.split('--').map(s => s.trim());
-    isBidirectional = true;
-    isTransition = true;
-  } else if (trigger.includes('->')) {
-    [left, right] = trigger.split('->').map(s => s.trim());
-    isBidirectional = false;
-    isTransition = true;
-  } else {
-    left = trigger;
-  }
-
-  if (left.includes(':')) {
-    [left, readableName] = left.split(':').map(s => s.trim());
-  } else {
-    readableName = left;
-  }
-
-  return {
-    left: left,
-    right: right,
-    isTransition: isTransition,
-    isBidirectional: isBidirectional,
-    readableName: readableName
-  }
-}
-
