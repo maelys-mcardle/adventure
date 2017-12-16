@@ -32,7 +32,7 @@ module.exports = {
   KEY_LAST: '.last',
   KEY_MESSAGE: 'message',
   KEY_RULES: 'rules',
-  KEY_SYNONYM: 'synonym',
+  KEY_SYNONYMS: 'synonyms',
   KEY_TEMPLATES: 'templates',
   KEY_TITLE: 'title',
   KEY_TRANSITION: 'transition',

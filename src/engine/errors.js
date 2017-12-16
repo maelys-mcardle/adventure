@@ -8,6 +8,8 @@ module.exports = {
   CHILD_ENTITY_NOT_FOUND: 
     (path) => `Child entity ${path} could not be found.`,
 
+  DO_ACTION_INVALID: (action) => `Do action ${action} is invalid.`,
+
   DISABLED_VALUE_DOES_NOT_EXIST:
     (value, property) => 
       `Disabled value ${value} for ${property} does not exist.`,
