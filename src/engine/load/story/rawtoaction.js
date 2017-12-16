@@ -113,9 +113,9 @@ function parseSynonyms(action, synonyms) {
   let newTemplates = [];
 
   for (let word of Object.keys(synonyms)) {
-    for (let synonym of synonyms[word]) {
+    for (let synonymForWord of synonyms[word]) {
       newTemplates = newTemplates.concat(
-        parseSingleSynonym(word, synonym, action.templates));
+        parseSingleSynonym(word, synonymForWord, action.templates));
     }
   }
 
@@ -127,17 +127,17 @@ function parseSynonyms(action, synonyms) {
 /**
  * Parses the templates for an action.
  * @param {string} word A word.
- * @param {string} synonym A synonym for the word.
+ * @param {string} synonymForWord A synonym for the word.
  * @param {string[]} templates The templates with the original word.
  * @returns {string[]} A new list of templates with synonyms.
  */
-function parseSingleSynonym(word, synonym, templates) {
+function parseSingleSynonym(word, synonymForWord, templates) {
 
   let newTemplates = [];
 
   for (let template of templates) {
     if (template.includes(word)) {
-      newTemplates.push(template.replace(word, synonym));
+      newTemplates.push(template.replace(word, synonymForWord));
     } else {
       console.log(errors.WORD_NOT_IN_TEMPLATE(word, template));
     }

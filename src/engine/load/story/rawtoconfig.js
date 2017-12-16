@@ -6,6 +6,12 @@ module.exports = {
   parse: parseConfig
 };
 
+/**
+ * Parses the config in the intermediary format and updates the story. 
+ * @param {Object} rawConfig The config in the intermediary format.
+ * @param {Story} story The story object.
+ * @returns {Story} The updated story.
+ */
 function parseConfig(rawConfig, story) {
 
   if (constants.KEY_TITLE in rawConfig) {

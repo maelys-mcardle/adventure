@@ -9,6 +9,11 @@ module.exports = {
   parse: rawToStory
 };
 
+/**
+ * Parses the story in the intermediary format and creates the story object.
+ * @param {RawStory} rawStory The story in the intermediary format.
+ * @returns {Story} The story object.
+ */
 function rawToStory(rawStory) {
   let story = new Story();
   story = rawToConfig.parse(rawStory.config, story);

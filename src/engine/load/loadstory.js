@@ -9,6 +9,11 @@ module.exports = {
   load: loadStory
 };
 
+/**
+ * Loads a story in a directory and creates its story object.
+ * @param {string} storyDirectory The file path to the story directory.
+ * @returns {Story} The story object.
+ */
 function loadStory(storyDirectory) {
 
   // Load all the files in the specified directory in memory.
