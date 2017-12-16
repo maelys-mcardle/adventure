@@ -92,6 +92,11 @@ and the values are "dock", "beach", "cabin" and "road".
   -------------------------------------------------------
 ```
 
+What the diagram above means is that the protagonist can walk from the dock
+to the beach, from the beach to the road, from the beach to the cabin, and
+from the cabin to the road. The protagonist cannot walk from the road to the
+dock. 
+
 ## Writing Your First Story
 
 ### Prerequesites
