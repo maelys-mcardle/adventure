@@ -1,8 +1,8 @@
 'use strict';
 
 const path = require('path');
-const constants = require('../../constants');
-const errors = require('../../errors');
+const constants = require('../../../constants');
+const errors = require('../../../errors');
 
 module.exports = {
   replacePlaceholders: replacePlaceholders,

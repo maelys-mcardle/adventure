@@ -1,8 +1,8 @@
 'use strict';
 
-const rawToConfig = require('./rawtoconfig');
-const rawToEntity = require('./rawtoentity');
-const rawToAction = require('./rawtoaction');
+const rawToConfig = require('./config/rawtoconfig');
+const rawToEntity = require('./entity/rawtoentity');
+const rawToAction = require('./action/rawtoaction');
 const Story = require('./storyclass');
 
 module.exports = {

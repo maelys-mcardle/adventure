@@ -2,8 +2,8 @@
 
 const placeholders = require('./placeholders');
 const {Trigger} = require('./triggerclass');
-const constants = require('../../constants');
-const errors = require('../../errors');
+const constants = require('../../../constants');
+const errors = require('../../../errors');
 
 module.exports = {
   parse: parseEntities

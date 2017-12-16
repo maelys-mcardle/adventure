@@ -4,8 +4,8 @@ module.exports = {
   parse: parseActions
 };
 
-const constants = require('../../constants');
-const errors = require('../../errors');
+const constants = require('../../../constants');
+const errors = require('../../../errors');
 
 /**
  * Parses the actions in the intermediary format and updates the story. 
