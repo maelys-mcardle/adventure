@@ -1,6 +1,7 @@
 'use strict';
 
 class Trigger {
+  
   constructor(trigger) {
     this.left = '';
     this.right = '';
@@ -10,6 +11,11 @@ class Trigger {
     this.parseTrigger(trigger);
   }
 
+  /**
+   * Populates the attributes based off of the trigger.
+   * @param {string} trigger The unparsed trigger.
+   * @returns {undefined}
+   */
   parseTrigger(trigger) {
     // Triggers can be the following format:
     //    left -- right (from left to right, right to left)
