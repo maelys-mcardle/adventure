@@ -21,16 +21,15 @@ class RawAction {
 }
 
 class RawStory {
-  constructor(config, actions, entities) {
-    this.name;
-    this.path;
+  constructor(foundStory, config, actions, entities) {
+    this.foundStory = foundStory;
     this.config = config;
     this.actions = actions;
     this.entities = entities;
   }
 }
 
-class RawParsedFile {
+class RawFile {
   constructor(name, contents) {
     this.name = name;
     this.contents = contents;
@@ -40,4 +39,4 @@ class RawParsedFile {
 exports.RawEntity = RawEntity;
 exports.RawAction = RawAction;
 exports.RawStory = RawStory;
-exports.RawParsedFile = RawParsedFile;
+exports.RawFile = RawFile;

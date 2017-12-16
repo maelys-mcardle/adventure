@@ -4,7 +4,7 @@ const yaml = require('js-yaml');
 const markdown = require('markdown').markdown;
 const dot = require('graphlib-dot');
 const path = require('path');
-const {RawAction, RawEntity, RawParsedFile, RawStory} = require('./rawclass');
+const {RawStory, RawAction, RawEntity, RawFile} = require('./rawclass');
 const constants = require('../../constants');
 
 module.exports = {
@@ -20,6 +20,7 @@ function parseFiles(storyFiles) {
   let storyActions = {}
   let storyEntities = {}
   let storyConfig = {}
+  let foundStory = false;
 
   for (let file of storyFiles) {
     if (file.directory.length > 0) {
@@ -36,6 +37,7 @@ function parseFiles(storyFiles) {
         case constants.DIRECTORY_ROOT:
           if (file.name === constants.FILE_NAME_STORY && file.isYaml()) {
             storyConfig = parseStoryConfigFile(file);
+            foundStory = true;
             break;
           }
 
@@ -45,7 +47,7 @@ function parseFiles(storyFiles) {
     }
   }
 
-  return new RawStory(storyConfig, storyActions, storyEntities);
+  return new RawStory(foundStory, storyConfig, storyActions, storyEntities);
 }
 
 /**
@@ -70,7 +72,7 @@ function parseActionFile(actions, file) {
   actions[key] = new RawAction();
   actions[key].name = getActionName(file);
   actions[key].path = getActionPath(file);
-  actions[key].action = new RawParsedFile(file.name, value);
+  actions[key].action = new RawFile(file.name, value);
 
   return actions;
 }
@@ -110,7 +112,7 @@ function parseEntityFile(entities, file) {
 function parseEntityFileWithFunction(entities, file, parseFunction, type) {
   let key = getEntityIdentifier(file);
   let value = parseFunction(file.contents);
-  let parsedFile = new RawParsedFile(file.name, value);
+  let parsedFile = new RawFile(file.name, value);
 
   if (!(key in entities)) {
     entities[key] = new RawEntity();

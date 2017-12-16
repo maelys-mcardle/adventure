@@ -3,6 +3,7 @@
 const loadFiles = require('./file/loadfiles');
 const fileToRaw = require('./raw/filetoraw');
 const rawToStory = require('./story/rawtostory');
+const errors = require('../errors');
 
 module.exports = {
   load: loadStory
@@ -16,8 +17,17 @@ function loadStory(storyDirectory) {
   // Parse the file contents to an intermediary representation.
   let rawStory = fileToRaw.parse(storyFiles);
 
-  // Process the intermediary representation into the final story object.
-  let story = rawToStory.parse(rawStory);
+  // If a story was found, proceed.
+  if (rawStory.foundStory) {
 
-  return story;
+    // Process the intermediary representation into the final story object.
+    let story = rawToStory.parse(rawStory);
+
+    return story;
+  }
+  
+  // No story found. Produce error.
+  console.log(errors.NO_STORY_FOUND(storyDirectory));
+
+  return null;
 }

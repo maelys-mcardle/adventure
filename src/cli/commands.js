@@ -87,8 +87,13 @@ function evaluateInput(story, input) {
  */
 function startNewStory(story, storyDirectoryPath) {
   let loadedStory = storyEngine.loadStory(storyDirectoryPath);
-  let output = getLoadedStoryOutput(loadedStory);
-  return [loadedStory, output];
+  let output = '';
+
+  if (loadedStory != null) {
+    output = getLoadedStoryOutput(loadedStory);
+  }
+
+  return [loadedStory, output]; 
 }
 
 /**

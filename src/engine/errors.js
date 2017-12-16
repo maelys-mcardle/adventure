@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+
   ACTION_UNDEFINED:
     (action, property) => `${action} for ${property} hasn't been defined.`,
 
@@ -22,6 +23,9 @@ module.exports = {
 
   NO_PROPERTY_IN_CONFIG:
     (property) => `Could not find property ${property} of configs.`,
+
+  NO_STORY_FOUND:
+    (directory) => `No story was found in the directory "${directory}".`,
 
   NO_VALUE_IN_CONFIG:
     (property) => `${property} has no initial value specified in config.`,
