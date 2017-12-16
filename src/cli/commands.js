@@ -244,8 +244,13 @@ function describeCurrentState(story) {
  */
 function listEligibleActions(story) {
   let possibleActions = storyEngine.listInputExamples(story);
-  let output = 'You can:\n' + 
-    possibleActions.map(a => ' ' + a.text).sort().join('\n');
+  let output = '';
+
+  if (possibleActions.length > 0) {
+    output = 'You can:\n' + 
+      possibleActions.map(a => ' ' + a.text).sort().join('\n');
+  }
+  
   return output;
 }
 

@@ -91,6 +91,8 @@ below, explore, and try things out!
 
 ## Writing Your First Story
 
+These instructions will put together a simple story set on a large ferry.
+
 ### Before Starting
 
 Make sure you can run the `adventure` command. If you can't, follow the 
@@ -143,7 +145,7 @@ Go into the `entities` directory, and create another directory called `world`.
 At this point, your story directory should look like so:
 
 ```
-  story/
+  myStory/
     |- actions/
     |- entities/
     |     |- world/
@@ -151,4 +153,87 @@ At this point, your story directory should look like so:
     |- story.yml
 ```
 
-Inside the `world` directory, create an `entity.yml` file.
+Inside the `world` directory, create a file called `entity.yml`. Open this
+file and put in the following:
+
+```yaml
+location:
+  value: deck
+```
+
+The world entity has one property, called `location`. The current value is
+the deck. Meaning, the protagonist's location is the deck.
+
+Now create a file called `text.md`. Open this file and put in the following:
+
+```markdown
+# location
+
+## deck
+
+You are on the deck of the ferry.
+
+The deck has a number of benches and chairs for passengers to use. It's
+windy today, so few people are out here.
+
+You look around. The ferry is surrounded by the ocean for as far as the
+eye can see.
+```
+
+That file contains the things that will be written out by the game when
+the protagonist is on the deck.
+
+Finally, create a file called `values.dot`. Open this file and put in the
+following:
+
+```dot
+graph location {
+  deck
+}
+```
+
+Your story directory should now look like so:
+
+```
+  myStory/
+    |- actions/
+    |- entities/
+    |     |- world/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |
+    |- story.yml
+```
+
+### Try it out!
+
+You've got everything now to play this story. Start up Adventure:
+
+```bash
+adventure
+```
+
+Then run the command to load a new story.
+
+```
+start myStory
+```
+
+You should now see the following:
+
+```
+> start examples/firststory
+Loaded My First Story
+
+You are on the deck of the ferry.
+
+The deck has a number of benches and chairs for passengers to use. It's
+windy today, so few people are out here.
+
+You look around. The ferry is surrounded by the ocean for as far as the
+eye can see.
+```
+
+At this point, there's nothing for the player to do. There needs to 
+be an action!
