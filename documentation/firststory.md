@@ -1,6 +1,6 @@
 # Writing Your First Story
 
-## Basic Concepts
+## Basic concepts
 
 ### Adventure
 
@@ -11,7 +11,7 @@ you might read in a book. The player controls the protagonist by writing
 sentences in plain English. The game understands these sentences and writes
 out text about what happens next.
 
-### Entities, Properties and Values
+### Entities, properties and values
 
 Stories in Adventure are made up of things, called `entities`. Everything is 
 an entity in Adventure. The world the protagonist navigates is an entity. 
@@ -89,16 +89,16 @@ If you don't understand how things work quite yet, don't worry. You don't
 need to understand everything to write your first story. Follow the steps
 below, explore, and try things out!
 
-## Writing Your First Story
+## Writing your first story
 
 These instructions will put together a simple story set on a ferry.
 
-### Before Starting
+### Before starting
 
 Make sure you can run the `adventure` command. If you can't, follow the 
 installation instructions in the README.
 
-### Create the Directories
+### Create the directories
 
 Stories are stored in a directory. This directory must two sub-directories: 
 `actions` and `entities`.
@@ -112,7 +112,7 @@ Stories are stored in a directory. This directory must two sub-directories:
 Go ahead and create a directory for your story. Then create the `actions` and
 `entities` directories inside of it.
 
-### Create the "story.yml" File
+### Create the "story.yml" file
 
 The most important file for Adventure is the `story.yml` file that's in the
 main story directory. It is where important information like the title for the
@@ -132,14 +132,14 @@ Open the `story.yml` file and put the following inside:
 ```yml
 title: My First Story
 author: Maëlys McArdle
-description: This is my first story.
+description: This story takes place on a ferry.
 entity: ferry
 ```
 
 Replace `Maëlys McArdle` with your name, and make up a new title instead of 
 `My First Story`. Leave the rest there.
 
-### Create the World Entity
+### Create the ferry entity
 
 Go into the `entities` directory, and create another directory called `ferry`.
 At this point, your story directory should look like so:
@@ -237,3 +237,6 @@ eye can see.
 
 At this point, there's nothing for the player to do. There needs to 
 be an action!
+
+### Create the walk action
+

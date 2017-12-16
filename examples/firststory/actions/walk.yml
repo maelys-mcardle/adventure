@@ -1,0 +1,9 @@
+do: transition
+templates:
+  - walk to the @value
+  - walk to @value
+  - walk @value
+synonyms:
+  walk:
+    - go
+    - run
