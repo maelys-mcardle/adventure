@@ -91,7 +91,7 @@ below, explore, and try things out!
 
 ## Writing Your First Story
 
-These instructions will put together a simple story set on a large ferry.
+These instructions will put together a simple story set on a ferry.
 
 ### Before Starting
 
@@ -133,7 +133,7 @@ Open the `story.yml` file and put the following inside:
 title: My First Story
 author: Maëlys McArdle
 description: This is my first story.
-entity: world
+entity: ferry
 ```
 
 Replace `Maëlys McArdle` with your name, and make up a new title instead of 
@@ -141,19 +141,19 @@ Replace `Maëlys McArdle` with your name, and make up a new title instead of
 
 ### Create the World Entity
 
-Go into the `entities` directory, and create another directory called `world`.
+Go into the `entities` directory, and create another directory called `ferry`.
 At this point, your story directory should look like so:
 
 ```
   myStory/
     |- actions/
     |- entities/
-    |     |- world/
+    |     |- ferry/
     |
     |- story.yml
 ```
 
-Inside the `world` directory, create a file called `entity.yml`. Open this
+Inside the `ferry` directory, create a file called `entity.yml`. Open this
 file and put in the following:
 
 ```yaml
@@ -161,7 +161,7 @@ location:
   value: deck
 ```
 
-The world entity has one property, called `location`. The current value is
+The ferry entity has one property, called `location`. The current value is
 the deck. Meaning, the protagonist's location is the deck.
 
 Now create a file called `text.md`. Open this file and put in the following:
@@ -198,7 +198,7 @@ Your story directory should now look like so:
   myStory/
     |- actions/
     |- entities/
-    |     |- world/
+    |     |- ferry/
     |          |- entity.yml
     |          |- text.md
     |          |- values.dot
