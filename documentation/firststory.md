@@ -1,9 +1,5 @@
 # Writing Your First Story
 
-## Prerequesites
-
-This assumes that you can already run the `adventure` command.
-
 ## Basic Concepts
 
 ### Adventure
@@ -98,6 +94,11 @@ and the values are "dock", "beach", "cabin" and "road".
 
 ## Writing Your First Story
 
+### Prerequesites
+
+This assumes that you can already run the `adventure` command. Installation
+instructions are covered in the README.
+
 ### Creating the Directories
 
 Stories are stored in a directory. This directory must have a `story.yml` file,
@@ -130,16 +131,12 @@ more files and subdirectories and might look something like this:
     |     |        |- ...
     |     |
     |     |- world/
-    |          |- house/
-    |          |   |- entity.yml
-    |          |   |- text.md
-    |          |   |- values.dot
-    |          | 
-    |          |- street/
-    |          |   |- ...
-    |          | 
-    |          |- mall/
-    |              |- ...
+    |          |- house.yml
+    |          |- houseText.md
+    |          |- houseValues.dot
+    |          |- mall.yml
+    |          |- mallText.md
+    |          |- mallValues.dot
     |
     |- story.yml
 ```
@@ -150,7 +147,10 @@ directory, and create two other directories `actions` and `entities`.
 ### Create story.yml File
 
 The most important file for Adventure is the `story.yml` file that's in the
-main story directory. Create that file now. In it, copy and paste the following:
+main story directory. It is where important information like the title for the
+story and the author is kept. 
+
+Create a `story.yml` file now. In it, copy and paste the following:
 
 ```yml
 title: Simple Story
@@ -159,9 +159,20 @@ description: A story to demonstrate the game engine.
 entity: world
 ```
 
-Replace the `author` with your name, and make up a new `title`.
+Then replace the `Maëlys McArdle` with your name, and make up a new title
+instead of `Simple Story`. You can leave the rest there.
 
 ### Create the World Entity
 
+Go into the `entities` directory, and create another directory called `world`.
+At this point, your story directory should look like so:
 
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- world/
+    |
+    |- story.yml
+```
 
