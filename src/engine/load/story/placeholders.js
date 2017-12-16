@@ -5,33 +5,60 @@ const constants = require('../../constants');
 const errors = require('../../errors');
 
 module.exports = {
-  entityPlaceholderToEntity: entityPlaceholderToEntity,
-  loadCurrentPropertyEntities: loadCurrentPropertyEntities
+  replacePlaceholders: replacePlaceholders,
 };
 
-function loadCurrentPropertyEntities(story, entities) {
+/**
+ * Replaces all entity placeholders with actual entities.
+ * @param {Story} story The story object with placeholders.
+ * @param {Entity[]} entities All the entities objects.
+ * @returns {Story} The story object with placeholders replaced.
+ */
+function replacePlaceholders(story, entities) {
 
-  if (story.rootEntity == null) {
+  // All entities loaded. Replace placeholders.
+  entities = replacePlaceholdersInEntities(entities);
+
+  // Load the root entity. Itself is a placeholder at this point.
+  if (story.rootEntity != null) {
+
+    let placeholder = story.rootEntity;
+    story.rootEntity = getEntityWithPath(entities, placeholder);
+
+  } else {
+
     console.log(errors.NO_ENTITIES_IN_STORY);
+
   }
 
-  story.rootEntity = getEntityFromPath(entities, story.rootEntity);
   return story;
 }
 
-function entityPlaceholderToEntity(entities) {
+/**
+ * Replaces all entity placeholders with actual entities.
+ * @param {Entity[]} entities All the entities objects.
+ * @returns {Entity[]} All the entities objects with placeholders replaced.
+ */
+function replacePlaceholdersInEntities(entities) {
 
   // Iterate over every entity.
   for (let entityIndex in entities) {
     let entity = entities[entityIndex];
-    entity = updateEntityPlaceholders(entities, entity, 0);
+    entity = replacePlaceholdersInChildEntities(entities, entity, 0);
     entities[entityIndex] = entity;
   }
 
   return entities;
 }
 
-function updateEntityPlaceholders(entities, entity, recursion) {
+/**
+ * Replaces all entity placeholders with actual entities.
+ * @param {Entity[]} entities All the entities objects.
+ * @param {Entity} entity The entity whose placeholders are being updated.
+ * @param {number} recursion Prevents infinite loops.
+ * @returns {Entity} The entity with placeholders replaced.
+ */
+function replacePlaceholdersInChildEntities(entities, entity, recursion) {
   
   if (recursion >= constants.MAX_RECURSION) {
     console.log(errors.MAX_RECURSION);
@@ -50,10 +77,11 @@ function updateEntityPlaceholders(entities, entity, recursion) {
       for (let childIndex in propertyValue.childEntities) {
         let placeholder = propertyValue.childEntities[childIndex];
         if (typeof(placeholder) === 'string') {
-          let childEntity = getEntityFromPath(entities, placeholder);
+
+          let childEntity = getEntityWithPath(entities, placeholder);
 
           // Create a copy as it will be modified.
-          childEntity = copyEntity(childEntity);
+          childEntity = copyObject(childEntity);
 
           // child path is:
           //  parentPath.parentName.parentProperty.parentPropertyValue.childPath
@@ -62,8 +90,8 @@ function updateEntityPlaceholders(entities, entity, recursion) {
               childEntity.path].filter(s => s != '').join(constants.PATH_SEP);
 
           childEntity.path = childPath;
-          childEntity = updateEntityPlaceholders(entities, 
-            childEntity, recursion + 1);
+          childEntity = replacePlaceholdersInChildEntities(
+            entities, childEntity, recursion + 1);
           
           propertyValue.childEntities[childIndex] = childEntity;
         }
@@ -76,7 +104,13 @@ function updateEntityPlaceholders(entities, entity, recursion) {
   return entity;
 }
 
-function getEntityFromPath(entities, path) {
+/**
+ * Returns an entity that has the specified path.
+ * @param {Entity[]} entities All the entities objects.
+ * @param {string} path The path the desired entity has.
+ * @returns {Entity} The matching entity.
+ */
+function getEntityWithPath(entities, path) {
   let splitPath = path.split(constants.PATH_SEP);
 
   if (splitPath.length > 0 ) {
@@ -96,6 +130,11 @@ function getEntityFromPath(entities, path) {
   return path;
 }
 
-function copyEntity(entity) {
-  return JSON.parse(JSON.stringify(entity));
+/**
+ * Copies an object.
+ * @param {Object} object The object to copy.
+ * @returns {Object} A copy of the object.
+ */
+function copyObject(object) {
+  return JSON.parse(JSON.stringify(object));
 }

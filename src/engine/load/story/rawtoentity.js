@@ -1,6 +1,6 @@
 'use strict';
 
-const pathToEntity = require('./pathtoentity');
+const placeholders = require('./placeholders');
 const constants = require('../../constants');
 const errors = require('../../errors');
 
@@ -40,10 +40,7 @@ function parseEntities(rawStoryEntities, story) {
   }
 
   // All entities loaded. Replace placeholders.
-  entities = pathToEntity.entityPlaceholderToEntity(entities);
-
-  // Load active entities into the current property.
-  story = pathToEntity.loadCurrentPropertyEntities(story, entities);
+  entities = placeholders.replacePlaceholders(story, entities);
 
   return story;
 }
