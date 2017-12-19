@@ -161,7 +161,8 @@ function loadConfigRules(property, config) {
   
       } else {
 
-        property = setRelationshipValue(property, trigger, 'rules', triggerRules);
+        property = addRelationshipData(property, trigger, 
+          constants.KEY_RULES, triggerRules);
 
       }
     }
@@ -254,7 +255,8 @@ function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   } else {
 
-    property = setRelationshipValue(property, trigger, 'text', text);
+    property = addRelationshipData(property, trigger, 
+      constants.KEY_TEXT, text);
 
   }
 
@@ -262,15 +264,21 @@ function addTextToProperty(entity, propertyName, rawTrigger, text) {
   return entity;
 }
 
-
-function setRelationshipValue(property, trigger, relationshipKey, relationshipValue) {
+/**
+ * Adds data (rules, text) to a relationship in a property.
+ * @param {Property} property The property.
+ * @param {Trigger} trigger The values for the relationship.
+ * @param {string} key What to set for the relationship (eg. text, rules).
+ * @param {string[]|Object} value The value to set.
+ * @returns {Property} The updated property.
+ */
+function addRelationshipData(property, trigger, key, value) {
   
   // For unidirectional property transition (->).
   if (trigger.left in property.values &&
-    trigger.right in property.values[trigger.left].relationships) {
-      let relationship = property.values[trigger.left].relationships[trigger.right];
-      relationship[relationshipKey] = relationshipValue;
-      property.values[trigger.left].relationships[trigger.right] = relationship;
+      trigger.right in property.values[trigger.left].relationships) {
+
+    property.values[trigger.left].relationships[trigger.right][key] = value;
   } else {
     console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
   }
@@ -278,10 +286,9 @@ function setRelationshipValue(property, trigger, relationshipKey, relationshipVa
   // For bidirectional property transition (--).
   if (trigger.isBidirectional) {
     if (trigger.right in property.values &&
-      trigger.left in property.values[trigger.right].relationships) {
-        let relationship = property.values[trigger.right].relationships[trigger.left];
-        relationship[relationshipKey] = relationshipValue;
-        property.values[trigger.right].relationships[trigger.left] = relationship;
+        trigger.left in property.values[trigger.right].relationships) {
+
+      property.values[trigger.right].relationships[trigger.left][key] = value;
     } else {
       console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
     }

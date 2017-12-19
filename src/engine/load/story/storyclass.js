@@ -37,7 +37,7 @@ class Entity {
   }
 
   newProperty(name) {
-    return new EntityProperty(name);
+    return new Property(name);
   }
 
   addProperty(property) {
@@ -45,7 +45,7 @@ class Entity {
   }
 }
 
-class EntityProperty {
+class Property {
   constructor(name) {
     this.name = name;
     this.messages = {};
@@ -55,7 +55,7 @@ class EntityProperty {
   }
 
   newValue(name) {
-    return new EntityPropertyValue(name);
+    return new Value(name);
   }
 
   addValue(value) {
@@ -63,7 +63,7 @@ class EntityProperty {
   }
 }
 
-class EntityPropertyValue {
+class Value {
   constructor(name) {
     this.name = name;
     this.readableName = name;
@@ -75,7 +75,7 @@ class EntityPropertyValue {
   }
 
   newRelationship(toValue) {
-    return new EntityPropertyValueRelationship(toValue);
+    return new Relationship(toValue);
   }
 
   addRelationship(relationship) {
@@ -83,7 +83,7 @@ class EntityPropertyValue {
   }
 }
 
-class EntityPropertyValueRelationship {
+class Relationship {
   constructor(toValue) {
     this.toValue = toValue;
     this.text = [];

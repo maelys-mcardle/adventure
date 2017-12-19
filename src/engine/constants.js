@@ -34,6 +34,7 @@ module.exports = {
   KEY_RULES: 'rules',
   KEY_SYNONYMS: 'synonyms',
   KEY_TEMPLATES: 'templates',
+  KEY_TEXT: 'text',
   KEY_TITLE: 'title',
   KEY_TRANSITION: 'transition',
   KEY_VALUE: 'value',
