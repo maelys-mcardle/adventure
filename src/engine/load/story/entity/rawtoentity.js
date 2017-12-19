@@ -92,11 +92,11 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
       let config = rawConfig.contents[propertyName];
       let property = entity.properties[propertyName];
 
-      property = loadConfigCurrentValue(property, config);
-      property = loadConfigActions(property, actions, config);
-      property = loadConfigDisabled(property, config);
-      property = loadConfigRules(property, config);
-      property = loadConfigChildEntities(property, config);
+      property = loadCurrentValue(property, config);
+      property = loadActions(property, actions, config);
+      property = loadDisabled(property, config);
+      property = loadRules(property, config);
+      property = loadChildEntities(property, config);
 
       entity.properties[propertyName] = property;
 
@@ -108,7 +108,7 @@ function parseRawEntityConfig(entity, actions, rawConfig) {
   return entity;
 }
 
-function loadConfigCurrentValue(property, config) {
+function loadCurrentValue(property, config) {
   if (constants.KEY_VALUE in config) {
     property.currentValue = config[constants.KEY_VALUE];
   } else {
@@ -117,7 +117,7 @@ function loadConfigCurrentValue(property, config) {
   return property;
 }
 
-function loadConfigActions(property, actions, config) {
+function loadActions(property, actions, config) {
   if (constants.KEY_ACTIONS in config) {
     for (let action of config[constants.KEY_ACTIONS]) {
       if (action in actions) {
@@ -130,7 +130,7 @@ function loadConfigActions(property, actions, config) {
   return property;
 }
 
-function loadConfigDisabled(property, config) {
+function loadDisabled(property, config) {
   if (constants.KEY_DISABLE in config) {
     for (let disabledPropertyValue of config[constants.KEY_DISABLE]) {
       if (disabledPropertyValue in property.values) {
@@ -144,7 +144,7 @@ function loadConfigDisabled(property, config) {
   return property;
 }
 
-function loadConfigRules(property, config) {
+function loadRules(property, config) {
   if (constants.KEY_RULES in config) {
     for (let rawTrigger of Object.keys(config[constants.KEY_RULES])) {
       let trigger = new Trigger(rawTrigger);
@@ -171,7 +171,7 @@ function loadConfigRules(property, config) {
   return property;
 }
 
-function loadConfigChildEntities(property, config) {
+function loadChildEntities(property, config) {
   if (constants.KEY_ENTITIES in config) {
     let entityNames = Object.keys(config[constants.KEY_ENTITIES]);
     for (let parentPropertyValue of entityNames) {
