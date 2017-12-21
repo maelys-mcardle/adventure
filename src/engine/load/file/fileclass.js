@@ -55,6 +55,8 @@ class File {
         return FileExtension.YAML;
       case '.dot':
         return FileExtension.DOT;
+      case '.gv':
+        return FileExtension.DOT;
       case '.md':
         return FileExtension.MARKDOWN;
       default:

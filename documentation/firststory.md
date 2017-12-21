@@ -206,6 +206,31 @@ Your story directory should now look like so:
     |- story.yml
 ```
 
+### The .yml, .md, and .dot files
+
+In the previous section, three different kinds of file were created to make
+the entity.
+
+The file that ends with `.dot` contains a list of all the properties, their
+values, and how those values are connected. The file is written in the 
+[DOT language](https://en.wikipedia.org/wiki/DOT_(graph_description_language).
+It's not really clear now, but as the story gets more complicated you should
+have a better idea of how it works. Each entity can have one or more of these
+files. It can be called anything, as long as it ends with `.dot` or `.gv`.
+
+The file that end with `.md` contain text related to a property. If it's shown
+as text when playing the game, it's defined here. The file is written in the 
+[Markdown language](https://en.wikipedia.org/wiki/Markdown). Each entity can 
+have one or more of these files. It can be called anything, as long as it ends
+with `.md`.
+
+The file that ends with `.yml` contains everything else that defines a property.
+What value it should have at the start. What actions are applicable to it.
+Rules that define special behaviours when certain things happen. The file is
+written in the [YAML language](https://en.wikipedia.org/wiki/YAML). Each 
+entity can have one or more of these files. It can be called anything, as long
+as it ends with `.yml` or `.yaml`.
+
 ### Try it out!
 
 You've got everything now to play this story. Start up Adventure:
@@ -220,10 +245,16 @@ Then run the command to load a new story.
 start myStory
 ```
 
-You should now see the following:
+If your story directory not in the directory you're in, you'll need to specify
+the path to the directory with the story. For example:
 
 ```
-> start examples/firststory
+start /home/documents/myStory/
+```
+
+You should see the following if it works:
+
+```
 Loaded My First Story
 
 You are on the deck of the ferry.
@@ -236,7 +267,7 @@ eye can see.
 ```
 
 At this point, there's nothing for the player to do. There needs to 
-be an action!
+be another place for the player to be and an action to get there!
 
 ### Create the walk action
 
