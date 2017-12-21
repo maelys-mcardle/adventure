@@ -47,6 +47,6 @@ To start adventure while developing:
 The game will present an empty prompt. You can load a sample story 
 with the `start` command:
 
-`> start examples/simple`
+`> start examples/thehouse`
 
 Use the `help` command to get a listing of all possible commands.
