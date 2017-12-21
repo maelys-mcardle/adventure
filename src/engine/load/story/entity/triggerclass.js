@@ -1,5 +1,9 @@
 'use strict';
 
+/** 
+ * Class for a trigger, which identifies a single value or 
+ * the relationship between two relationships.
+ */
 class Trigger {
   
   constructor(trigger) {

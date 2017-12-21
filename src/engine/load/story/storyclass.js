@@ -2,6 +2,7 @@
 
 const constants = require('../../constants');
 
+/** The internal representation of a story. */
 class Story {
   constructor(name) {
     this.title = 'Untitled';
@@ -46,6 +47,7 @@ class Story {
   }
 }
 
+/** Class for the story's entities. */
 class Entity {
   constructor(name, path) {
     this.name = name;
@@ -72,6 +74,7 @@ class Entity {
   }
 }
 
+/** Class for the story entity's properties. */
 class Property {
   constructor(name) {
     this.name = name;
@@ -100,6 +103,8 @@ class Property {
   }
 }
 
+
+/** Class for the story entity property's values. */
 class Value {
   constructor(name) {
     this.name = name;
@@ -130,6 +135,7 @@ class Value {
   }
 }
 
+/** Class for the story entity property values' relationships. */
 class Relationship {
   constructor(toValue) {
     this.toValue = toValue;
@@ -138,6 +144,7 @@ class Relationship {
   }
 }
 
+/** Class for the story's actions. */
 class Action {
   constructor(name, path) {
     this.name = name;

@@ -2,6 +2,7 @@
 
 const constants = require('../../constants');
 
+/** The intermediate representation of an entity. */
 class RawEntity {
   constructor() {
     this.name;
@@ -12,6 +13,7 @@ class RawEntity {
   }
 }
 
+/** The intermediate representation of an action. */
 class RawAction {
   constructor() {
     this.name;
@@ -20,6 +22,7 @@ class RawAction {
   }
 }
 
+/** The intermediate representation of a story object. */
 class RawStory {
   constructor(foundStory, config, actions, entities) {
     this.foundStory = foundStory;
@@ -29,6 +32,7 @@ class RawStory {
   }
 }
 
+/** Contains a file's name and contents. */
 class RawFile {
   constructor(name, contents) {
     this.name = name;
