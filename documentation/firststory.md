@@ -213,7 +213,7 @@ the entity.
 
 The file that ends with `.dot` contains a list of all the properties, their
 values, and how those values are connected. The file is written in the 
-[DOT language](https://en.wikipedia.org/wiki/DOT_(graph_description_language).
+[DOT language](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)).
 It's not really clear now, but as the story gets more complicated you should
 have a better idea of how it works. Each entity can have one or more of these
 files. It can be called anything, as long as it ends with `.dot` or `.gv`.
