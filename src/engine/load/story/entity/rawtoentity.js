@@ -9,6 +9,12 @@ module.exports = {
   parse: parseEntities
 };
 
+/**
+ * Parses entities from their intermediate representation into their final.
+ * @param {RawEntity[]} rawStoryEntities The raw entities.
+ * @param {Story} story The story object.
+ * @returns {Story} The updated story object.
+ */
 function parseEntities(rawStoryEntities, story) {
 
   let entities = [];
@@ -21,19 +27,19 @@ function parseEntities(rawStoryEntities, story) {
     let rawEntity = rawStoryEntities[entityId];
     let entity = story.newEntity(rawEntity.name, rawEntity.path);
 
-    // Translate the config from a representation created with a yaml
+    // Translate the entity data from objects created with a yaml
     // parser, a markdown parser, and a graphviz dot file parser into 
     // a useful internal representation.
-    for (let rawEntityProperties of rawEntity[constants.TYPE_DOT]) {
-      entity = parseRawEntityProperties(entity, rawEntityProperties);
+    for (let parsedDotFile of rawEntity[constants.TYPE_DOT]) {
+      entity = parseDot(entity, parsedDotFile);
     }
 
-    for (let rawEntityText of rawEntity[constants.TYPE_MARKDOWN]) {
-      entity = parseRawEntityText(entity, rawEntityText);
+    for (let parsedMarkdown of rawEntity[constants.TYPE_MARKDOWN]) {
+      entity = parseMarkdown(entity, parsedMarkdown);
     }
 
-    for (let rawEntityConfig of rawEntity[constants.TYPE_YAML]) {
-      entity = parseRawEntityConfig(entity, story.actions, rawEntityConfig);
+    for (let parsedYaml of rawEntity[constants.TYPE_YAML]) {
+      entity = parseYaml(entity, story.actions, parsedYaml);
     }
 
     // Append this now parsed entity to the list.
@@ -46,9 +52,16 @@ function parseEntities(rawStoryEntities, story) {
   return story;
 }
 
-function parseRawEntityProperties(entity, rawProperties)
+/**
+ * Parses a Dot file associated with the entity.
+ * This populates all the values for the property.
+ * @param {Entity} entity The entity.
+ * @param {Object} rawDot A parsed Dot file for the entity.
+ * @returns {Entity} The updated entity.
+ */
+function parseDot(entity, rawDot)
 {
-  for (let graph of rawProperties.contents) {
+  for (let graph of rawDot.contents) {
 
     let propertyName = graph.graph().id;
     let property = entity.newProperty(propertyName);
@@ -84,106 +97,14 @@ function parseRawEntityProperties(entity, rawProperties)
   return entity;
 }
 
-function parseRawEntityConfig(entity, actions, rawConfig) {
-
-  for (let propertyName of Object.keys(rawConfig.contents)) {
-    if (propertyName in entity.properties) {
-
-      let config = rawConfig.contents[propertyName];
-      let property = entity.properties[propertyName];
-
-      property = loadCurrentValue(property, config);
-      property = loadActions(property, actions, config);
-      property = loadDisabled(property, config);
-      property = loadRules(property, config);
-      property = loadChildEntities(property, config);
-
-      entity.properties[propertyName] = property;
-
-    } else {
-      console.log(errors.NO_PROPERTY_IN_CONFIG(propertyName));
-    }
-  }
-  
-  return entity;
-}
-
-function loadCurrentValue(property, config) {
-  if (constants.KEY_VALUE in config) {
-    property.currentValue = config[constants.KEY_VALUE];
-  } else {
-    console.log(errors.NO_VALUE_IN_CONFIG(property.name));
-  }
-  return property;
-}
-
-function loadActions(property, actions, config) {
-  if (constants.KEY_ACTIONS in config) {
-    for (let action of config[constants.KEY_ACTIONS]) {
-      if (action in actions) {
-        property.actions.push(action);
-      } else {
-        console.log(errors.ACTION_UNDEFINED(action, property.name));
-      }
-    }
-  }
-  return property;
-}
-
-function loadDisabled(property, config) {
-  if (constants.KEY_DISABLE in config) {
-    for (let disabledPropertyValue of config[constants.KEY_DISABLE]) {
-      if (disabledPropertyValue in property.values) {
-        property.values[disabledPropertyValue].disabled = true;
-      } else {
-        console.log(errors.DISABLED_VALUE_DOES_NOT_EXIST(
-          disabledPropertyValue, property.name));
-      }
-    }
-  }
-  return property;
-}
-
-function loadRules(property, config) {
-  if (constants.KEY_RULES in config) {
-    for (let rawTrigger of Object.keys(config[constants.KEY_RULES])) {
-      let trigger = new Trigger(rawTrigger);
-      let triggerRules = config.rules[rawTrigger];
-
-      if (!trigger.isTransition) {
-        
-        // For property.
-        if (trigger.left in property.values) {
-          property.values[trigger.left].rules = triggerRules;
-        } else {
-          console.log(errors.TRIGGER_NOT_FOUND(trigger.left));
-        }
-  
-      } else {
-
-        property = addRelationshipData(property, trigger, 
-          constants.KEY_RULES, triggerRules);
-
-      }
-    }
-  }
-
-  return property;
-}
-
-function loadChildEntities(property, config) {
-  if (constants.KEY_ENTITIES in config) {
-    let entityNames = Object.keys(config[constants.KEY_ENTITIES]);
-    for (let parentPropertyValue of entityNames) {
-      for (let childEntityName of config.entities[parentPropertyValue]) {
-        property.values[parentPropertyValue].childEntities.push(childEntityName);
-      }
-    }
-  }
-  return property;
-}
-
-function parseRawEntityText(entity, rawText) {
+/**
+ * Parses a Markdown file associated with the entity.
+ * This populates the text for the entity.
+ * @param {Entity} entity The entity.
+ * @param {Object} rawMarkdown A parsed Markdown file for the entity.
+ * @returns {Entity} The updated entity.
+ */
+function parseMarkdown(entity, rawMarkdown) {
 
   let property;
   let trigger;
@@ -191,14 +112,14 @@ function parseRawEntityText(entity, rawText) {
 
   // The markdown parser provides an array of items. The first is the
   // string 'markdown'.
-  if (rawText.contents.length === 0 || 
-      rawText.contents[0] !== constants.MD_MARKDOWN) {
+  if (rawMarkdown.contents.length === 0 || 
+    rawMarkdown.contents[0] !== constants.MD_MARKDOWN) {
     return parsedText;
   }
 
   // Go through all the items in the array provided by the
   // markdown parser. These are the headers and paragraphs.
-  for (let entry of rawText.contents.slice(1)) {
+  for (let entry of rawMarkdown.contents.slice(1)) {
 
     let entryType = entry[0];
 
@@ -226,6 +147,152 @@ function parseRawEntityText(entity, rawText) {
   return entity;
 }
 
+/**
+ * Parses a Yaml file associated with the entity.
+ * This defines all behaviour for the entity.
+ * @param {Entity} entity The entity.
+ * @param {Actions[]} actions The actions for the story.
+ * @param {Object} rawYaml A parsed Yaml file for the entity.
+ * @returns {Entity} The updated entity.
+ */
+function parseYaml(entity, actions, rawYaml) {
+
+  for (let propertyName of Object.keys(rawYaml.contents)) {
+    if (propertyName in entity.properties) {
+
+      let config = rawYaml.contents[propertyName];
+      let property = entity.properties[propertyName];
+
+      property = loadCurrentValue(property, config);
+      property = loadActions(property, actions, config);
+      property = loadDisabled(property, config);
+      property = loadRules(property, config);
+      property = loadChildEntities(property, config);
+
+      entity.properties[propertyName] = property;
+
+    } else {
+      console.log(errors.NO_PROPERTY_IN_CONFIG(propertyName));
+    }
+  }
+  
+  return entity;
+}
+
+/**
+ * Load current value for the property.
+ * @param {Property} property The property.
+ * @param {Object} config Property configuration.
+ * @returns {Property} The updated property.
+ */
+function loadCurrentValue(property, config) {
+  if (constants.KEY_VALUE in config) {
+    property.currentValue = config[constants.KEY_VALUE];
+  } else {
+    console.log(errors.NO_VALUE_IN_CONFIG(property.name));
+  }
+  return property;
+}
+
+/**
+ * Load actions for the property.
+ * @param {Property} property The property.
+ * @param {Actions[]} actions All the actions.
+ * @param {Object} config Property configuration.
+ * @returns {Property} The updated property.
+ */
+function loadActions(property, actions, config) {
+  if (constants.KEY_ACTIONS in config) {
+    for (let action of config[constants.KEY_ACTIONS]) {
+      if (action in actions) {
+        property.actions.push(action);
+      } else {
+        console.log(errors.ACTION_UNDEFINED(action, property.name));
+      }
+    }
+  }
+  return property;
+}
+
+/**
+ * Load disabled values for the property.
+ * @param {Property} property The property.
+ * @param {Object} config Property configuration.
+ * @returns {Property} The updated property.
+ */
+function loadDisabled(property, config) {
+  if (constants.KEY_DISABLE in config) {
+    for (let disabledPropertyValue of config[constants.KEY_DISABLE]) {
+      if (disabledPropertyValue in property.values) {
+        property.values[disabledPropertyValue].disabled = true;
+      } else {
+        console.log(errors.DISABLED_VALUE_DOES_NOT_EXIST(
+          disabledPropertyValue, property.name));
+      }
+    }
+  }
+  return property;
+}
+
+/**
+ * Load rules for the property.
+ * @param {Property} property The property.
+ * @param {Object} config Property configuration.
+ * @returns {Property} The updated property.
+ */
+function loadRules(property, config) {
+  if (constants.KEY_RULES in config) {
+    for (let rawTrigger of Object.keys(config[constants.KEY_RULES])) {
+      let trigger = new Trigger(rawTrigger);
+      let triggerRules = config.rules[rawTrigger];
+
+      if (!trigger.isTransition) {
+        
+        // For property.
+        if (trigger.left in property.values) {
+          property.values[trigger.left].rules = triggerRules;
+        } else {
+          console.log(errors.TRIGGER_NOT_FOUND(trigger.left));
+        }
+  
+      } else {
+
+        property = addRelationshipData(property, trigger, 
+          constants.KEY_RULES, triggerRules);
+
+      }
+    }
+  }
+
+  return property;
+}
+
+/**
+ * Load placeholder for child entities.
+ * @param {Property} property The property.
+ * @param {Object} config Property configuration.
+ * @returns {Property} The updated property.
+ */
+function loadChildEntities(property, config) {
+  if (constants.KEY_ENTITIES in config) {
+    let entityNames = Object.keys(config[constants.KEY_ENTITIES]);
+    for (let parentValue of entityNames) {
+      for (let childEntityName of config.entities[parentValue]) {
+        property.values[parentValue].childEntities.push(childEntityName);
+      }
+    }
+  }
+  return property;
+}
+
+/**
+ * Adds text to a property, either one of its values, or as a message.
+ * @param {Entity} entity The entity.
+ * @param {string} propertyName The values for the relationship.
+ * @param {string} rawTrigger Where to put the text.
+ * @param {string[]} text The text to store.
+ * @returns {Entity} The updated entity.
+ */
 function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!(propertyName in entity.properties)) {
@@ -279,8 +346,11 @@ function addRelationshipData(property, trigger, key, value) {
       trigger.right in property.values[trigger.left].relationships) {
 
     property.values[trigger.left].relationships[trigger.right][key] = value;
+
   } else {
+
     console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
+
   }
 
   // For bidirectional property transition (--).
@@ -289,8 +359,11 @@ function addRelationshipData(property, trigger, key, value) {
         trigger.left in property.values[trigger.right].relationships) {
 
       property.values[trigger.right].relationships[trigger.left][key] = value;
+
     } else {
+
       console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
+
     }
   }
 
