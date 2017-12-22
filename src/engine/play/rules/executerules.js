@@ -9,75 +9,71 @@ module.exports = {
   execute: executeRules,
 }
 
-function executeRules(story, action, target, newPropertyValue, isTransition) {
+function executeRules(story, action, target, newValue, isTransition) {
 
   let messages = [];
   
   // Get entity property.
-  let entityProperty = 
+  let property = 
     getEntity.findProperty(story, target.entity, target.path, target.property);
   
-  if (entityProperty == null) {
-    console.log(errors.ENTITY_PROPERTY_NOT_FOUND(
-      target.entity, target.property));
+  if (property == null) {
+    console.log(
+      errors.ENTITY_PROPERTY_NOT_FOUND(target.entity, target.property));
     return [story, messages];
   }
 
   // Apply rules to property.
   if (isTransition) {
-    [entityProperty, messages] = 
-      executeTransitionRules(action, entityProperty, newPropertyValue);
+    [property, messages] = 
+      executeTransitionRules(action, property, newValue);
   } else {
-    [entityProperty, messages] = 
-      executePropertyRules(action, entityProperty);
+    [property, messages] = 
+      executePropertyRules(action, property);
   }
 
   // Update entity.
   story = updateEntity.updateProperty(story, target.entity, 
-    target.path, target.property, entityProperty);
+    target.path, target.property, property);
 
   return [story, messages];
 }
 
-function executeTransitionRules(action, entityProperty, newPropertyValue) {
+function executeTransitionRules(action, property, newValue) {
   
   let messages = [];
   
   // Set property value.
-  let oldPropertyValue = entityProperty.currentValue;
+  let oldValue = property.currentValue;
 
   // Set property.
-  entityProperty.currentValue = newPropertyValue;
+  property.currentValue = newValue;
   
   // Execute transition rules.
-  let propertyTransitionRules = 
-    entityProperty.values[oldPropertyValue].
-      relationships[newPropertyValue].rules;
+  let transitionRules = property.values[oldValue].relationships[newValue].rules;
 
-  [entityProperty, messages] = 
-    applyRules(action, oldPropertyValue, newPropertyValue,
-      entityProperty, propertyTransitionRules, 0);
+  [property, messages] = 
+    applyRules(action, oldValue, newValue, property, transitionRules, 0);
 
-  return [entityProperty, messages];
+  return [property, messages];
 }
 
-function executePropertyRules(action, entityProperty) {
+function executePropertyRules(action, property) {
 
   let messages = [];
 
   // Set property value.
-  let newPropertyValueName = entityProperty.currentValue;
+  let newValue = property.currentValue;
 
   // Execute property value rules.
-  let propertyValueRules = entityProperty.values[newPropertyValueName].rules;
-  [entityProperty, messages] = 
-    applyRules(action, newPropertyValueName, newPropertyValueName,
-      entityProperty, propertyValueRules, 0);
+  let rules = property.values[newValue].rules;
+  [property, messages] = 
+    applyRules(action, newValue, newValue, property, rules, 0);
   
-  return [entityProperty, messages];
+  return [property, messages];
 }
   
-function applyRules(action, oldPropertyValue, newPropertyValue, 
+function applyRules(action, oldValue, newValue, 
   property, rules, recursion) {
 
   let messages = [];
@@ -87,7 +83,7 @@ function applyRules(action, oldPropertyValue, newPropertyValue,
     return [property, messages];
   }
 
-  property = applyRuleValue(property, rules, oldPropertyValue);
+  property = applyRuleValue(property, rules, oldValue);
   property = applyRuleDisable(property, rules);
   property = applyRuleEnable(property, rules);
   property = applyRuleActions(property, rules);
@@ -95,21 +91,21 @@ function applyRules(action, oldPropertyValue, newPropertyValue,
 
   [property, messages] = 
     applyRuleIfBlock(action, property, rules, messages, 
-      oldPropertyValue, newPropertyValue, recursion);
+      oldValue, newValue, recursion);
 
   return [property, messages];
 }
 
-function applyRuleValue(property, rules, oldPropertyValue) {
+function applyRuleValue(property, rules, oldValue) {
 
   if (constants.KEY_VALUE in rules) {
-    let propertyValue = rules[constants.KEY_VALUE];
-    if (propertyValue === constants.KEY_LAST) {
-      property.currentValue = oldPropertyValue;
-    } else if (propertyValue in property.values) {
-      property.currentValue = propertyValue;
+    let newValue = rules[constants.KEY_VALUE];
+    if (newValue === constants.KEY_LAST) {
+      property.currentValue = oldValue;
+    } else if (newValue in property.values) {
+      property.currentValue = newValue;
     } else {
-      console.log(errors.NOT_FOUND(propertyValue));
+      console.log(errors.NOT_FOUND(newValue));
     }
   }
 
@@ -119,12 +115,12 @@ function applyRuleValue(property, rules, oldPropertyValue) {
 function applyRuleDisable(property, rules) {
   
   if (constants.KEY_DISABLE in rules) {
-    let disablePropertyValues = rules[constants.KEY_DISABLE];
-    for (let disablePropertyValue of disablePropertyValues) {
-      if (disablePropertyValue in property.values) {
-        property.values[disablePropertyValue].disabled = true;
+    let disableValues = rules[constants.KEY_DISABLE];
+    for (let disableValue of disableValues) {
+      if (disableValue in property.values) {
+        property.values[disableValue].disabled = true;
       } else {
-        console.log(errors.NOT_FOUND(disablePropertyValue));
+        console.log(errors.NOT_FOUND(disableValue));
       }
     }
   }
@@ -135,12 +131,12 @@ function applyRuleDisable(property, rules) {
 function applyRuleEnable(property, rules) {
 
   if (constants.KEY_ENABLE in rules) {
-    let enablePropertyValues = rules[constants.KEY_ENABLE];
-    for (let enablePropertyValue of enablePropertyValues) {
-      if (enablePropertyValue in property.values) {
-        property.values[enablePropertyValue].disabled = false;
+    let enableValues = rules[constants.KEY_ENABLE];
+    for (let enableValue of enableValues) {
+      if (enableValue in property.values) {
+        property.values[enableValue].disabled = false;
       } else {
-        console.log(errors.NOT_FOUND(enablePropertyValue));
+        console.log(errors.NOT_FOUND(enableValue));
       }
     }
   }
@@ -171,36 +167,37 @@ function applyRuleMessage(property, rules, messageQueue) {
   return messageQueue;
 }
 
-function applyRuleIfBlock(action, entityProperty, rules, messages, 
-  oldPropertyValueName, newPropertyValueName, recursion) {
+function applyRuleIfBlock(action, property, rules, messages, 
+  oldValue, newValue, recursion) {
 
   for (let trigger of Object.keys(rules)) {
+
     let words = trigger.split(' ');
+
     if (words.length > 1 && 
         words[0] == constants.KEY_IF) {
 
       let childRules = rules[trigger];
-      let ifActionMessages = [];
-      let ifPropertyMessages = [];
+      let actionMessages = [];
+      let propertyMessages = [];
 
-      [entityProperty, ifActionMessages] = applyRuleIfAction(action, 
-        entityProperty, rules, oldPropertyValueName, newPropertyValueName,
-        words, childRules, recursion);
+      [property, actionMessages] = 
+        applyRuleIfAction(action, property, rules, oldValue, newValue,
+          words, childRules, recursion);
 
-      [entityProperty, ifPropertyMessages] = applyRuleIfValue(action, 
-        entityProperty, rules, oldPropertyValueName, newPropertyValueName, 
-        words, childRules, recursion);
+      [property, propertyMessages] = 
+        applyRuleIfValue(action, property, rules, oldValue, newValue, 
+          words, childRules, recursion);
 
-      messages = messages.concat(ifActionMessages).concat(ifPropertyMessages);
+      messages = messages.concat(actionMessages).concat(propertyMessages);
     }
   }
 
-  return [entityProperty, messages];
+  return [property, messages];
 }
 
-function applyRuleIfAction(action, 
-  entityProperty, rules, oldPropertyValueName, newPropertyValueName,
-  words, childRules, recursion) {
+function applyRuleIfAction(action, property, rules, oldValue, newValue,
+    words, childRules, recursion) {
 
   let messages = [];
 
@@ -209,16 +206,15 @@ function applyRuleIfAction(action,
       words[0] == constants.KEY_IF &&
       words[1] == action.name) {
         
-    [entityProperty, messages] = 
-      applyRules(action, oldPropertyValueName, newPropertyValueName,
-        entityProperty, childRules, recursion + 1) 
+    [property, messages] = 
+      applyRules(action, oldValue, newValue,
+        property, childRules, recursion + 1) 
   }
 
-  return [entityProperty, messages];
+  return [property, messages];
 }
 
-function applyRuleIfValue(action, 
-  entityProperty, rules, oldPropertyValueName, newPropertyValueName,
+function applyRuleIfValue(action, property, rules, oldValue, newValue,
   words, childRules, recursion) {
 
   let messages = [];
@@ -229,22 +225,23 @@ function applyRuleIfValue(action,
       words[2] == constants.KEY_IS) {
 
     let targetProperty = words[1];
-    let targetPropertyValue = words[3];
+    let targetValue = words[3];
 
     // Look at current property value, but also child entities of either
     // property value.
-    if (isPropertyValue(entityProperty, '', targetProperty, targetPropertyValue, 0)) {
+    if (isPropertyValue(property, '', targetProperty, targetValue, 0)) {
 
-      [entityProperty, messages] = 
-        applyRules(action, oldPropertyValueName, newPropertyValueName,
-          entityProperty, childRules, recursion + 1);
+      [property, messages] = 
+        applyRules(action, oldValue, newValue, 
+          property, childRules, recursion + 1);
     }
   }
 
-  return [entityProperty, messages];
+  return [property, messages];
 }
 
-function isPropertyValue(property, propertyPrefix, targetProperty, targetPropertyValue, recursion) {
+function isPropertyValue(property, propertyPrefix, targetProperty, 
+  targetValue, recursion) {
 
   // property can be:
   //  property
@@ -258,16 +255,16 @@ function isPropertyValue(property, propertyPrefix, targetProperty, targetPropert
 
   let currentPropertyName = propertyPrefix + property.name;
   if (currentPropertyName.endsWith(targetProperty) && 
-      property.currentValue == targetPropertyValue) {
+      property.currentValue == targetValue) {
     return true;
   } else {
-    for (let propertyValue of Object.keys(property.values)) {
-      for (let childEntity of property.values[propertyValue].childEntities) {
+    for (let value of Object.keys(property.values)) {
+      for (let childEntity of property.values[value].childEntities) {
         let prefix = getPropertyPrefix(childEntity);
         for (let propertyName of Object.keys(childEntity.properties)) {
           let property = childEntity.properties[propertyName];
           if (isPropertyValue(property, prefix, 
-              targetProperty, targetPropertyValue, recursion + 1)) {
+              targetProperty, targetValue, recursion + 1)) {
             return true;
           }
         }
