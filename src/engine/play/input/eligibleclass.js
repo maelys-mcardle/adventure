@@ -9,14 +9,6 @@ class EligibleInput {
   }
 }
 
-class Target {
-  constructor() {
-    this.entity = null;
-    this.path = null;
-    this.property = null;
-  }
-}
-
 class EligibleAction {
   constructor(action) {
     this.action = action;
@@ -24,7 +16,7 @@ class EligibleAction {
   }
 
   newEligibleEntity() {
-    return new EligibleActionEntity();
+    return new EligibleEntity();
   }
 
   addEligibleEntity(eligibleEntity) {
@@ -32,13 +24,20 @@ class EligibleAction {
   }
 }
 
-class EligibleActionEntity {
+class EligibleEntity {
   constructor() {
-    this.entityName = null;
-    this.entityPath = null;
-    this.propertyName = null;
-    this.currentPropertyValue = null;
-    this.eligiblePropertyValue = {};
+    this.target = new Target();
+    this.currentValue = null;
+    this.eligibleValues = {};
+  }
+}
+
+/** This class specify's an entity's name, path, and property name. */
+class Target {
+  constructor() {
+    this.entity = null;
+    this.path = null;
+    this.property = null;
   }
 }
 
