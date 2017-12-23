@@ -8,20 +8,44 @@ module.exports = {
   findProperty: findProperty,
 }
 
+/**
+ * Gets the entity with the given target.
+ * @param {Story} story The story object.
+ * @param {Target} target The name/path for the entity.
+ * @returns {Entity} The matching entity.
+ */
 function findEntity(story, target) {
 
-  let foundEntity = getEntityByName(story.rootEntity, target);
+  let entity = getEntityByName(story.rootEntity, target);
 
-  return foundEntity;
+  return entity;
 }
 
+/**
+ * Gets the property with the given target.
+ * @param {Story} story The story object.
+ * @param {Target} target The name for the property and its entity.
+ * @returns {Property} The matching property.
+ */
 function findProperty(story, target) {
 
-  let entityProperty = getPropertyByName(story.rootEntity, target);
+  let entity = getEntityByName(story.rootEntity, target, 0);
+  let property = null;
+  
+  if (entity != null) {
+    property = entity.properties[target.property];
+  }
 
-  return entityProperty;
+  return property;
 }
 
+/**
+ * Gets the entity with the given target.
+ * @param {Story} story The story object.
+ * @param {Target} target The name/path for the entity.
+ * @param {number} recursion Prevents infinite loops.
+ * @returns {Entity} The matching entity.
+ */
 function getEntityByName(entity, target, recursion) {
 
  if (recursion >= constants.MAX_RECURSION) {
@@ -48,15 +72,4 @@ function getEntityByName(entity, target, recursion) {
  }
 
  return null;
-}
-
-function getPropertyByName(rootEntity, target) {
-
-  let entity = getEntityByName(rootEntity, target, 0);
-  
-  if (entity != null) {
-    return entity.properties[target.property];
-  }
-
-  return null;
 }
