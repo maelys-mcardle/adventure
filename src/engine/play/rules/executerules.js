@@ -9,13 +9,23 @@ module.exports = {
   execute: executeRules,
 }
 
+/**
+ * Executes rules for an entity's property.
+ * @param {Story} story The story object.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Target} target The entity/property that was acted upon.
+ * @param {string} newValue The new value for the entity/property.
+ * @param {bool} isTransition Whether the rules to execute are those between
+ *                            values (in transition) or those for the current
+ *                            value.
+ * @returns {[Story, string[]]} The updated story and messages to output.
+ */
 function executeRules(story, action, target, newValue, isTransition) {
 
   let messages = [];
   
   // Get entity property.
-  let property = 
-    getEntity.findProperty(story, target);
+  let property = getEntity.findProperty(story, target);
   
   if (property == null) {
     console.log(
@@ -24,12 +34,14 @@ function executeRules(story, action, target, newValue, isTransition) {
   }
 
   // Apply rules to property.
+  // There are two sets of rules: one for transitioning from one value to 
+  // another, and another for the being at a given value.
   if (isTransition) {
     [property, messages] = 
-      executeTransitionRules(action, property, newValue);
+      executeRulesForBetweenValues(action, property, newValue);
   } else {
     [property, messages] = 
-      executePropertyRules(action, property);
+      executeRulesForCurrentValue(action, property);
   }
 
   // Update entity.
@@ -38,7 +50,14 @@ function executeRules(story, action, target, newValue, isTransition) {
   return [story, messages];
 }
 
-function executeTransitionRules(action, property, newValue) {
+/**
+ * Executes rules between values for an entity's property.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} newValue The new value for the entity/property.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function executeRulesForBetweenValues(action, property, newValue) {
   
   let messages = [];
   
@@ -49,15 +68,21 @@ function executeTransitionRules(action, property, newValue) {
   property.currentValue = newValue;
   
   // Execute transition rules.
-  let transitionRules = property.values[oldValue].relationships[newValue].rules;
+  let rules = property.values[oldValue].relationships[newValue].rules;
 
   [property, messages] = 
-    applyRules(action, oldValue, newValue, property, transitionRules, 0);
+    applyRules(rules, action, property, oldValue, newValue, 0);
 
   return [property, messages];
 }
 
-function executePropertyRules(action, property) {
+/**
+ * Executes rules for the current value of an entity's property.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function executeRulesForCurrentValue(action, property) {
 
   let messages = [];
 
@@ -67,13 +92,22 @@ function executePropertyRules(action, property) {
   // Execute property value rules.
   let rules = property.values[newValue].rules;
   [property, messages] = 
-    applyRules(action, newValue, newValue, property, rules, 0);
+    applyRules(rules, action, property, newValue, newValue, 0);
   
   return [property, messages];
 }
-  
-function applyRules(action, oldValue, newValue, 
-  property, rules, recursion) {
+
+/**
+ * Apply the rules on a property.
+ * @param {Object} rules The rules to execute.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @param {string} newValue The new value for the property.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function applyRules(rules, action, property, oldValue, newValue, recursion) {
 
   let messages = [];
 
@@ -82,20 +116,27 @@ function applyRules(action, oldValue, newValue,
     return [property, messages];
   }
 
-  property = applyRuleValue(property, rules, oldValue);
-  property = applyRuleDisable(property, rules);
-  property = applyRuleEnable(property, rules);
-  property = applyRuleActions(property, rules);
-  messages = applyRuleMessage(property, rules, messages);
+  property = applyRuleValue(rules, property, oldValue);
+  property = applyRuleDisable(rules, property);
+  property = applyRuleEnable(rules, property);
+  property = applyRuleActions(rules, property);
+  messages = applyRuleMessage(rules, property, messages);
 
   [property, messages] = 
-    applyRuleIfBlock(action, property, rules, messages, 
-      oldValue, newValue, recursion);
+    applyRuleIfBlock(rules, action, property, oldValue, newValue, 
+      messages, recursion);
 
   return [property, messages];
 }
 
-function applyRuleValue(property, rules, oldValue) {
+/**
+ * Rule to set a property value.
+ * @param {Object} rules The rules to execute.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @returns {Property} The updated property.
+ */
+function applyRuleValue(rules, property, oldValue) {
 
   if (constants.KEY_VALUE in rules) {
     let newValue = rules[constants.KEY_VALUE];
@@ -111,7 +152,13 @@ function applyRuleValue(property, rules, oldValue) {
   return property;
 }
 
-function applyRuleDisable(property, rules) {
+/**
+ * Rule to disable values.
+ * @param {Object} rules The rules to execute.
+ * @param {Property} property The property that was acted upon.
+ * @returns {Property} The updated property.
+ */
+function applyRuleDisable(rules, property) {
   
   if (constants.KEY_DISABLE in rules) {
     let disableValues = rules[constants.KEY_DISABLE];
@@ -127,7 +174,13 @@ function applyRuleDisable(property, rules) {
   return property;
 }
 
-function applyRuleEnable(property, rules) {
+/**
+ * Rule to enable values.
+ * @param {Object} rules The rules to execute.
+ * @param {Property} property The property that was acted upon.
+ * @returns {Property} The updated property.
+ */
+function applyRuleEnable(rules, property) {
 
   if (constants.KEY_ENABLE in rules) {
     let enableValues = rules[constants.KEY_ENABLE];
@@ -143,7 +196,13 @@ function applyRuleEnable(property, rules) {
   return property;
 }
 
-function applyRuleActions(property, rules) {
+/**
+ * Rule to set actions for the property.
+ * @param {Object} rules The rules to execute.
+ * @param {Property} property The property that was acted upon.
+ * @returns {Property} The updated property.
+ */
+function applyRuleActions(rules, property) {
   if (constants.KEY_ACTIONS in rules) {
     let actionsToAccept = rules[constants.KEY_ACTIONS];
     property.actions = actionsToAccept;
@@ -151,23 +210,41 @@ function applyRuleActions(property, rules) {
   return property;
 }
 
-function applyRuleMessage(property, rules, messageQueue) {
+/**
+ * Rule to emit a message for the property.
+ * @param {Object} rules The rules to execute.
+ * @param {Property} property The property that was acted upon.
+ * @param {string[]} messages The existing messages for the property.
+ * @returns {string[]} The updated messages for the property.
+ */
+function applyRuleMessage(rules, property, messages) {
 
   if (constants.KEY_MESSAGE in rules) {
     let messageKey = rules[constants.KEY_MESSAGE];
     if (messageKey in property.messages) {
       let messageText = property.messages[messageKey];
-      messageQueue.push(messageText);
+      messages.push(messageText);
     } else {
       console.log(errors.NOT_FOUND(messageKey));
     }
   }
 
-  return messageQueue;
+  return messages;
 }
 
-function applyRuleIfBlock(action, property, rules, messages, 
-  oldValue, newValue, recursion) {
+/**
+ * Conditional rule (if block) with contents to execute if true.
+ * @param {Object} rules The rules to execute.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @param {string} newValue The new value for the property.
+ * @param {string[]} messages The messages for the property.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function applyRuleIfBlock(rules, action, property, oldValue, newValue, 
+  messages, recursion) {
 
   for (let trigger of Object.keys(rules)) {
 
@@ -176,17 +253,17 @@ function applyRuleIfBlock(action, property, rules, messages,
     if (words.length > 1 && 
         words[0] == constants.KEY_IF) {
 
-      let childRules = rules[trigger];
+      let ifBlockRules = rules[trigger];
       let actionMessages = [];
       let propertyMessages = [];
 
       [property, actionMessages] = 
-        applyRuleIfAction(action, property, rules, oldValue, newValue,
-          words, childRules, recursion);
+        applyRuleIfAction(ifBlockRules, action, property, oldValue, newValue,
+          words, recursion);
 
       [property, propertyMessages] = 
-        applyRuleIfValue(action, property, rules, oldValue, newValue, 
-          words, childRules, recursion);
+        applyRuleIfValue(ifBlockRules, action, property, oldValue, newValue, 
+          words, recursion);
 
       messages = messages.concat(actionMessages).concat(propertyMessages);
     }
@@ -195,8 +272,20 @@ function applyRuleIfBlock(action, property, rules, messages,
   return [property, messages];
 }
 
-function applyRuleIfAction(action, property, rules, oldValue, newValue,
-    words, childRules, recursion) {
+/**
+ * Conditional rule (if block) with contents to execute if a specific 
+ * action was done.
+ * @param {Object} rules The rules to execute.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @param {string} newValue The new value for the property.
+ * @param {string[]} words The words in the if statement.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function applyRuleIfAction(rules, action, property, oldValue, newValue,
+    words, recursion) {
 
   let messages = [];
 
@@ -206,15 +295,26 @@ function applyRuleIfAction(action, property, rules, oldValue, newValue,
       words[1] == action.name) {
         
     [property, messages] = 
-      applyRules(action, oldValue, newValue,
-        property, childRules, recursion + 1) 
+      applyRules(rules, action, property, oldValue, newValue, recursion + 1);
   }
 
   return [property, messages];
 }
 
-function applyRuleIfValue(action, property, rules, oldValue, newValue,
-  words, childRules, recursion) {
+/**
+ * Conditional rule (if block) with contents to execute if a property 
+ * has a specific value.
+ * @param {Object} rules The rules to execute.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @param {string} newValue The new value for the property.
+ * @param {string[]} words The words in the if statement.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function applyRuleIfValue(rules, action, property, oldValue, newValue,
+  words, recursion) {
 
   let messages = [];
 
@@ -228,18 +328,26 @@ function applyRuleIfValue(action, property, rules, oldValue, newValue,
 
     // Look at current property value, but also child entities of either
     // property value.
-    if (isPropertyValue(property, '', targetProperty, targetValue, 0)) {
+    if (isCurrentValue(property, '', targetProperty, targetValue, 0)) {
 
       [property, messages] = 
-        applyRules(action, oldValue, newValue, 
-          property, childRules, recursion + 1);
+        applyRules(rules, action, property, oldValue, newValue, recursion + 1);
     }
   }
 
   return [property, messages];
 }
 
-function isPropertyValue(property, propertyPrefix, targetProperty, 
+/**
+ * Determines if a property has a specific value.
+ * @param {Property} property The current property.
+ * @param {string} propertyPrefix The path to the current property.
+ * @param {string} targetProperty The property to target.
+ * @param {string} targetValue The value to see if the property has currently.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {bool} True if the target property has the target value.
+ */
+function isCurrentValue(property, propertyPrefix, targetProperty, 
   targetValue, recursion) {
 
   // property can be:
@@ -259,10 +367,13 @@ function isPropertyValue(property, propertyPrefix, targetProperty,
   } else {
     for (let value of Object.keys(property.values)) {
       for (let childEntity of property.values[value].childEntities) {
-        let prefix = getPropertyPrefix(childEntity);
+
+        let prefix = childEntity.path + constants.PATH_SEP + 
+          childEntity.name + constants.PATH_SEP;
+
         for (let propertyName of Object.keys(childEntity.properties)) {
           let property = childEntity.properties[propertyName];
-          if (isPropertyValue(property, prefix, 
+          if (isCurrentValue(property, prefix, 
               targetProperty, targetValue, recursion + 1)) {
             return true;
           }
@@ -272,8 +383,4 @@ function isPropertyValue(property, propertyPrefix, targetProperty,
   }
 
   return false;
-}
-
-function getPropertyPrefix(entity) {
-  return entity.path + constants.PATH_SEP + entity.name + constants.PATH_SEP;
 }
