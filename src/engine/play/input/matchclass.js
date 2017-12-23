@@ -1,5 +1,6 @@
 'use strict';
 
+/** This class tracks the results of searching eligible inputs. */
 class MatchingInput {
   constructor() {
     this.match;
