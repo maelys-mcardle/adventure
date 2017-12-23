@@ -40,22 +40,26 @@ function updatePropertyRecursive(entity, target, updatedProperty, recursion) {
   // See if current entity matches.
   // If it does, update the property.
   if (entity.name == target.entity && entity.path == target.path) {
+    
     entity.properties[target.property] = updatedProperty;
 
   // If the current entity does not match, search its children.
   } else {
+
     for (let propertyName of Object.keys(entity.properties)) {
       let property = entity.properties[propertyName];
       let currentValue = property.values[property.currentValue];
       for (let childEntityIndex in currentValue.childEntities) {
+
         let childEntity = currentValue.childEntities[childEntityIndex];
-        
         let updatedChildEntity = updatePropertyRecursive(childEntity,
           target, updatedProperty, recursion + 1);
-        
-          currentValue.childEntities[childEntityIndex] = updatedChildEntity;
+
+        currentValue.childEntities[childEntityIndex] = updatedChildEntity;
       }
-      entity.properties[propertyName].values[property.currentValue] = currentValue;
+
+      entity.properties[propertyName].values[property.currentValue] = 
+        currentValue;
     }
   }
 
