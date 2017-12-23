@@ -7,19 +7,15 @@ module.exports = {
   updateProperty: updateEntityProperty,
 }
 
-function updateEntityProperty(story, targetEntityName, targetEntityPath, 
-  targetPropertyName, updatedProperty) {
+function updateEntityProperty(story, target, updatedProperty) {
 
   story.rootEntity = 
-    updateEntityPropertyByName(
-      story.rootEntity, targetEntityName, targetEntityPath, 
-      targetPropertyName, updatedProperty, 0);
+    updateEntityPropertyByName(story.rootEntity, target, updatedProperty, 0);
 
   return story;
 }
 
-function updateEntityPropertyByName(entity, targetEntityName, targetEntityPath, 
-targetPropertyName, updatedProperty, recursion) {
+function updateEntityPropertyByName(entity, target, updatedProperty, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(errors.MAX_RECURSION);
@@ -27,8 +23,8 @@ targetPropertyName, updatedProperty, recursion) {
   }
 
   // current entity matches.
-  if (entity.name == targetEntityName && entity.path == targetEntityPath) {
-    entity.properties[targetPropertyName] = updatedProperty;
+  if (entity.name == target.entity && entity.path == target.path) {
+    entity.properties[target.property] = updatedProperty;
 
   // search children.
   } else {
@@ -39,8 +35,7 @@ targetPropertyName, updatedProperty, recursion) {
         let childEntity = currentPropertyValue.childEntities[childEntityIndex];
         
         let updatedChildEntity = updateEntityPropertyByName(childEntity,
-          targetEntityName, targetEntityPath, 
-          targetPropertyName, updatedProperty, recursion + 1);
+          target, updatedProperty, recursion + 1);
         
         currentPropertyValue.childEntities[childEntityIndex] = updatedChildEntity;
       }

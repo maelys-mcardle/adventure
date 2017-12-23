@@ -15,7 +15,7 @@ function executeRules(story, action, target, newValue, isTransition) {
   
   // Get entity property.
   let property = 
-    getEntity.findProperty(story, target.entity, target.path, target.property);
+    getEntity.findProperty(story, target);
   
   if (property == null) {
     console.log(
@@ -33,8 +33,7 @@ function executeRules(story, action, target, newValue, isTransition) {
   }
 
   // Update entity.
-  story = updateEntity.updateProperty(story, target.entity, 
-    target.path, target.property, property);
+  story = updateEntity.updateProperty(story, target, property);
 
   return [story, messages];
 }

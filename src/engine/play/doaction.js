@@ -42,7 +42,7 @@ function describeProperty(story, target) {
 
   // Get entity property.
   let property = 
-    getEntity.findProperty(story, target.entity, target.path, target.property);
+    getEntity.findProperty(story, target);
 
   if (property == null) {
     return paragraphs;

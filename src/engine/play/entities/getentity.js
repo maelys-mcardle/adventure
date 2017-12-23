@@ -16,11 +16,9 @@ function findEntity(story, targetEntityName, targetEntityPath) {
   return foundEntity;
 }
 
-function findProperty(story, targetEntityName, targetEntityPath, 
-  targetPropertyName) {
+function findProperty(story, target) {
 
-  let entityProperty = getPropertyByName(story.rootEntity, 
-    targetEntityName, targetEntityPath, targetPropertyName);
+  let entityProperty = getPropertyByName(story.rootEntity, target);
 
   return entityProperty;
 }
@@ -55,14 +53,13 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
  return null;
 }
 
-function getPropertyByName(rootEntity, targetEntityName, targetEntityPath, 
-  targetPropertyName) {
+function getPropertyByName(rootEntity, target) {
 
   let entity = 
-    getEntityByName(rootEntity, targetEntityName, targetEntityPath, 0);
+    getEntityByName(rootEntity, target.entity, target.path, 0);
   
   if (entity != null) {
-    return entity.properties[targetPropertyName];
+    return entity.properties[target.property];
   }
 
   return null;
