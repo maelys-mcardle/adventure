@@ -16,8 +16,7 @@ module.exports = {
  */
 function findEntity(story, target) {
 
-  let entity = getEntityByName(story.rootEntity, target);
-
+  let entity = getEntityRecursive(story.rootEntity, target, 0);
   return entity;
 }
 
@@ -29,7 +28,7 @@ function findEntity(story, target) {
  */
 function findProperty(story, target) {
 
-  let entity = getEntityByName(story.rootEntity, target, 0);
+  let entity = findEntity(story, target);
   let property = null;
   
   if (entity != null) {
@@ -46,7 +45,7 @@ function findProperty(story, target) {
  * @param {number} recursion Prevents infinite loops.
  * @returns {Entity} The matching entity.
  */
-function getEntityByName(entity, target, recursion) {
+function getEntityRecursive(entity, target, recursion) {
 
  if (recursion >= constants.MAX_RECURSION) {
    console.log(errors.MAX_RECURSION);
@@ -63,7 +62,7 @@ function getEntityByName(entity, target, recursion) {
      let property = entity.properties[propertyName];
      let currentValue = property.values[property.currentValue];
      for (let childEntity of currentValue.childEntities) {
-       let foundEntity = getEntityByName(childEntity, target, recursion + 1);
+       let foundEntity = getEntityRecursive(childEntity, target, recursion + 1);
        if (foundEntity != null) {
          return foundEntity;
        }

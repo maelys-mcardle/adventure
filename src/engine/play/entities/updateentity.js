@@ -17,7 +17,7 @@ module.exports = {
 function updateProperty(story, target, updatedProperty) {
 
   story.rootEntity = 
-    updatePropertyByName(story.rootEntity, target, updatedProperty, 0);
+    updatePropertyRecursive(story.rootEntity, target, updatedProperty, 0);
 
   return story;
 }
@@ -30,7 +30,7 @@ function updateProperty(story, target, updatedProperty) {
  * @param {number} recursion Prevents infinite loops.
  * @returns {Story} The updated story.
  */
-function updatePropertyByName(entity, target, updatedProperty, recursion) {
+function updatePropertyRecursive(entity, target, updatedProperty, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
     console.log(errors.MAX_RECURSION);
@@ -50,12 +50,12 @@ function updatePropertyByName(entity, target, updatedProperty, recursion) {
       for (let childEntityIndex in currentValue.childEntities) {
         let childEntity = currentValue.childEntities[childEntityIndex];
         
-        let updatedChildEntity = updateEntityPropertyByName(childEntity,
+        let updatedChildEntity = updatePropertyRecursive(childEntity,
           target, updatedProperty, recursion + 1);
         
-        currentPropertyValue.childEntities[childEntityIndex] = updatedChildEntity;
+          currentValue.childEntities[childEntityIndex] = updatedChildEntity;
       }
-      entity.properties[propertyName].values[property.currentValue] = currentPropertyValue;
+      entity.properties[propertyName].values[property.currentValue] = currentValue;
     }
   }
 
