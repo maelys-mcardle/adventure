@@ -4,14 +4,13 @@ const constants = require('../../constants');
 const errors = require('../../errors');
 
 module.exports = {
-  find: findEntity,
+  findEntity: findEntity,
   findProperty: findProperty,
 }
 
-function findEntity(story, targetEntityName, targetEntityPath) {
+function findEntity(story, target) {
 
-  let foundEntity = getEntityByName(story.rootEntity, 
-    targetEntityName, targetEntityPath);
+  let foundEntity = getEntityByName(story.rootEntity, target);
 
   return foundEntity;
 }
@@ -23,8 +22,7 @@ function findProperty(story, target) {
   return entityProperty;
 }
 
-function getEntityByName(entity, targetEntityName, targetEntityPath,
-  recursion) {
+function getEntityByName(entity, target, recursion) {
 
  if (recursion >= constants.MAX_RECURSION) {
    console.log(errors.MAX_RECURSION);
@@ -32,17 +30,16 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
  }
 
  // current entity matches.
- if (entity.name == targetEntityName && entity.path == targetEntityPath) {
+ if (entity.name == target.entity && entity.path == target.path) {
    return entity;
 
  // search children.
  } else {
    for (let propertyName of Object.keys(entity.properties)) {
      let property = entity.properties[propertyName];
-     let currentPropertyValue = property.values[property.currentValue];
-     for (let childEntity of currentPropertyValue.childEntities) {
-       let foundEntity = getEntityByName(childEntity,
-         targetEntityName, targetEntityPath, recursion + 1);
+     let currentValue = property.values[property.currentValue];
+     for (let childEntity of currentValue.childEntities) {
+       let foundEntity = getEntityByName(childEntity, target, recursion + 1);
        if (foundEntity != null) {
          return foundEntity;
        }
@@ -55,8 +52,7 @@ function getEntityByName(entity, targetEntityName, targetEntityPath,
 
 function getPropertyByName(rootEntity, target) {
 
-  let entity = 
-    getEntityByName(rootEntity, target.entity, target.path, 0);
+  let entity = getEntityByName(rootEntity, target, 0);
   
   if (entity != null) {
     return entity.properties[target.property];
