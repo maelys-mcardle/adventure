@@ -152,7 +152,7 @@ class Action {
     this.templates = [];
     this.defaultPropertyValue = null;
     this.changesPropertyValue = false;
-    this.describesEntityProperty = false;
+    this.describesPropertyValue = false;
   }
 
   /**
