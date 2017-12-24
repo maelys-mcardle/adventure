@@ -269,5 +269,156 @@ eye can see.
 At this point, there's nothing for the player to do. There needs to 
 be another place for the player to be and an action to get there!
 
+### Add a cabin
+
+That second place for the protagonist to be will be a cabin. Open the ferry's
+`values.dot` file, and edit the file to add the cabin like so:
+
+```dot
+graph location {
+  deck -- cabin
+}
+```
+
+The `--` between deck and cabin means that the two values are connected. When
+in the `deck`, the protagonist will be able to go to the `cabin`.
+
+Then edit the `text.md` file and edit it so it looks like so:
+
+```markdown
+# location
+
+## deck
+
+You are on the deck of the ferry.
+
+The deck has a number of benches and chairs for passengers to use. It's
+windy today, so few people are out here.
+
+You look around. The ferry is surrounded by the ocean for as far as the
+eye can see.
+
+## cabin
+
+You are on the cabin of the ferry.
+
+The ship's captain is here, along with the first mate. They welcome passengers
+to join them in the cabin, to see them steer and navigate the ship. There
+are radar screens showing the clouds that surround the ship, and a few other
+blips - perhaps other vessels in the distance.
+```
+
 ### Create the walk action
+
+The last piece now is to add a walk action. This action will change the values
+in the `location` property of the `ferry` entity.
+
+In the `actions` directory, add a `walk.yml` file. The story directory should
+now look as such:
+
+```
+  myStory/
+    |- actions/
+    |     |- walk.yml
+    |
+    |- entities/
+    |     |- ferry/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |
+    |- story.yml
+```
+
+Edit the `walk.yml` file so that it contains the following:
+
+```yaml
+do: transition
+templates:
+  - walk to the @value
+  - walk to @value
+  - walk @value
+synonyms:
+  walk:
+    - go
+    - run
+```
+
+Here `do: transition` means that this action will change the value of the
+property to whatever the player specifies. 
+
+The templates specify what the player can put in to trigger this action. 
+`@value` is a sub-in for actual values. With this story, there would only
+be two values so far: `deck` and `cabin`.
+
+This means that if the player wanted to trigger this action, and walk to the
+cabin from the deck, they could write:
+
+```
+walk to the cabin
+walk to cabin
+walk cabin
+```
+
+The synonyms are alternative words that could be used, in lieu of walk. And
+so the following would also trigger the action:
+
+```
+go to the cabin
+go to cabin
+go cabin
+run to the cabin
+run to cabin
+run cabin
+```
+
+### Try it out!
+
+Let's try these changes out. Start up adventure.
+
+```bash
+adventure
+```
+
+Then run the command to load your story.
+
+```
+start myStory
+```
+
+You should be greeted with the following:
+
+```
+Loaded My First Story
+
+You are on the deck of the ferry.
+
+The deck has a number of benches and chairs for passengers to use. It's
+windy today, so few people are out here.
+
+You look around. The ferry is surrounded by the ocean for as far as the
+eye can see.
+
+You can:
+ walk to the cabin
+``` 
+
+Now write `walk to the cabin` (or `go to the cabin` or whatnot). You should
+see the following:
+
+```
+You are on the cabin of the ferry.
+
+The ship's captain is here, along with the first mate. They welcome passengers
+to join them in the cabin, to see them steer and navigate the ship. There
+are radar screens showing the clouds that surround the ship, and a few other
+blips - perhaps other vessels in the distance.
+
+You can:
+ walk to the deck
+```
+
+You did it!
+
+### Adding more locations
 
