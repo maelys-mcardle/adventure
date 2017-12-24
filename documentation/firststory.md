@@ -426,7 +426,7 @@ Try adding more locations. Each time a value is added, the `values.yml` and
 `text.md` files will need to be updated. For instance, the `values.yml` file
 might end up looking like:
 
-```
+```dot
 graph location {
   engineRoom -- lowerDeck -- deck -- cabin
   lowerDeck -- cafeteria
@@ -435,7 +435,7 @@ graph location {
 
 And the `text.md` file might look like this:
 
-```
+```markdown
 # location
 
 ## deck
@@ -499,7 +499,7 @@ contain letters or numbers.
 Saying that the text for `engineRoom` should be `engine room` is specified in
 the `text.md` file after the colon (:).
 
-```
+```markdown
 ## engineRoom: engine room
 
 You are on the engine room of the ferry.
