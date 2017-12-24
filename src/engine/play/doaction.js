@@ -23,20 +23,20 @@ function applyAction(story, actionName, target, value) {
 
   if (action.changesPropertyValue) { 
     [story, text] = changeValue(story, action, target, value);
-  } else if (action.describesEntityProperty) {
-    text = describeProperty(story, target);
+  } else if (action.describesPropertyValue) {
+    text = describeValue(story, target);
   }
 
   return [story, text];
 }
 
 /**
- * Gets all the text for the property in its current state.
+ * Gets all the text for the property's current value.
  * @param {Story} story The story object.
  * @param {Target} target The entity and property to get the text of.
  * @returns {string[]} The paragraphs of text.
  */
-function describeProperty(story, target) {
+function describeValue(story, target) {
 
   let paragraphs = [];
 

@@ -86,7 +86,7 @@ function parseDo(action, doAction) {
       break;
 
     case constants.KEY_DESCRIPTION:
-      action.describesEntityProperty = true;
+      action.describesPropertyValue = true;
       break;
 
     default:

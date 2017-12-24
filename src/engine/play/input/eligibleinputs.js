@@ -104,7 +104,7 @@ function getInputsWithTemplate(template, eligibleAction) {
       }
     }
 
-    if (eligibleAction.action.describesEntityProperty) {
+    if (eligibleAction.action.describesPropertyValue) {
     
       let eligibleInput = 
         getEligibleInput(templateWithEntity, eligibleAction, 
