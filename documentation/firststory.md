@@ -422,3 +422,91 @@ You did it!
 
 ### Adding more locations
 
+Try adding more locations. Each time a value is added, the `values.yml` and
+`text.md` files will need to be updated. For instance, the `values.yml` file
+might end up looking like:
+
+```
+graph location {
+  engineRoom -- lowerDeck -- deck -- cabin
+  lowerDeck -- cafeteria
+}
+```
+
+And the `text.md` file might look like this:
+
+```
+# location
+
+## deck
+
+You are on the deck of the ferry.
+
+The deck has a number of benches and chairs for passengers to use. It's
+windy today, so few people are out here.
+
+You look around. The ferry is surrounded by the ocean for as far as the
+eye can see.
+
+## cabin
+
+You are on the cabin of the ferry.
+
+The ship's captain is here, along with the first mate. They welcome passengers
+to join them in the cabin, to see them steer and navigate the ship. There
+are radar screens showing the clouds that surround the ship, and a few other
+blips - perhaps other vessels in the distance.
+
+## lowerDeck: lower deck
+
+You are on the lower deck of the ferry.
+
+(Put something interesting about the lower deck here!)
+
+## engineRoom: engine room
+
+You are on the engine room of the ferry.
+
+(Put something interesting about the engine room here!)
+
+## cafeteria
+
+You are in the ferry's cafeteria.
+
+(Put something interesting about the cafeteria here!)
+```
+
+There's a few things to notice about the above. First, values can be connected
+to more than one thing. For instance, the lower deck is connected to the 
+engine room, the cafeteria, and the deck. When playing the game, being on the
+lower deck would give multiple options:
+
+```
+You are on the lower deck of the ferry.
+
+You can:
+ walk to the cafeteria
+ walk to the deck
+ walk to the engine room
+```
+
+Second, values must cannot contain spaces. Which is why the value for engine
+room is `engineRoom` and the lower deck is `lowerDeck`. This way of putting
+multiple words together is called 
+[camel case](https://en.wikipedia.org/wiki/Camel_case). Values should only 
+contain letters or numbers.
+
+Saying that the text for `engineRoom` should be `engine room` is specified in
+the `text.md` file after the colon (:).
+
+```
+## engineRoom: engine room
+
+You are on the engine room of the ferry.
+```
+
+### Next steps
+
+To keep learning how to write stories for adventure, check out the other 
+files in this documentation directory, and look at the examples. There's a lot
+that wasn't touched so far, including writing rules and `description` actions.
