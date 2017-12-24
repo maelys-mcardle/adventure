@@ -1,0 +1,16 @@
+# Actions
+
+```yaml
+do: transition
+templates:
+  - go to the @value
+  - go to @value
+  - go the @value
+  - go @value
+synonyms:
+  go:
+    - travel
+    - walk
+    - head
+    - enter
+```
