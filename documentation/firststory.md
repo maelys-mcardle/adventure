@@ -492,6 +492,46 @@ You can:
  walk to the engine room
 ```
 
+### Adding transitions
+
+You can also add text for when the protagonist goes from one location to
+another. If, for instance, there's a door between the deck and the lower deck,
+the following can be added to the `text.md` file.
+
+```markdown
+## deck -- lower deck
+
+You push open the heavy door between the deck and the lower deck.
+```
+
+Now when the protagonist goes from the main deck to the lower deck, or vice
+versa, they would see:
+
+```
+You push open the heavy door between the deck and the lower deck.
+
+You are on the lower deck of the ferry.
+
+You can:
+ walk to the cafeteria
+ walk to the deck
+ walk to the engine room
+```
+
+Transitional text like this can be added for any changes in value. They can
+also be uni-directional. For instance, to have the captain wave goodbye when
+the protagonist exits the cabin, the following could be added to the `text.md`
+file.
+
+```markdown
+## cabin -> deck
+
+The captain waves goodbye as you leave the cabin.
+```
+
+The above wouldn't be triggered when the protagonist enters the cabin; only 
+when they leave.
+
 ### Next steps
 
 To keep learning how to write stories for adventure, check out the other 

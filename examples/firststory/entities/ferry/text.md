@@ -36,3 +36,11 @@ You are on the engine room of the ferry.
 You are in the ferry's cafeteria.
 
 (Put something interesting about the cafeteria here!)
+
+## deck -- lower deck
+
+You push open the heavy door between the deck and the lower deck.
+
+## cabin -> deck
+
+The captain waves goodbye.
