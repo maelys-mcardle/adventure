@@ -433,8 +433,9 @@ graph location {
 }
 ```
 
-Note that if values have a space in the `values.yml` file, they must be put
-in double-quotes. Meanwhile, the `text.md` file might look like this:
+Note that if values have a space in the `values.yml` file, such as 
+`engine room`, they must be put in double-quotes. Meanwhile, the `text.md` 
+file might look like this:
 
 ```markdown
 # location
