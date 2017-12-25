@@ -428,12 +428,13 @@ might end up looking like:
 
 ```dot
 graph location {
-  engineRoom -- lowerDeck -- deck -- cabin
-  lowerDeck -- cafeteria
+  "engine room" -- "lower deck" -- deck -- cabin
+  "lower deck" -- cafeteria
 }
 ```
 
-And the `text.md` file might look like this:
+Note that if values have a space in the `values.yml` file, they must be put
+in double-quotes. Meanwhile, the `text.md` file might look like this:
 
 ```markdown
 # location
@@ -457,13 +458,13 @@ to join them in the cabin, to see them steer and navigate the ship. There
 are radar screens showing the clouds that surround the ship, and a few other
 blips - perhaps other vessels in the distance.
 
-## lowerDeck: lower deck
+## lower deck
 
 You are on the lower deck of the ferry.
 
 (Put something interesting about the lower deck here!)
 
-## engineRoom: engine room
+## engine room
 
 You are on the engine room of the ferry.
 
@@ -488,21 +489,6 @@ You can:
  walk to the cafeteria
  walk to the deck
  walk to the engine room
-```
-
-Second, values must cannot contain spaces. Which is why the value for engine
-room is `engineRoom` and the lower deck is `lowerDeck`. This way of putting
-multiple words together is called 
-[camel case](https://en.wikipedia.org/wiki/Camel_case). Values should only 
-contain letters or numbers.
-
-Saying that the text for `engineRoom` should be `engine room` is specified in
-the `text.md` file after the colon (:).
-
-```markdown
-## engineRoom: engine room
-
-You are on the engine room of the ferry.
 ```
 
 ### Next steps

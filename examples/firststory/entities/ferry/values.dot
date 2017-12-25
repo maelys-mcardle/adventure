@@ -1,3 +1,4 @@
 graph location {
-  deck -- cabin
+  "engine room" -- "lower deck" -- deck -- cabin
+  "lower deck" -- cafeteria
 }
