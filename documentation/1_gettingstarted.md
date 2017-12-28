@@ -25,19 +25,27 @@ documentation.
 Make sure [NodeJS](https://nodejs.org/) is installed. Then open a command-line
 prompt and run the following command:
 
-`npm install -g https://github.com/maelys-mcardle/adventure`
+```bash
+npm install -g https://github.com/maelys-mcardle/adventure
+```
 
 Test that Adventure runs by executing the following in a command-line prompt:
 
-`adventure`
+```bash
+adventure
+```
 
 The game will present an empty prompt that looks like this:
 
-`> `
+```
+> 
+```
 
 Use the `exit` command to quit.
 
-`> exit`
+```
+> exit
+```
 
 ### If you're going to write games
 
@@ -59,15 +67,21 @@ npm install
 Test that Adventure runs by executing the following in the same command-line
 prompt:
 
-`npm run adventure`
+```bash
+npm run adventure
+```
 
 The game will present an empty prompt that looks like this:
 
-`> `
+```
+> 
+```
 
 Use the `exit` command to quit.
 
-`> exit`
+```
+> exit
+```
 
 ## Playing a game
 
@@ -116,14 +130,39 @@ You can:
 >
 ```
 
-From here you can write sentences in plain language:
+From here you can write sentences in plain language. For example:
 
 ```
 > read the letter
 ```
 
+Note that what you write doesn't have to match exactly what's listed beneath
+`You can:`. Those are only examples. There's one example per thing you can
+do. For instance, instead of writing `go to the upstairs hallway`, you can 
+put in:
+
 ```
 > walk to the upstairs hallway
 ```
+
+Or other variations. Punctuation and letter capitalisation doesn't matter
+in Adventure, so writing:
+
+```
+> Say "hi there!"
+```
+
+Is the same as writing:
+
+```
+> say hi there
+```
+
+## Built-in commands
+
+There are also built-in commands for adventure. These are always there no
+matter what happens in the story. You used one, the `load` built-in command,
+to play a game. There are other commands, like `save`, which can be used to
+save progress in a game.
 
 Use the `help` command to get a listing of built-in commands for Adventure.
