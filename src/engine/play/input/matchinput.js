@@ -19,22 +19,39 @@ function matchInput(story, input) {
   let matchingInput = new MatchingInput();
   let allEligibleInputs = eligibleInputs.listAll(story, input);
 
-  let bestMatch = stringSimilarity.findBestMatch(input.trim(),
-    allEligibleInputs.map(i => i.text)).bestMatch;
+  let bestMatch = 
+    stringSimilarity.findBestMatch(
+      removePunctuation(input),
+      allEligibleInputs.map(i => removePunctuation(i.text))).bestMatch;
 
-  if (bestMatch.rating > 0.9) {
-    for (let eligibleInput of allEligibleInputs) {
-      if (bestMatch.target === eligibleInput.text) {
+  for (let eligibleInput of allEligibleInputs) {
+    if (bestMatch.target === removePunctuation(eligibleInput.text)) {
+
+      if (bestMatch.rating > 0.9) {
         matchingInput.match = eligibleInput;
         matchingInput.hasMatch = true;
         matchingInput.isExactMatch = bestMatch.rating === 1.0;
-        break;
+      } else if (bestMatch.rating > 0.5) {
+        matchingInput.suggestion = eligibleInput.text;
+        matchingInput.hasSuggestion = true;
       }
+
+      break;
     }
-  } else if (bestMatch.rating > 0.5) {
-    matchingInput.suggestion = bestMatch.target;
-    matchingInput.hasSuggestion = true;
   }
 
   return matchingInput;
+}
+
+/**
+ * Removes punctuation from text.
+ * @param {string} text The text to remove the punctuation.
+ * @returns {string} The text with punctuation removed.
+ */
+function removePunctuation(text) {
+  return text
+    .replace(/[\W_]+/g," ") // Replace non-aphanumeric characters with spaces
+    .replace(/ +(?= )/g,'') // Replace multiple spaces with single space.
+    .trim()
+    .toLowerCase();
 }
