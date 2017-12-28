@@ -59,7 +59,7 @@ function evaluateInput(story, input) {
   }
 
   for (let builtin of builtinCommands) {
-    if (command === builtin.command) {
+    if (command.toLowerCase() === builtin.command.toLowerCase()) {
       return builtin.callback(story, argument);
     }
   }
