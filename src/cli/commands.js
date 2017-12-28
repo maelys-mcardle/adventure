@@ -12,7 +12,7 @@ const builtinCommands = [
   {
     command: 'load',
     description: 'Load a story',
-    argument: 'save file',
+    argument: 'story directory or save file',
     callback: loadStory
   },
   {
@@ -60,6 +60,11 @@ function evaluateInput(story, input) {
 
   for (let builtin of builtinCommands) {
     if (command.toLowerCase() === builtin.command.toLowerCase()) {
+
+      if (builtin.argument && argument == '') {
+        return [story, `Missing ${builtin.argument}`]
+      }
+
       return builtin.callback(story, argument);
     }
   }
@@ -75,12 +80,19 @@ function evaluateInput(story, input) {
  * @returns {[Story, string]} The loaded story and text output.
  */
 function loadStory(story, storyPath) {
-  let isDirectory = fs.lstatSync(storyPath).isDirectory();
 
-  if (isDirectory) {
-    return loadNewStory(story, storyPath);
-  } else {
-    return loadSavedStory(story, storyPath);
+  try {
+
+    let isDirectory = fs.lstatSync(storyPath).isDirectory();
+
+    if (isDirectory) {
+      return loadNewStory(story, storyPath);
+    } else {
+      return loadSavedStory(story, storyPath);
+    }
+
+  } catch (err) {
+    return [story, `"${storyPath}" isn't a file or directory.`]
   }
 }
 
@@ -128,7 +140,7 @@ function saveStory(story, savePath) {
 
   let storyAsJson = toJson(story);
   writeFile(savePath, storyAsJson);
-  return [story, 'Saved ' + story.title];
+  return [story, 'Saved.'];
 }
 
 /**
@@ -138,6 +150,11 @@ function saveStory(story, savePath) {
  * @returns {[Story, string]} The story and text output.
  */
 function dumpStoryState(story, argument) {
+
+  if (story == null) {
+    return [story, 'Load a story first.']
+  }
+
   return [story, toJson(story)];
 }
 
@@ -148,6 +165,11 @@ function dumpStoryState(story, argument) {
  * @returns {[Story, string]} The story and text output.
  */
 function reminder(story, argument) {
+
+  if (story == null) {
+    return [story, 'Load a story first.']
+  }
+
   let output = getLoadedStoryOutput(story);
   return [story, output];
 }
@@ -161,7 +183,7 @@ function reminder(story, argument) {
 function runAction(story, input) {
 
   if (story == null) {
-    return [story, '']
+    return [story, 'Command not recognized.']
   }
 
   let [updatedStory, paragraphs] = storyEngine.evaluateInput(story, input);
