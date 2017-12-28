@@ -5,7 +5,7 @@ Adventure is a game engine reminiscent of 1980's interactive fiction.
 The language to create games with this engine is declarative and attempts
 to be as straight-forward as possible, as to reduce learning curves. 
 
-## Installing adventure
+## Installing adventure to play games
 
 Make sure you have [NodeJS](https://nodejs.org/) installed. Then run:
 
@@ -24,10 +24,10 @@ with the `load` command:
 
 Use the `help` command to get a listing of all possible commands.
 
-## Developing for adventure
+## Installing adventure to write games
 
-Make sure you have `git`, `npm` and `nodejs` installed. To retrieve
-the code and start developing, run the following:
+Make sure you have [NodeJS](https://nodejs.org/) and [Git](https://git-scm.com/)
+installed. To retrieve the code and start developing, run the following:
 
 ```bash
 # Download the source code.

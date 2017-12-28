@@ -10,8 +10,6 @@ transformers lining the shelves. Traces of your teenage self - the boxes
 of video games you kept perfectly. The computer you built, and rebuilt.
 An entire life that suddenly stops midway through university.
 
-And then this.
-
 ### bathroom
 
 You are in the bathroom.
