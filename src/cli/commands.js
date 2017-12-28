@@ -10,22 +10,16 @@ module.exports = {
 
 const builtinCommands = [
   {
-    command: 'start',
-    description: 'Start a new story',
-    argument: 'story directory',
-    callback: startNewStory
+    command: 'load',
+    description: 'Load a story',
+    argument: 'save file',
+    callback: loadStory
   },
   {
     command: 'save',
-    description: 'Save story progress',
+    description: 'Save story progress (use "load" command to load again)',
     argument: 'save file',
-    callback: saveStoryProgress
-  },
-  {
-    command: 'load',
-    description: 'Load a story in progress',
-    argument: 'save file',
-    callback: loadStoryProgress
+    callback: saveStory
   },
   {
     command: 'debug',
@@ -33,14 +27,9 @@ const builtinCommands = [
     callback: dumpStoryState
   },
   {
-    command: 'refresh',
+    command: 'reminder',
     description: 'Describe the current situation',
-    callback: refresh
-  },
-  {
-    command: 'list',
-    description: 'List commands for the story',
-    callback: listActions
+    callback: reminder
   },
   {
     command: 'help',
@@ -80,12 +69,28 @@ function evaluateInput(story, input) {
 }
 
 /**
+ * Loads a story.
+ * @param {Story} story The previous story object, if any.
+ * @param {string} storyPath Path to the story directory or save file.
+ * @returns {[Story, string]} The loaded story and text output.
+ */
+function loadStory(story, storyPath) {
+  let isDirectory = fs.lstatSync(storyPath).isDirectory();
+
+  if (isDirectory) {
+    return loadNewStory(story, storyPath);
+  } else {
+    return loadSavedStory(story, storyPath);
+  }
+}
+
+/**
  * Loads a new story.
  * @param {Story} story The previous story object, if any.
  * @param {string} storyDirectoryPath Directory containing story files.
  * @returns {[Story, string]} The loaded story and text output.
  */
-function startNewStory(story, storyDirectoryPath) {
+function loadNewStory(story, storyDirectoryPath) {
   let loadedStory = storyEngine.loadStory(storyDirectoryPath);
   let output = '';
 
@@ -102,7 +107,7 @@ function startNewStory(story, storyDirectoryPath) {
  * @param {string} savePath Path to saved story file.
  * @returns {[Story, string]} The loaded story and text output.
  */
-function loadStoryProgress(story, savePath) {
+function loadSavedStory(story, savePath) {
   let storyAsJson = readFile(savePath);
   let loadedStory = fromJson(storyAsJson);
   let output = getLoadedStoryOutput(loadedStory);
@@ -115,7 +120,7 @@ function loadStoryProgress(story, savePath) {
  * @param {string} savePath Path to save the story file.
  * @returns {[Story, string]} The story and text output.
  */
-function saveStoryProgress(story, savePath) {
+function saveStory(story, savePath) {
 
   if (story == null) {
     return [story, 'Load a story first.']
@@ -124,23 +129,6 @@ function saveStoryProgress(story, savePath) {
   let storyAsJson = toJson(story);
   writeFile(savePath, storyAsJson);
   return [story, 'Saved ' + story.title];
-}
-
-/**
- * Lists eligible actions on the story.
- * @param {Story} story The story object.
- * @param {string} argument Unused.
- * @returns {[Story, string]} The story and text output.
- */
-function listActions(story, argument) {
-
-  if (story == null) {
-    return [story, 'Load a story first.']
-  }
-
-  let output = listEligibleActions(story);
-
-  return [story, output];
 }
 
 /**
@@ -159,8 +147,8 @@ function dumpStoryState(story, argument) {
  * @param {string} argument Unused.
  * @returns {[Story, string]} The story and text output.
  */
-function refresh(story, argument) {
-  let output = describeCurrentState(story);
+function reminder(story, argument) {
+  let output = getLoadedStoryOutput(story);
   return [story, output];
 }
 
@@ -201,7 +189,7 @@ function help(story, argument) {
     }
     output += `  ${builtin.description}\n\n`;
   }
-  
+
   return [story, output];
 }
 
@@ -222,7 +210,7 @@ function quit(story, argument) {
  */
 function getLoadedStoryOutput(story) {
   let output = 
-    `Loaded ${story.title}\n\n` +
+    `"${story.title}" by ${story.author}\n\n` +
     `${describeCurrentState(story)}\n\n` +
     listEligibleActions(story);
   return output;

@@ -242,14 +242,14 @@ adventure
 Then run the command to load a new story.
 
 ```
-start myStory
+load myStory
 ```
 
 If your story directory not in the directory you're in, you'll need to specify
 the path to the directory with the story. For example:
 
 ```
-start /home/documents/myStory/
+load /home/documents/myStory/
 ```
 
 You should see the following if it works:
@@ -383,7 +383,7 @@ adventure
 Then run the command to load your story.
 
 ```
-start myStory
+load myStory
 ```
 
 You should be greeted with the following:

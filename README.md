@@ -20,7 +20,7 @@ An interactive console for the engine be started with the command:
 The game will present an empty prompt. You can load a new story 
 with the `start` command:
 
-`> start path/to/story`
+`> load path/to/story`
 
 Use the `help` command to get a listing of all possible commands.
 
@@ -47,6 +47,6 @@ To start adventure while developing:
 The game will present an empty prompt. You can load a sample story 
 with the `start` command:
 
-`> start examples/thehouse`
+`> load examples/thehouse`
 
 Use the `help` command to get a listing of all possible commands.
