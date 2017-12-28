@@ -116,4 +116,14 @@ You can:
 >
 ```
 
+From here you can write sentences in plain language:
+
+```
+> read the letter
+```
+
+```
+> walk to the upstairs hallway
+```
+
 Use the `help` command to get a listing of built-in commands for Adventure.
