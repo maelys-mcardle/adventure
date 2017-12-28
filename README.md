@@ -18,7 +18,7 @@ An interactive console for the engine be started with the command:
 `adventure`
 
 The game will present an empty prompt. You can load a new story 
-with the `start` command:
+with the `load` command:
 
 `> load path/to/story`
 
@@ -45,7 +45,7 @@ To start adventure while developing:
 `npm run adventure`
 
 The game will present an empty prompt. You can load a sample story 
-with the `start` command:
+with the `load` command:
 
 `> load examples/thehouse`
 

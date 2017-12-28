@@ -17,7 +17,7 @@ const builtinCommands = [
   },
   {
     command: 'save',
-    description: 'Save story progress (use "load" command to load again)',
+    description: 'Save story progress (use "load" command to resume)',
     argument: 'save file',
     callback: saveStory
   },
