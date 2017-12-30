@@ -136,17 +136,40 @@ From here you can write sentences in plain language. For example:
 > read the letter
 ```
 
-Note that what you write doesn't have to match exactly what's listed beneath
-`You can:`. Those are only examples. There's one example per thing you can
-do. For instance, instead of writing `go to the upstairs hallway`, you can 
-put in:
+## More on commands
+
+The plain language commands used to move the story forward don't have to match
+exactly what's listed beneath `You can:`.
+
+```
+You can:
+ describe world
+ go to the upstairs hallway
+ read the letter
+```
+
+What's listed there are only examples of things you could write, one per thing 
+you can do. Other ways of saying those commands are accepted. For instance,
+the game suggests writing the following:
+
+```
+> go to the upstairs hallway
+```
+
+But this would also be accepted:
 
 ```
 > walk to the upstairs hallway
 ```
 
-Or other variations. Punctuation and letter capitalisation doesn't matter
-in Adventure, so writing:
+So would this:
+
+```
+> go upstairs hallway
+```
+
+Furthermore, punctuation and capitalization are ignored when Adventure tries
+to understand commands. So writing the following:
 
 ```
 > Say "hi there!"
@@ -160,7 +183,7 @@ Is the same as writing:
 
 ## Built-in commands
 
-There are also built-in commands for adventure. These are always there no
+There are also built-in commands for Adventure. These are always there no
 matter what happens in the story. You used one, the `load` built-in command,
 to play a game. There are other commands, like `save`, which can be used to
 save progress in a game.
