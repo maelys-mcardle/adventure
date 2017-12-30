@@ -6,11 +6,7 @@ The presence is floating above the lawn.
 
 # conversation
 
-## hello
-
-Ada tells you "Hello, friend."
-
-## nothing
+## idle
 
 The presence looks at you.
 

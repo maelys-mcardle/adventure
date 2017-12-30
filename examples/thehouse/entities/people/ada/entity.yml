@@ -3,17 +3,15 @@ appearance:
   value: floating
 
 conversation:
-  value: hello
+  value: idle
   actions: [say]
   disable: [whoAreYouReally]
   rules:
-    hello:
-      value: nothing
     whoAreYou:
       disable: [whoAreYou]
       enable: [whoAreYouReally]
-      value: nothing
+      value: idle
     whoAreYouReally:
-      value: nothing
+      value: idle
     whereAmI:
-      value: nothing
+      value: idle

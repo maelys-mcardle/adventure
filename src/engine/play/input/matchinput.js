@@ -3,6 +3,7 @@
 const stringSimilarity = require('string-similarity');
 const eligibleInputs = require('./eligibleinputs');
 const {MatchingInput} = require('./matchclass');
+const constants = require('../../constants');
 
 module.exports = {
   match: matchInput
@@ -27,11 +28,11 @@ function matchInput(story, input) {
   for (let eligibleInput of allEligibleInputs) {
     if (bestMatch.target === removePunctuation(eligibleInput.text)) {
 
-      if (bestMatch.rating > 0.9) {
+      if (bestMatch.rating >= constants.RATING_MATCH) {
         matchingInput.match = eligibleInput;
         matchingInput.hasMatch = true;
         matchingInput.isExactMatch = bestMatch.rating === 1.0;
-      } else if (bestMatch.rating > 0.5) {
+      } else if (bestMatch.rating >= constants.RATING_SUGGESTION) {
         matchingInput.suggestion = eligibleInput.text;
         matchingInput.hasSuggestion = true;
       }

@@ -9,6 +9,12 @@ module.exports = {
   // To prevent bugs from killing the program.
   MAX_RECURSION: 5,
 
+  // How close input has to be to a known accepted phrase
+  // to be considered a match or a possible suggestion.
+  // 0.9 == 90% of input has to match a known phrase
+  RATING_MATCH: 0.9,
+  RATING_SUGGESTION: 0.5,
+
   // Directories.
   DIRECTORY_ACTIONS: 'actions',
   DIRECTORY_ENTITIES: 'entities',

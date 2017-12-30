@@ -3,8 +3,7 @@ graph appearance {
 }
 
 digraph conversation {
-    hello -> nothing
-    nothing -> whoAreYou
-    nothing -> whoAreYouReally
-    nothing -> whereAmI
+    idle -> whoAreYou
+    idle -> whoAreYouReally
+    idle -> whereAmI
 }
