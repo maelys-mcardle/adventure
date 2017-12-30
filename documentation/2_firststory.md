@@ -532,8 +532,8 @@ The captain waves goodbye as you leave the cabin.
 The above wouldn't be triggered when the protagonist enters the cabin; only 
 when they leave.
 
-### Next steps
+## That's it!
 
-To keep learning how to write stories for adventure, check out the other 
-files in this documentation directory, and look at the examples. There's a lot
-that wasn't touched so far, including writing rules and `description` actions.
+That's it for this guide to write your first story. There's much more you can
+do with stories in Adventure, make sure to check out the other files in the
+`documentation` directory!
