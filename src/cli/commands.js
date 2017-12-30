@@ -11,25 +11,27 @@ module.exports = {
 const builtinCommands = [
   {
     command: 'load',
-    description: 'Load a story',
+    description: 'Load a story from a story directory or save file',
     argument: 'story directory or save file',
+    examples: ['load examples/thehouse/', 'load savefile.json'],
     callback: loadStory
   },
   {
     command: 'save',
-    description: 'Save story progress (use "load" command to resume)',
+    description: 'Save story progress to a save file',
     argument: 'save file',
+    examples: ['save savefile.json'],
     callback: saveStory
-  },
-  {
-    command: 'debug',
-    description: 'Dump of current game state',
-    callback: dumpStoryState
   },
   {
     command: 'reminder',
     description: 'Describe the current situation',
     callback: reminder
+  },
+  {
+    command: 'debug',
+    description: 'Dump of current game state',
+    callback: dumpStoryState
   },
   {
     command: 'help',
@@ -204,12 +206,20 @@ function help(story, argument) {
   let output = 'BUILT-IN COMMANDS\n\n';
 
   for (let builtin of builtinCommands) {
-    if ('argument' in builtin) {
-      output += ` ${builtin.command} [${builtin.argument}]\n`;
-    } else {
-      output += ` ${builtin.command}\n`;
+
+    output += ` ${builtin.command}\n` 
+            + `  ${builtin.description}\n`
+            + `   examples:\n`
+            + `    "${builtin.command}`
+            + ('argument' in builtin ? ` [${builtin.argument}]"\n` : '"\n');
+
+    if ('examples' in builtin) {
+      for (let example of builtin.examples) {
+        output += `    "${example}"\n`;
+      }
     }
-    output += `  ${builtin.description}\n\n`;
+
+    output += '\n';
   }
 
   return [story, output];
