@@ -2,12 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const wrap = require('word-wrap');
 const storyEngine = require('../engine/engine');
 
 module.exports = {
   evaluate: evaluateInput,
 }
 
+const TERMINAL_WIDTH = 80;
 const builtinCommands = [
   {
     command: 'load',
@@ -109,7 +111,7 @@ function loadNewStory(story, storyDirectoryPath) {
   let output = '';
 
   if (loadedStory != null) {
-    output = getLoadedStoryOutput(loadedStory);
+    output = getFullStoryOutput(loadedStory);
   }
 
   return [loadedStory, output]; 
@@ -124,7 +126,7 @@ function loadNewStory(story, storyDirectoryPath) {
 function loadSavedStory(story, savePath) {
   let storyAsJson = readFile(savePath);
   let loadedStory = fromJson(storyAsJson);
-  let output = getLoadedStoryOutput(loadedStory);
+  let output = getFullStoryOutput(loadedStory);
   return [loadedStory, output];
 }
 
@@ -172,7 +174,7 @@ function reminder(story, argument) {
     return [story, 'Load a story first.']
   }
 
-  let output = getLoadedStoryOutput(story);
+  let output = getFullStoryOutput(story);
   return [story, output];
 }
 
@@ -190,7 +192,7 @@ function runAction(story, input) {
 
   let [updatedStory, paragraphs] = storyEngine.evaluateInput(story, input);
 
-  let output = paragraphs.join('\n\n') + '\n\n' + 
+  let output = normalizeStoryParagraphs(paragraphs) + '\n\n' + 
     listEligibleActions(updatedStory);
 
   return [updatedStory, output];
@@ -240,10 +242,10 @@ function quit(story, argument) {
  * @param {Story} story The story object.
  * @returns {string} Text output for the loaded story.
  */
-function getLoadedStoryOutput(story) {
+function getFullStoryOutput(story) {
   let output = 
     `"${story.title}" by ${story.author}\n\n` +
-    `${describeCurrentState(story)}\n\n` +
+    `${getStoryOutput(story)}\n\n` +
     listEligibleActions(story);
   return output;
 }
@@ -253,8 +255,31 @@ function getLoadedStoryOutput(story) {
  * @param {Story} story The story object.
  * @returns {string} Text for the story.
  */
-function describeCurrentState(story) {
-  return storyEngine.describeCurrentState(story).join('\n\n');
+function getStoryOutput(story) {
+  let paragraphs = storyEngine.getStoryOutput(story);
+  return normalizeStoryParagraphs(paragraphs);
+}
+
+/**
+ * Makes the story output printable on the terminal.
+ * It makes it a single string, word-wrapped at a given width.
+ * @param {string[]} paragraphs Story paragraphs
+ * @returns {string} The normalized story output.
+ */
+function normalizeStoryParagraphs(paragraphs) {
+  
+  // Get the story output as a single string.
+  let singleText = paragraphs.join('\n\n');
+
+  // Make text fit in the terminal window.
+  let wrappedText = 
+    wrap(singleText, 
+      {
+        width: TERMINAL_WIDTH,
+        indent: ''
+      });
+  
+  return wrappedText;
 }
 
 /**
@@ -263,7 +288,7 @@ function describeCurrentState(story) {
  * @returns {string} Lists example eligible commands.
  */
 function listEligibleActions(story) {
-  let possibleActions = storyEngine.listInputExamples(story);
+  let possibleActions = storyEngine.getInputExamples(story);
   let output = '';
 
   if (possibleActions.length > 0) {

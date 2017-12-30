@@ -5,7 +5,7 @@
 ### bedroom
 
 You are in the bedroom. It hasn't changed since your childhood. Your pink
-bed sheets. The blue walls. Your plush animals. Your polly pocket and 
+bed sheets. The blue walls. Your plush animals. Your polly pocket and
 transformers lining the shelves. Traces of your teenage self - the boxes
 of video games you kept perfectly. The computer you built, and rebuilt.
 An entire life that suddenly stops midway through university.

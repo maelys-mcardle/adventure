@@ -139,7 +139,8 @@ function parseMarkdown(entity, rawMarkdown) {
     // Paragraph. 
     } else if (entryType === constants.MD_PARAGRAPH && property && trigger) {
       let paragraph = entry[1];
-      text.push(paragraph);
+      let paragraphWithoutNewlines = paragraph.replace(/\s+/g, ' ');
+      text.push(paragraphWithoutNewlines);
       entity = addTextToProperty(entity, property, trigger, text);
     }
   }

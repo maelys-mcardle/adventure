@@ -6,6 +6,6 @@ const playStory = require('./play/playstory');
 module.exports = {
   loadStory: loadStory.load,
   evaluateInput: playStory.evaluateInput,
-  describeCurrentState: playStory.describeCurrentState,
-  listInputExamples: playStory.listInputExamples
+  getStoryOutput: playStory.getOutput,
+  getInputExamples: playStory.getInputExamples
 }

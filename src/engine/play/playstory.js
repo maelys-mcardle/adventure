@@ -8,8 +8,8 @@ const strings = require('../strings');
 
 module.exports = {
   evaluateInput: evaluateInput,
-  describeCurrentState: describeCurrentState,
-  listInputExamples: listInputExamples
+  getOutput: getOutput,
+  getInputExamples: getInputExamples
 }
 
 /**
@@ -47,7 +47,7 @@ function evaluateInput(story, input) {
  * @param {Story} story The story object.
  * @returns {string[]} The paragraphs of text.
  */
-function describeCurrentState(story) {
+function getOutput(story) {
   let output = getText.getAll(story);
   return output;
 }
@@ -57,7 +57,7 @@ function describeCurrentState(story) {
  * @param {Story} story The story object.
  * @returns {string[]} The examples of commands.
  */
-function listInputExamples(story) {
+function getInputExamples(story) {
   let output = eligibleInputs.listExamples(story);
   return output;
 }
