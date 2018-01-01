@@ -15,12 +15,11 @@ a game.
 
 ## Installing Adventure
 
-The instructions for installing Adventure differ for playing and writing games.
-For playing games, it's only necessary to load the Adventure executable. For
-writing games, the instructions will also download examples and this 
-documentation.
+There's two ways to install Adventure. One without downloading documentation
+and examples, which gives you the `adventure` command to play games. Another way
+is a development version, which gives you documentation and examples.
 
-### If you're only playing games
+### Installation (without documentation/examples)
 
 Make sure [NodeJS](https://nodejs.org/) is installed. Then open a command-line
 prompt and run the following command:
@@ -47,7 +46,7 @@ Use the `exit` command to quit.
 > exit
 ```
 
-### If you're going to write games
+### Installation (with documentation/examples)
 
 Make sure [NodeJS](https://nodejs.org/) and [Git](https://git-scm.com/) are
 installed. To retrieve the code and start developing, run the following in 
@@ -88,10 +87,10 @@ Use the `exit` command to quit.
 To play a game, start Adventure:
 
 ```bash
-# If installed with npm -g (for those only playing games)
+# If installed with npm -g (installation without documentation/examples)
 adventure
 
-# If installed with git (for those writing games)
+# If installed with git (installation with documentation/examples)
 npm run adventure
 ```
 
