@@ -94,7 +94,7 @@ entity: places.vancouver
 In Adventure, paths are separated with a dot `.` instead of a slash `/`:
 
 ```
-directory                         path in adventure
+directory                         path in Adventure
 ---------                         -----------------
 entities/world                 -> world
 entities/places/vancouver      -> places.vancouver
