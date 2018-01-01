@@ -81,9 +81,23 @@ Entities are made up of three kinds of files:
 * `.md` or Markdown files (eg. `text.md`) 
 * `.dot` or Dot files (eg. `values.dot`)
 
-Between them, they define the entirety of the entity. Generally speaking, the
-[Markdown files](https://en.wikipedia.org/wiki/Markdown) contain all the text
-that is shown to the player in game for that entity. These files look like this:
+Between them, they define the entirety of the entity. 
+
+The [DOT files](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\))
+list all the properties and values for that entity. Entities are made up of
+multiple properties, which specify an aspect of that entity. Those properties
+then have values. These files look like this:
+
+```dot
+graph location {
+  "engine room" -- "lower deck" -- deck -- cabin
+  "lower deck" -- cafeteria
+}
+```
+
+The [Markdown files](https://en.wikipedia.org/wiki/Markdown) contain all the 
+text that is shown to the player in game for that entity. These files look 
+like this:
 
 ```markdown
 # location
@@ -108,18 +122,6 @@ are radar screens showing the clouds that surround the ship, and a few other
 blips - perhaps other vessels in the distance.
 ```
 
-The [DOT files](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\))
-list all the properties and values for that entity. Entities are made up of
-multiple properties, which specify an aspect of that entity. Those properties
-then have values. These files look like this:
-
-```dot
-graph location {
-  "engine room" -- "lower deck" -- deck -- cabin
-  "lower deck" -- cafeteria
-}
-```
-
 The [YAML files](https://en.wikipedia.org/wiki/YAML) contain everything else,
 specifying the logic for the entity. The actions that can be used on each 
 property, rules, child entities. These files look like this:
@@ -141,3 +143,9 @@ multiple files. For instance, one file per property. So if there's too much
 text in the `text.md` file for a entity that has the two properties 
 `location` and `status`, then the file can be split into two: `location.md` and
 `status.md`.
+
+## Dot Files
+
+## Markdown Files
+
+## YAML Files
