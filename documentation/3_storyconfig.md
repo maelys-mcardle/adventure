@@ -12,7 +12,7 @@ the `actions` and `entities` sub-directories:
 
 This `story.yml` is the story's configuration file. It contains the main
 information for a story, such as its title and author. It also specifies
-which is the main entity. 
+the root entity - more on that below.
 
 ## File contents
 
@@ -38,7 +38,7 @@ more entities. This would be the path for the entity at the top of the hiearchy.
 
 The `entity` field in the `story.yml` file must specify the path of an entity.
 This path is defined by the directory structure of the story. Let's say we 
-wamt the `world` entity to be the root entity:
+want the `world` entity to be the root entity:
 
 ```
   story/
@@ -93,4 +93,70 @@ directory                         path in adventure
 entities/world                 -> world
 entities/places/vancouver      -> places.vancouver
 entities/universe/earth/canada -> universe.earth.canada
+```
+
+## Only one entity can be specified
+
+Only one entity, called the root entity, can be specified in the story 
+configuration file. This is because entities in Adventure are hiearchial.
+This means an entity can contain more entities, which can contain more 
+entities - making a tree-like structure. The root entity is the one at
+the very top.
+
+```
+                            orbit
+                              |
+          -----------------------------------------
+          |                   |                   |
+      spaceship           astronaut           satellite   
+          |                   |
+   ---------------        inventory
+   |             |
+airlock       engines          
+```
+
+Adventure works by going through the tree-like structure, starting from the 
+root entity, `orbit` in the example above, and going to every child
+entity (entity beneath it).
+
+The entity structure is independent of the directory structure. Child entities
+are specified in the entity's `entity.yml` file. So while the entity structure
+looks like the above, the directory structure might look like this below:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- orbit/
+    |     |- characters/
+    |     |    |- astronaut/
+    |     |    |     |- entity.yml
+    |     |    |     |- text.md
+    |     |    |     |- values.dot
+    |     |    |
+    |     |    |- inventory/
+    |     |          |- entity.yml
+    |     |          |- ...
+    |     |
+    |     |- objects/
+    |          |- spaceship/
+    |          |     |- entity.yml
+    |          |     |- ...
+    |          |
+    |          |- satellite/
+    |          |     |- ...
+    |          |
+    |          |- ...
+    |
+    |- story.yml
+```
+
+A story configuration file with `orbit` as the root entity could look 
+like the following:
+
+```yaml
+title: Space is Cold
+author: Maëlys McArdle
+description: A story to demonstrate the game engine.
+entity: orbit
 ```
