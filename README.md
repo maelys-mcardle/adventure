@@ -10,7 +10,9 @@ game world and the actions within it.
 
 Make sure you have [NodeJS](https://nodejs.org/) installed. Then run:
 
-`npm install -g https://github.com/maelys-mcardle/adventure`
+```
+npm install -g https://github.com/maelys-mcardle/adventure
+```
 
 ## Playing a game
 
