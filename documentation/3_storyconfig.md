@@ -29,8 +29,11 @@ entity: world
 The fields are as follows:
 
 **title**: The name for the story.
+
 **author**: The author(s) for the story.
+
 **description**: A short, one or two sentence description for the story.
+
 **entity**: The root entity. Entities are hiearchial in Adventure, containing
 more entities. This would be the path for the entity at the top of the hiearchy.
 
