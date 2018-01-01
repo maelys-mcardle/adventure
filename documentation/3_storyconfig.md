@@ -37,6 +37,9 @@ The fields are as follows:
 **entity**: The root entity. Entities are hiearchial in Adventure, containing
 more entities. This would be the path for the entity at the top of the hiearchy.
 
+These fields are optional, but without the `entity` field, the story won't
+be playable.
+
 ## More on the "entity" field
 
 The `entity` field in the `story.yml` file must specify the path of an entity.
