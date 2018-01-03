@@ -278,6 +278,23 @@ Note the keyword `digraph` is used instead of `graph`, to signify a directional
 relationship setting. In it, all relationships are directional, 
 represented with a `->`.
 
+### Dividing up complex properties
+
+```dot
+graph location {
+
+    subgraph house {
+        bedroom -- upstairsHallway -- bathroom
+        stairs -- upstairsHallway -- masterBedroom
+        livingRoom -- entrance -- stairs
+        entrance -- kitchen -- livingRoom
+    }
+
+    shed -- lawn -- entrance
+    lawn -- street
+}
+```
+
 ## Defining In-game text (Markdown files)
 
 ### Aliases
