@@ -194,8 +194,92 @@ text in the `text.md` file for a entity that has the two properties
 `location` and `status`, then the file can be split into two: `location.md` and
 `status.md`.
 
-## Dot Files
+## Defining Properties and values (Dot files)
 
-## Markdown Files
+Properties and values are written using a graph description language called
+[DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)).
 
-## YAML Files
+At it most simplest, it takes the following format:
+
+```dot
+graph propertyName {
+  value
+}
+```
+
+Where `propertyName` would be the name of a property for the entity, and
+`value` would be the only acceptable value for that property. Property names 
+must always be preceded by the keyword `graph`. 
+
+In reality, there would be multiple properties, and multiple values for each.
+A car entity's `values.dot` file might look like this:
+
+```dot
+graph engine {
+  on -- off
+}
+
+graph doors {
+  open -- ajar -- closed
+  open -- closed
+}
+
+graph fuel {
+  full -- "half full" -- empty
+}
+```
+
+In the above examples, there are three properties: `engine`, `doors` and `fuel`,
+each with a set of values. The `--` between values means that it can transition
+between the adjoining values. For instance, the fuel cannot go from `full` to
+`empty`, it must first go from `full` to `halfFull` and from `halfFull` to 
+`empty`.
+
+Properties should not contain spaces. If you want to represent
+multiple words, use [camel case](https://en.wikipedia.org/wiki/Camel_case) 
+notation. That means multiple words should be written like this: 
+`propertyWithMultipleWords` where there's no spaces, but the words that would
+follow a space normally are capitalized.
+
+Values can contain spaces. However, when writing values, they should be 
+wrapped in double-quotes:
+
+```dot
+graph dogs {
+  "german shepherd"
+  "corgi"
+  "alaskan malamute"
+}
+```
+
+If the value is very long, another way to represent it is with aliases. Those
+are covered in the next section.
+
+You can validate your dot file online by putting its contents at the
+[webgraphviz](http://www.webgraphviz.com/) website. It'll generate pretty
+graphs representing the relationships between your values.
+
+### One-way relationships
+
+Uni-directional relationships can also be represented in dot files:
+
+```dot
+digraph health {
+  healthy -> sick -> dead
+  sick -> healthy
+}
+```
+
+In the above example, a person can go from `healthy` to `sick`, and from 
+`sick` to `dead`. However, they can not go back from `dead` to `sick`. It's
+a one-way relationship, instead of two-way.
+
+Note the keyword `digraph` is used instead of `graph`, to signify a directional
+relationship setting. In it, all relationships are directional, 
+represented with a `->`.
+
+## Defining In-game text (Markdown files)
+
+### Aliases
+
+## Defining entity logic (YAML files)
