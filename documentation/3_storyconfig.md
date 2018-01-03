@@ -101,7 +101,7 @@ entities/places/vancouver      -> places.vancouver
 entities/universe/earth/canada -> universe.earth.canada
 ```
 
-## Only one entity can be specified
+### Only one entity can be specified
 
 Only one entity, called the root entity, can be specified in the story 
 configuration file. This is because entities in Adventure are hiearchial.

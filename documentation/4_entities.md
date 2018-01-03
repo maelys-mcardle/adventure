@@ -40,9 +40,31 @@ and each property must have at least one value.
 
 ## Directory
 
-Each entity must have its own directory. This directory will then contain
-files for the entity. The name and path of the entity are defined by the
-directory they're in. For instance, take the entity in the directory below:
+The files for each entity must be put inside a dedicated directory for that
+entity. The name of the directory will then become the name of the entity.
+For example, the entities given the directory structure below would be 
+`spaceship` and `asteroid`:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- spaceship/
+    |     |    |- entity.yml
+    |     |    |- text.md
+    |     |    |- values.dot
+    |     |
+    |     |- asteroid/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+For organizational purposes, directories can be put inside other directories.
+For example, the entity `elizabeth` can be put inside the directory `characters`
+alongside all other character entities.
 
 ```
   story/
@@ -57,10 +79,38 @@ directory they're in. For instance, take the entity in the directory below:
     |- story.yml
 ```
 
-The entity name would be `elizabeth` and is taken from the directory name. The
-full path for the entity would be `characters.elizabeth`. The full path is
-the list of directories it takes to get from the `entities/` directory to the
-entity, separated by dots (`.`).
+Directory names should not contain any spaces, and by convention, 
+are lower-case.
+
+### Entity Paths
+
+Paths are used to refer to entities within Adventure. This is because 
+multiple entities can have the same name and therefore using names is not
+enough. For example, there are two entities named `door` in the following
+example:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- house/
+    |     |    |- door/
+    |     |          |- entity.yml
+    |     |          |- text.md
+    |     |          |- values.dot
+    |     |- car/
+    |          |- door/
+    |                |- entity.yml
+    |                |- text.md
+    |                |- values.dot
+    | 
+    |- story.yml
+```
+
+The path is the list of directories it takes to get from the `entities/` 
+directory to the entity, separated by dots (`.`). In the example above, there
+are two entities named `door`, but one has the path `house.door` while the
+other has the path `car.door`.
 
 Here are a few more examples of how directories translate to paths in
 Adventure:
