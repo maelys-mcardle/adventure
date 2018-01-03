@@ -252,9 +252,6 @@ graph dogs {
 }
 ```
 
-If the value is very long, another way to represent it is with aliases. Those
-are covered in the next section.
-
 You can validate your dot file online by putting its contents at the
 [webgraphviz](http://www.webgraphviz.com/) website. It'll generate pretty
 graphs representing the relationships between your values.
@@ -292,6 +289,19 @@ graph location {
 
     shed -- lawn -- entrance
     lawn -- street
+}
+```
+
+### Long values
+
+If the value is very long, another way to represent it is with aliases. Those
+are covered in the next section.
+
+```dot
+digraph conversation {
+    idle -> whoAreYou
+    idle -> whoAreYouReally
+    idle -> whereAmI
 }
 ```
 
