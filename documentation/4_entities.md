@@ -182,19 +182,11 @@ location:
   actions: [walk]
 ```
 
-There can be one or more of each of these files for each entity. Adventure
-will go through all of these files. By convention, if there's only a single
-`.md` file, it's called `text.md`. If there's only a single `.dot` file, it's
-called `values.dot`, and if there's only a single `.yml` file it's called 
-`entity.yml`. They can, however, be called anything.
+Each entity can have one or more `.md`, `.dot` and `.yml` files. Simpler
+entities will have one of each, named `text.md`, `values.dot` and `entity.yml`
+by convention. More complex entities might have more than one of these files.
 
-When one of these files gets too large, it's a good idea to split it into
-multiple files. For instance, one file per property. So if there's too much
-text in the `text.md` file for a entity that has the two properties 
-`location` and `status`, then the file can be split into two: `location.md` and
-`status.md`.
-
-## Defining Properties and values (Dot files)
+## Defining Properties and values (".dot" files)
 
 Properties and values are written using a graph description language called
 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)).
@@ -203,13 +195,13 @@ At it most simplest, it takes the following format:
 
 ```dot
 graph propertyName {
-  value
+  someValue
 }
 ```
 
 Where `propertyName` would be the name of a property for the entity, and
-`value` would be the only acceptable value for that property. Property names 
-must always be preceded by the keyword `graph`. 
+`someValue` would be the only acceptable value for that property. Property 
+names must always be preceded by the keyword `graph`. 
 
 In reality, there would be multiple properties, and multiple values for each.
 A car entity's `values.dot` file might look like this:
@@ -275,7 +267,171 @@ Note the keyword `digraph` is used instead of `graph`, to signify a directional
 relationship setting. In it, all relationships are directional, 
 represented with a `->`.
 
-### Dividing up complex properties
+## Defining In-game text (".md" files)
+
+The text shown to the player is in a file written in a subset of the 
+[Markdown language](https://en.wikipedia.org/wiki/Markdown).
+
+At its most simplest, the files take on the following format:
+
+```markdown
+# propertyName
+
+## someValue
+
+This sentence, the one you're reading right now, would be shown to the 
+player.
+```
+
+The line `## someValue` is called the trigger, and it defines the condition
+for the text to appear to the player.
+
+There are three different types of triggers: values, transitions, and messages.
+More on these below.
+
+Note that these files can contain one or more properties. Take the following
+`text.md` file for a door entity, which has the properties `position` and
+`condition`:
+
+```markdown
+# position
+
+## open
+
+The door is open.
+
+## closed
+
+The door is closed.
+
+# condition
+
+## perfect
+
+The door is in perfect condition.
+
+## broken
+
+The door is broken.
+
+## perfect -> broken
+
+You broke the door.
+
+## broken -> perfect
+
+You fixed the door.
+```
+
+### Value trigger
+
+The simplest trigger is for when the property's current value matches the 
+value named in the trigger. So take a property with two values, `on` and `off`. 
+Its `text.md` file might look like so:
+
+```markdown
+# flashlight
+
+## on
+
+The flashlight is on.
+
+## off
+
+The flashlight is off.
+```
+
+The `## on` trigger means that the text beneath it would only appear when the 
+flashlight's value is currently `on`. Likewise for the `## off` trigger.
+
+### Transition trigger
+
+Another type of trigger is for when the property's value changes from one 
+specified value to another. Take the following example for a cargo ship entity:
+
+```markdown
+# location
+
+## deck
+
+You are on the deck.
+
+## cabin
+
+You are in the cabin.
+
+## wheelhouse
+
+You are in the wheelhouse. The captain is driving the ship.
+
+## deck -> wheelhouse
+
+The captain waves hello to you.
+
+## wheelhouse -> deck
+
+The captain waves goodbye to you.
+
+## deck -- cabin
+
+You open the large door between the deck and cabin.
+```
+
+The `## deck -> wheelhouse` means that when the location changes from `deck`
+to `wheelhouse`, the text beneath the trigger will be displayed to the player. 
+This is a uni-directional relationship, marked by the `->`. This text will
+not show when the location changes from `wheelhouse` to the `deck`.
+
+The `## deck -- cabin` means that when the location changes from `deck` to 
+`cabin` or vice versa, the text beneath the trigger will be shown to the player.
+This is a bi-directional relationship, marked by the `--`. 
+
+Note that the `->` and `--` of the Markdown file does not have to match the
+relationships defined in the Dot file. The Dot file is about what values
+a specific value can transition to. The Markdown file is about when to show
+text.
+
+### Messages trigger
+
+The third type of trigger is for messages. These are shown programatically
+by a rule in the `.yml` file. The triggers must be unique, and not correspond
+to a value.
+
+Take the following example:
+
+```markdown
+# location
+
+## castle
+
+You are in the castle.
+
+# gameOver
+
+Game over. You totes saved the prince!
+```
+
+The `# gameOver` is a message trigger. `gameOver` isn't a property's value.
+It is triggered when there's a rule in the `.yml` file for the property
+that says `message: gameOver`.
+
+## Defining entity logic (".yml" files)
+
+## Dealing with long values with aliases
+
+If the value is very long, another way to represent it is with aliases. Those
+are covered in the next section.
+
+```dot
+digraph conversation {
+    idle -> whoAreYou
+    idle -> whoAreYouReally
+    idle -> whereAmI
+}
+```
+## Simplifying complex entities
+
+### Sub-divide properties
 
 ```dot
 graph location {
@@ -292,21 +448,5 @@ graph location {
 }
 ```
 
-### Long values
+### Split files
 
-If the value is very long, another way to represent it is with aliases. Those
-are covered in the next section.
-
-```dot
-digraph conversation {
-    idle -> whoAreYou
-    idle -> whoAreYouReally
-    idle -> whereAmI
-}
-```
-
-## Defining In-game text (Markdown files)
-
-### Aliases
-
-## Defining entity logic (YAML files)
