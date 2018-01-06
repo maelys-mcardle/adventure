@@ -9,43 +9,49 @@ module.exports = {
   evaluate: evaluateInput,
 }
 
-const TERMINAL_WIDTH = 80;
-const builtinCommands = [
-  {
-    command: 'load',
-    description: 'Load a story from a story directory or save file',
-    argument: 'story directory or save file',
-    examples: ['load examples/thehouse/', 'load savefile.json'],
-    callback: loadStory
-  },
-  {
-    command: 'save',
-    description: 'Save story progress to a save file',
-    argument: 'save file',
-    examples: ['save savefile.json'],
-    callback: saveStory
-  },
-  {
-    command: 'reminder',
-    description: 'Describe the current situation',
-    callback: reminder
-  },
-  {
-    command: 'debug',
-    description: 'Dump of current game state',
-    callback: dumpStoryState
-  },
-  {
-    command: 'help',
-    description: 'List built-in commands',
-    callback: help
-  },
-  {
-    command: 'exit',
-    description: 'Leave the story',
-    callback: quit
-  },
-]
+const config = {
+
+  // Width of CLI terminal, in characters.
+  terminalWidth: 80,
+
+  // List of built-in commands.
+  builtinCommands: [
+    {
+      command: 'load',
+      description: 'Load a story from a story directory or save file',
+      argument: 'story directory or save file',
+      examples: ['load examples/thehouse/', 'load savefile.json'],
+      callback: loadStory
+    },
+    {
+      command: 'save',
+      description: 'Save story progress to a save file',
+      argument: 'save file',
+      examples: ['save savefile.json'],
+      callback: saveStory
+    },
+    {
+      command: 'reminder',
+      description: 'Describe the current situation',
+      callback: reminder
+    },
+    {
+      command: 'debug',
+      description: 'Dump of current game state',
+      callback: dumpStoryState
+    },
+    {
+      command: 'help',
+      description: 'List built-in commands',
+      callback: help
+    },
+    {
+      command: 'exit',
+      description: 'Leave the story',
+      callback: quit
+    },
+  ]
+}
 
 /**
  * Evaluates the user input.
@@ -62,7 +68,7 @@ function evaluateInput(story, input) {
     return [story, ''];
   }
 
-  for (let builtin of builtinCommands) {
+  for (let builtin of config.builtinCommands) {
     if (command.toLowerCase() === builtin.command.toLowerCase()) {
 
       if (builtin.argument && argument == '') {
@@ -207,17 +213,15 @@ function runAction(story, input) {
 function help(story, argument) {
   let output = 'BUILT-IN COMMANDS\n\n';
 
-  for (let builtin of builtinCommands) {
+  for (let builtin of config.builtinCommands) {
 
-    output += ` ${builtin.command}\n` 
-            + `  ${builtin.description}\n`
-            + `   examples:\n`
-            + `    "${builtin.command}`
+    output += ` ${builtin.command}: ${builtin.description}\n` 
+            + `   eg. "${builtin.command}`
             + ('argument' in builtin ? ` [${builtin.argument}]"\n` : '"\n');
 
     if ('examples' in builtin) {
       for (let example of builtin.examples) {
-        output += `    "${example}"\n`;
+        output += `       "${example}"\n`;
       }
     }
 
@@ -275,7 +279,7 @@ function normalizeStoryParagraphs(paragraphs) {
   let wrappedText = 
     wrap(singleText, 
       {
-        width: TERMINAL_WIDTH,
+        width: config.terminalWidth,
         indent: ''
       });
   
