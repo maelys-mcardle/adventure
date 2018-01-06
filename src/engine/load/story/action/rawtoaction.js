@@ -137,11 +137,25 @@ function parseSingleSynonym(word, synonymForWord, templates) {
 
   for (let template of templates) {
     if (template.includes(word)) {
-      newTemplates.push(template.replace(word, synonymForWord));
+      let templateWithSynonym = replaceWord(template, word, synonymForWord);
+      newTemplates.push(templateWithSynonym);
     } else {
       console.log(errors.WORD_NOT_IN_TEMPLATE(word, template));
     }
   }
 
   return newTemplates;
+}
+
+/**
+ * Replaces a word with a synonym.
+ * @param {string} text The word containing the word.
+ * @param {string} word A word.
+ * @param {string} synonymForWord A synonym for the word.
+ * @returns {string} The text with the word replaced.
+ */
+function replaceWord(text, word, synonymForWord) {
+  // The \b{word}\b means that the whole word must be matched,
+  // and not just a part of another word.
+  return text.replace(RegExp(`\\b${word}\\b`, 'g'), synonymForWord);
 }
