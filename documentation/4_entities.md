@@ -423,7 +423,7 @@ location:
       message: gameOver
 ```
 
-## Defining entity logic (".yml" files)
+## Defining entity behaviour (".yml" files)
 
 The text shown to the player is in a file written in the
 [YAML language](https://en.wikipedia.org/wiki/YAML).
@@ -457,8 +457,9 @@ file that has all the values.
 
 The `actions` field sets the actions that can be performed on the property.
 
-See the documentation on actions for how to create the action files, which
-are needed for this field to work. 
+See the documentation on actions for an explanation of what actions are and 
+how they work. The important thing to take away at this time is that the name
+of these actions are needed for this property to work.
 
 ```yaml
 door:
@@ -488,38 +489,119 @@ directory. So if there's this directory structure for the story:
     |- story.yml
 ```
 
-The actions would be `close`, `describe` and `open`.
+The actions in the above example would be `close`, `describe` and `open`.
 
-### Disable
+### Child Entities
 
-### Entities
+All entities can contain more entities. These contained entities are called
+child entities; they are the child of the parent property.
 
-### Rules
+The `entities` field sets the child entity. At its most simplest it
+takes the following format:
 
-#### "If" blocks
+```yaml
+propertyName:
+  entities:
+    someValue:
+      - someChildEntity
+```
 
-#### Enable
+For example:
 
-#### Disable
+```yaml
+location:
+  value: bedroom
+  actions: [walk, describe]
+  entities:
+    bedroom:
+      - objects.letter
+      - objects.door
+    entrance:
+      - objects.door
+    lawn:
+      - people.neighbour
+```
 
-#### Actions
+These entities are activated when the property's current value is that of
+the value specified in the `entities` field. For instance, when the protagonist
+is in the bedroom in the above example, there will be two entities: the 
+`letter` and the `door`. 
 
-#### Value
+The player will see the text and actions associated with the `location` 
+property, but also the `letter` and the `door`. When the property's value
+changes, these child entities are deactivated. Their state (eg. door being
+open) is remembered.
 
-#### Message
+### More on entity behaviour
+
+The above only covers the basics. More can be defined in the `.yml` files
+for the entities. See the documentation covering more on entities.
 
 ## Dealing with long values with aliases
 
-If the value is very long, another way to represent it is with aliases. Those
-are covered in the next section.
+There are cases where the value of a property might be so long as to
+be unwieldy in code. For instance, if an entity representing an in-game
+character can say things, the conversation property might be represented
+as such:
 
 ```dot
 digraph conversation {
-    idle -> whoAreYou
-    idle -> whoAreYouReally
-    idle -> whereAmI
+    idle -> "What is your name?"
+    idle -> "Where do you live?"
+    idle -> "How do you find the weather?"
 }
 ```
+
+Then that text would need to be used everywhere, including the `.yml` files:
+
+```yaml
+conversation:
+  value: Where do you live?
+```
+
+Aliases are a way to deal with these long values. They are shortcuts. To use
+them, first write using values that are a single word. You can represent many
+words with [camel case](https://en.wikipedia.org/wiki/Camel_case).
+
+In the example above, the values file might look like so:
+
+```dot
+digraph conversation {
+    idle -> whatName
+    idle -> whereLive
+    idle -> howWeather
+}
+```
+
+Then in the text file, you represent the full-text of the alias using a 
+colon `:` in the trigger for the value.
+
+```markdown
+# conversation
+
+## idle
+
+Yes?
+
+## whatName: What is your name?
+
+My name is Corie Greenberg.
+
+## whereLive: Where do you live?
+
+I live on a boat.
+
+## whatWeather: How do you find the weather?
+
+I find there's lots of rain.
+
+## idle -> whatWeather
+
+She looks towards the sky.
+```
+
+Everywhere else, only the alias would be used, that is to say, the shortcut.
+
 ## Simplifying complex entities
 
 ### Sub-divide properties
