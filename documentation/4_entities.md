@@ -493,9 +493,9 @@ has one value to begin with.
 
 The `actions` field sets the actions that can be performed on the property.
 
-See the documentation on actions for an explanation of what actions are and 
-how they work. The important thing to take away at this time is that the name
-of these actions are needed for this property to work.
+See the [documentation on actions](5_actions.md) for an explanation of what 
+actions are and how they work. The important thing to take away at this time 
+is that the name of these actions are needed for this property to work.
 
 ```yaml
 door:
@@ -592,7 +592,8 @@ open) is remembered.
 ### More on entity configuration
 
 The above only covers the basics. More can be defined in the `.yml` files
-for the entities. See the documentation covering more on entities.
+for the entities. See the [documentation covering entities](6_moreentities.md)
+in more detail.
 
 ## Using aliases to shorten long values
 

@@ -559,4 +559,5 @@ when they leave.
 
 That's it for this guide to write your first story. There's much more you can
 do with stories in Adventure, make sure to check out the other files in the
-`documentation` directory!
+`documentation` directory! Especially the documentation on
+[entities](4_entities.md) and [actions](5_actions.md).
