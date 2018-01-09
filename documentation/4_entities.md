@@ -735,7 +735,10 @@ graph location {
 ```
 
 The `subgraph` keyword is used to denote a graph within a graph for the dot 
-file. The organization can also be done in the text file:
+file. This has no effect on the rest of the story. It's just purely for 
+organizational purposes, to make it easier to edit the story.
+
+This organization can also be done in the text file:
 
 ```markdown
 # location
@@ -796,5 +799,7 @@ The `someGroupName` above doesn't have to be defined anywhere else. Normally
 though, it would match the name for the subgraph in the `.dot` file.
 
 Note that just because the sub-division was done in the `.dot` file it doesn't
-have to be done in the `.md` file and vice versa.
+have to be done in the `.md` file and vice versa. The `.yml` files cannot be
+organized any differently. If the `.yml` files get too complex, the only 
+solution is to split it up into multiple files.
 
