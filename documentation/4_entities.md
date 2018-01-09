@@ -6,11 +6,11 @@
   - [What entities are](#what-entities-are)
   - [Properties and values](#properties-and-values)
   - [Directory](#directory)
-    - [Entity Paths](#entity-paths)
+    - [Entity paths](#entity-paths)
   - [Files](#files)
-  - [Defining Properties and values (".dot" files)](#defining-properties-and-values-dot-files)
+  - [Defining properties and values (".dot" files)](#defining-properties-and-values-dot-files)
     - [One-way relationships](#one-way-relationships)
-  - [Defining In-game text (".md" files)](#defining-in-game-text-md-files)
+  - [Defining in-game text (".md" files)](#defining-in-game-text-md-files)
     - [Value trigger](#value-trigger)
     - [Transition trigger](#transition-trigger)
     - [Messages trigger](#messages-trigger)
@@ -19,7 +19,7 @@
     - [Actions](#actions)
     - [Child entities](#child-entities)
     - [More on entity behaviour](#more-on-entity-behaviour)
-  - [Dealing with long values with aliases](#dealing-with-long-values-with-aliases)
+  - [Dealing with long values using aliases](#dealing-with-long-values-using-aliases)
   - [Organizing complex entities](#organizing-complex-entities)
     - [Splitting files](#splitting-files)
     - [Sub-dividing properties](#sub-dividing-properties)
@@ -110,7 +110,7 @@ alongside all other character entities.
 Directory names should not contain any spaces, and by convention, 
 are lower-case.
 
-### Entity Paths
+### Entity paths
 
 Paths are used to refer to entities within Adventure. This is because 
 multiple entities can have the same name and therefore using names is not
@@ -214,7 +214,7 @@ Each entity can have one or more `.md`, `.dot` and `.yml` files. Simpler
 entities will have one of each, named `text.md`, `values.dot` and `entity.yml`
 by convention. More complex entities might have more than one of these files.
 
-## Defining Properties and values (".dot" files)
+## Defining properties and values (".dot" files)
 
 Properties and values are written using a graph description language called
 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)).
@@ -295,7 +295,7 @@ Note the keyword `digraph` is used instead of `graph`, to signify a directional
 relationship setting. In it, all relationships are directional, 
 represented with a `->`.
 
-## Defining In-game text (".md" files)
+## Defining in-game text (".md" files)
 
 The text shown to the player is in a file written in a subset of the 
 [Markdown language](https://en.wikipedia.org/wiki/Markdown).
@@ -590,7 +590,7 @@ open) is remembered.
 The above only covers the basics. More can be defined in the `.yml` files
 for the entities. See the documentation covering more on entities.
 
-## Dealing with long values with aliases
+## Dealing with long values using aliases
 
 There are cases where the value of a property might be so long as to
 be unwieldy in code. For instance, if an entity representing an in-game
