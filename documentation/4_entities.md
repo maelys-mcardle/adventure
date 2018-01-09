@@ -300,7 +300,7 @@ represented with a `->`.
 
 ## Defining in-game text (".md" files)
 
-The text shown to the player is in a file written in a subset of the 
+The text shown to the player is in files written in a subset of the 
 [Markdown language](https://en.wikipedia.org/wiki/Markdown).
 
 At its most simplest, the files take on the following format:
@@ -456,10 +456,11 @@ location:
 
 ## Entity configuration (".yml" files)
 
-The text shown to the player is in a file written in the
-[YAML language](https://en.wikipedia.org/wiki/YAML).
+The configuration for the entity is in one or more files written in the
+[YAML language](https://en.wikipedia.org/wiki/YAML). These files contain
+all the rest of the information needed to make the entity do what you want.
 
-At their most simplest, they have the following format:
+At their most simplest, these files have the following format:
 
 ```yaml
 propertyName:
