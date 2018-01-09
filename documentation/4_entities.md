@@ -21,7 +21,7 @@
     - [Child entities](#child-entities)
     - [More on entity configuration](#more-on-entity-configuration)
   - [Using aliases to shorten long values](#using-aliases-to-shorten-long-values)
-  - [Organizing complex entities](#organizing-complex-entities)
+  - [Simplifying complex entities](#simplifying-complex-entities)
     - [Splitting files](#splitting-files)
     - [Sub-dividing properties](#sub-dividing-properties)
 
@@ -660,7 +660,7 @@ She looks towards the sky.
 
 Everywhere else, only the alias would be used, that is to say, the shortcut.
 
-## Organizing complex entities
+## Simplifying complex entities
 
 Individual entities can get pretty complex. There's a few strategies you can
 undertake To keep things readable for large entities.
