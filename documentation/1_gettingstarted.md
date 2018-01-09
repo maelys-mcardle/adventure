@@ -1,5 +1,18 @@
 # Getting Started
 
+<!-- TOC -->
+
+- [Getting Started](#getting-started)
+  - [Overview](#overview)
+  - [Installing Adventure](#installing-adventure)
+    - [Installation (without documentation/examples)](#installation-without-documentationexamples)
+    - [Installation (with documentation/examples)](#installation-with-documentationexamples)
+  - [Playing a game](#playing-a-game)
+  - [More on commands](#more-on-commands)
+  - [Built-in commands](#built-in-commands)
+
+<!-- /TOC -->
+
 ## Overview
 
 Adventure is a tool to create and play text adventure games. In these 
