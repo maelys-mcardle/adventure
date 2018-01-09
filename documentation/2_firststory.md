@@ -1,5 +1,28 @@
 # Writing Your First Story
 
+<!-- TOC -->
+
+- [Writing Your First Story](#writing-your-first-story)
+  - [Basic concepts](#basic-concepts)
+    - [Adventure](#adventure)
+    - [Entities, properties and values](#entities-properties-and-values)
+    - [Actions](#actions)
+  - [Writing your first story](#writing-your-first-story)
+    - [Before starting](#before-starting)
+    - [Create the directories](#create-the-directories)
+    - [Create the "story.yml" file](#create-the-storyyml-file)
+    - [Create the ferry entity](#create-the-ferry-entity)
+    - [The .yml, .md, and .dot files](#the-yml-md-and-dot-files)
+    - [Try it out!](#try-it-out)
+    - [Add a cabin](#add-a-cabin)
+    - [Create the walk action](#create-the-walk-action)
+    - [Try it out!](#try-it-out-1)
+    - [Adding more locations](#adding-more-locations)
+    - [Adding transitions](#adding-transitions)
+  - [That's it!](#thats-it)
+
+<!-- /TOC -->
+
 ## Basic concepts
 
 ### Adventure

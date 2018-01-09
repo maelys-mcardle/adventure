@@ -1,5 +1,17 @@
 # Story Configuration
 
+<!-- TOC -->
+
+- [Story Configuration](#story-configuration)
+  - [Overview](#overview)
+  - [File contents](#file-contents)
+  - [More on the "entity" field](#more-on-the-entity-field)
+    - [Only one entity can be specified](#only-one-entity-can-be-specified)
+
+<!-- /TOC -->
+
+## Overview
+
 There is a file called `story.yml` in the story's root directory, alongside
 the `actions` and `entities` sub-directories:
 

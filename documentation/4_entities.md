@@ -1,5 +1,33 @@
 # Entities
 
+<!-- TOC -->
+
+- [Entities](#entities)
+  - [What entities are](#what-entities-are)
+  - [Properties and values](#properties-and-values)
+  - [Directory](#directory)
+    - [Entity Paths](#entity-paths)
+  - [Files](#files)
+  - [Defining Properties and values (".dot" files)](#defining-properties-and-values-dot-files)
+    - [One-way relationships](#one-way-relationships)
+  - [Defining In-game text (".md" files)](#defining-in-game-text-md-files)
+    - [Value trigger](#value-trigger)
+    - [Transition trigger](#transition-trigger)
+    - [Messages trigger](#messages-trigger)
+  - [Defining entity behaviour (".yml" files)](#defining-entity-behaviour-yml-files)
+    - [Value](#value)
+    - [Actions](#actions)
+    - [Child Entities](#child-entities)
+    - [More on entity behaviour](#more-on-entity-behaviour)
+  - [Dealing with long values with aliases](#dealing-with-long-values-with-aliases)
+  - [Organizing complex entities](#organizing-complex-entities)
+    - [Split files](#split-files)
+    - [Sub-divide properties](#sub-divide-properties)
+
+<!-- /TOC -->
+
+## What entities are
+
 In Adventure, every _thing_ in a story is defined in an entity. The world the 
 protagonist inhabits is defined in an entity. The house they walk to is 
 defined in an entity. The door they interact with is defined in an entity.
