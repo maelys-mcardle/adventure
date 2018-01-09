@@ -16,8 +16,8 @@
     - [Transition trigger](#transition-trigger)
     - [Messages trigger](#messages-trigger)
   - [Entity configuration (".yml" files)](#entity-configuration-yml-files)
-    - [Value](#value)
-    - [Actions](#actions)
+    - [Initial value](#initial-value)
+    - [Eligible actions](#eligible-actions)
     - [Child entities](#child-entities)
     - [More on entity configuration](#more-on-entity-configuration)
   - [Using aliases to shorten long values](#using-aliases-to-shorten-long-values)
@@ -472,7 +472,7 @@ that when that property is created, the first value it will have is `someValue`.
 
 These files contain multiple fields, covered below.
 
-### Value
+### Initial value
 
 The `value` field sets the initial value of the property.
 
@@ -489,7 +489,7 @@ If no value is specified, the first value Adventure loaded in will be used.
 It's recommended to always have a `value` field, unless the property only 
 has one value to begin with.
 
-### Actions
+### Eligible actions
 
 The `actions` field sets the actions that can be performed on the property.
 
