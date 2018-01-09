@@ -3,11 +3,11 @@ location:
   actions: [go, describe]
   rules:
     entrance -- lawn:
-      if entrance.objects.door.door is closed:
+      when entrance.objects.door.door is closed:
         message: frontDoorNotOpen
         value: .last
     upstairsHallway -- masterBedroom:
-      if masterBedroom.objects.door.door is closed:
+      when masterBedroom.objects.door.door is closed:
         message: masterBedroomDoorLocked
         value: .last
   entities:

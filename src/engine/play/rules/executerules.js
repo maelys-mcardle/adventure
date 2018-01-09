@@ -123,7 +123,7 @@ function applyRules(rules, action, property, oldValue, newValue, recursion) {
   messages = applyRuleMessage(rules, property, messages);
 
   [property, messages] = 
-    applyRuleIfBlock(rules, action, property, oldValue, newValue, 
+    applyRuleWhenBlock(rules, action, property, oldValue, newValue, 
       messages, recursion);
 
   return [property, messages];
@@ -233,7 +233,7 @@ function applyRuleMessage(rules, property, messages) {
 }
 
 /**
- * Conditional rule (if block) with contents to execute if true.
+ * Conditional rule (when block) with contents to execute if true.
  * @param {Object} rules The rules to execute.
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
@@ -243,7 +243,7 @@ function applyRuleMessage(rules, property, messages) {
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleIfBlock(rules, action, property, oldValue, newValue, 
+function applyRuleWhenBlock(rules, action, property, oldValue, newValue, 
   messages, recursion) {
 
   for (let trigger of Object.keys(rules)) {
@@ -251,19 +251,19 @@ function applyRuleIfBlock(rules, action, property, oldValue, newValue,
     let words = trigger.split(' ');
 
     if (words.length > 1 && 
-        words[0] == constants.KEY_IF) {
+        words[0] == constants.KEY_WHEN) {
 
-      let ifBlockRules = rules[trigger];
+      let whenBlockRules = rules[trigger];
       let actionMessages = [];
       let propertyMessages = [];
 
       [property, actionMessages] = 
-        applyRuleIfAction(ifBlockRules, action, property, oldValue, newValue,
-          words, recursion);
+        applyRuleWhenAction(whenBlockRules, action, property, oldValue, 
+          newValue, words, recursion);
 
       [property, propertyMessages] = 
-        applyRuleIfValue(ifBlockRules, action, property, oldValue, newValue, 
-          words, recursion);
+        applyRuleWhenValue(whenBlockRules, action, property, oldValue, 
+          newValue, words, recursion);
 
       messages = messages.concat(actionMessages).concat(propertyMessages);
     }
@@ -273,7 +273,7 @@ function applyRuleIfBlock(rules, action, property, oldValue, newValue,
 }
 
 /**
- * Conditional rule (if block) with contents to execute if a specific 
+ * Conditional rule (when block) with contents to execute if a specific 
  * action was done.
  * @param {Object} rules The rules to execute.
  * @param {Action} action The action that triggered the rule execution.
@@ -284,14 +284,14 @@ function applyRuleIfBlock(rules, action, property, oldValue, newValue,
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleIfAction(rules, action, property, oldValue, newValue,
+function applyRuleWhenAction(rules, action, property, oldValue, newValue,
     words, recursion) {
 
   let messages = [];
 
-  // To handle "if {action}:"
+  // To handle "when {action}:"
   if (words.length == 2 && 
-      words[0] == constants.KEY_IF &&
+      words[0] == constants.KEY_WHEN &&
       words[1] == action.name) {
         
     [property, messages] = 
@@ -302,7 +302,7 @@ function applyRuleIfAction(rules, action, property, oldValue, newValue,
 }
 
 /**
- * Conditional rule (if block) with contents to execute if a property 
+ * Conditional rule (when block) with contents to execute if a property 
  * has a specific value.
  * @param {Object} rules The rules to execute.
  * @param {Action} action The action that triggered the rule execution.
@@ -313,14 +313,14 @@ function applyRuleIfAction(rules, action, property, oldValue, newValue,
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleIfValue(rules, action, property, oldValue, newValue,
+function applyRuleWhenValue(rules, action, property, oldValue, newValue,
   words, recursion) {
 
   let messages = [];
 
-  // To handle "if {property} is {value}:"
+  // To handle "when {property} is {value}:"
   if (words.length == 4 &&
-      words[0] == constants.KEY_IF &&
+      words[0] == constants.KEY_WHEN &&
       words[2] == constants.KEY_IS) {
 
     let targetProperty = words[1];

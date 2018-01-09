@@ -29,9 +29,6 @@ module.exports = {
   NO_STORY_FOUND:
     (directory) => `No story was found in the directory "${directory}".`,
 
-  NO_VALUE_IN_CONFIG:
-    (property) => `${property} has no initial value specified in config.`,
-
   NO_PROPERTY_FOR_TRIGGER:
     (property, trigger) => 
       `Could not find property ${property} for trigger ${trigger}`,
@@ -49,7 +46,10 @@ module.exports = {
 
   TRIGGER_NOT_FOUND:
     (trigger) => `Could not find ${trigger} to apply rule to.`,
-    
+  
+  VALUE_DOES_NOT_EXIST:
+    (value) => `Value ${value} does not exist.`,
+
   WORD_NOT_IN_TEMPLATE:
     (word, template) => `Word ${word} not found in template ${template}`,
 }

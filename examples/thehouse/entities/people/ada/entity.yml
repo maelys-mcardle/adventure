@@ -1,6 +1,5 @@
 appearance:
   actions: [describe]
-  value: floating
 
 conversation:
   value: idle

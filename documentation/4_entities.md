@@ -453,6 +453,10 @@ In the example above, the initial value for the `door` property of the door
 entity would be the value `closed`. This value must be listed in the `.dot`
 file that has all the values.
 
+If no value is specified, the first value Adventure loaded in will be used.
+It's recommended to always have a `value` field, unless the property only 
+has one value to begin with.
+
 ### Actions
 
 The `actions` field sets the actions that can be performed on the property.
@@ -493,11 +497,29 @@ The actions in the above example would be `close`, `describe` and `open`.
 
 ### Child Entities
 
-All entities can contain more entities. These contained entities are called
-child entities; they are the child of the parent property.
+All entities can contain more entities. These are called child entities. 
+Together, these entities make a hiearchy, starting at the root entity. For
+an explanation of what the root entity is, see the documentation on 
+[Story Configuration](3_storyconfig.md).
 
-The `entities` field sets the child entity. At its most simplest it
-takes the following format:
+Take the `orbit` entity in the example below. It has three child entities,
+`spaceship`, `astronaut`, and `satellite`. The `spaceship` entity has two
+child entities, `airlock` and `engines`.
+
+```
+                            orbit
+                              |
+          -----------------------------------------
+          |                   |                   |
+      spaceship           astronaut           satellite   
+          |                   |
+   ---------------        inventory
+   |             |
+airlock       engines          
+```
+
+Child entities can be set using the `entities` field. It is written using the
+following format:
 
 ```yaml
 propertyName:
@@ -522,7 +544,10 @@ location:
       - people.neighbour
 ```
 
-These entities are activated when the property's current value is that of
+As you might notice, child entities actually belong to a property value of
+its parent entity.
+
+These entities are then activated when the property's current value is that of
 the value specified in the `entities` field. For instance, when the protagonist
 is in the bedroom in the above example, there will be two entities: the 
 `letter` and the `door`. 
@@ -602,9 +627,97 @@ She looks towards the sky.
 
 Everywhere else, only the alias would be used, that is to say, the shortcut.
 
-## Simplifying complex entities
+## Organizing complex entities
+
+Individual entities can get pretty complex. There's a few strategies you can
+undertake To keep things readable for large entities.
+
+### Split files
+
+Simple entities might have a single `values.dot`, `text.md`, and `entities.yml`
+file that contains everything related to that entity.
+
+However, some of these files might get very large over time. To keep things
+readable for you as you write the story, it might become wise to split these
+files up. Different properties can be put in different files.
+
+As long as the files retain the file extension (`.dot`, `.md`, `.yml`), and
+remain in the same directory, they can be named anything. By convention,
+if there's more than one file, they should be named the property they contain.
+
+For instance, take a `values.dot` file with the following:
+
+```dot
+graph location {
+    bedroom -- upstairsHallway -- bathroom
+    stairs -- upstairsHallway -- masterBedroom
+    livingRoom -- entrance -- stairs
+    entrance -- kitchen -- livingRoom
+    shed -- lawn -- entrance
+    lawn -- street
+}
+
+graph weather {
+  sunny -- overcast -- raining
+}
+```
+
+It could be split up into two files, `location.dot` and `weather.dot`. 
+
+```dot
+# location.dot
+graph location {
+    bedroom -- upstairsHallway -- bathroom
+    stairs -- upstairsHallway -- masterBedroom
+    livingRoom -- entrance -- stairs
+    entrance -- kitchen -- livingRoom
+    shed -- lawn -- entrance
+    lawn -- street
+}
+```
+
+```dot
+# weather.dot
+graph weather {
+  sunny -- overcast -- raining
+}
+```
+
+The same strategy of putting different properties in different files can be 
+applied to the `.md` and `.yml` files. As such, the story directory structure 
+could look as such:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- world/
+    |          |- entity.yml
+    |          |- location.md
+    |          |- weather.md
+    |          |- values.dot
+    | 
+    |- story.yml
+```
 
 ### Sub-divide properties
+
+Another strategy to manage large entities is to sub-divide the structure
+itself. For instance, The following `location` property has a lot of values
+and can be unwieldy:
+
+```dot
+graph location {
+    bedroom -- upstairsHallway -- bathroom
+    stairs -- upstairsHallway -- masterBedroom
+    livingRoom -- entrance -- stairs
+    entrance -- kitchen -- livingRoom
+    shed -- lawn -- entrance
+    lawn -- street
+}
+```
+
+The entity can actually be sub-divided to be more clear:
 
 ```dot
 graph location {
@@ -621,5 +734,67 @@ graph location {
 }
 ```
 
-### Split files
+The `subgraph` keyword is used to denote a graph within a graph for the dot 
+file. The organization can also be done in the text file:
+
+```markdown
+# location
+
+## house
+
+### bedroom
+
+You are in the bedroom.
+
+### kitchen
+
+You are in the kitchen.
+
+...
+
+### entrance
+
+You are in the entrance.
+
+## lawn
+
+You are on the lawn.
+
+## shed
+
+You are in the shed.
+
+## street
+
+You are on the street.
+```
+
+Note the extra `#` in `### valueName` for the values beneath `## house`. 
+Normally, text files are organized as such:
+
+```markdown
+# propertyName
+
+## someValue
+
+Text for someValue.
+```
+
+But it can be split up as such:
+
+```markdown
+# propertyName
+
+## someGroupName
+
+### someValue
+
+Text for someValue.
+```
+
+The `someGroupName` above doesn't have to be defined anywhere else. Normally
+though, it would match the name for the subgraph in the `.dot` file.
+
+Note that just because the sub-division was done in the `.dot` file it doesn't
+have to be done in the `.md` file and vice versa.
 

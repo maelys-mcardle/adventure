@@ -188,9 +188,20 @@ function parseYaml(entity, actions, rawYaml) {
  */
 function loadCurrentValue(property, config) {
   if (constants.KEY_VALUE in config) {
-    property.currentValue = config[constants.KEY_VALUE];
+    // Value specified. Load it in as the current value,
+    // if it exists for the property.
+    let currentValue = config[constants.KEY_VALUE];
+    if (currentValue in property.values) {
+      property.currentValue = currentValue;
+    } else {
+      console.log(errors.VALUE_DOES_NOT_EXIST(currentValue))
+    }
   } else {
-    console.log(errors.NO_VALUE_IN_CONFIG(property.name));
+    // Value not specified. Grab the first one.
+    let values = Object.keys(property.values);
+    if (values.length > 0) {
+      property.currentValue = values[0];
+    }
   }
   return property;
 }

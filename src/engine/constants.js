@@ -33,7 +33,6 @@ module.exports = {
   KEY_ENABLE: 'enable',
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',
-  KEY_IF: 'if',
   KEY_IS: 'is',
   KEY_LAST: '.last',
   KEY_MESSAGE: 'message',
@@ -44,6 +43,7 @@ module.exports = {
   KEY_TITLE: 'title',
   KEY_TRANSITION: 'transition',
   KEY_VALUE: 'value',
+  KEY_WHEN: 'when',
 
   // File types.
   TYPE_DOT: 'dot',
