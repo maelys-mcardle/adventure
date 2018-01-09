@@ -15,12 +15,12 @@
     - [Value trigger](#value-trigger)
     - [Transition trigger](#transition-trigger)
     - [Messages trigger](#messages-trigger)
-  - [Defining entity behaviour (".yml" files)](#defining-entity-behaviour-yml-files)
+  - [Entity configuration (".yml" files)](#entity-configuration-yml-files)
     - [Value](#value)
     - [Actions](#actions)
     - [Child entities](#child-entities)
-    - [More on entity behaviour](#more-on-entity-behaviour)
-  - [Dealing with long values using aliases](#dealing-with-long-values-using-aliases)
+    - [More on entity configuration](#more-on-entity-configuration)
+  - [Using aliases to shorten long values](#using-aliases-to-shorten-long-values)
   - [Organizing complex entities](#organizing-complex-entities)
     - [Splitting files](#splitting-files)
     - [Sub-dividing properties](#sub-dividing-properties)
@@ -454,7 +454,7 @@ location:
       message: gameOver
 ```
 
-## Defining entity behaviour (".yml" files)
+## Entity configuration (".yml" files)
 
 The text shown to the player is in a file written in the
 [YAML language](https://en.wikipedia.org/wiki/YAML).
@@ -588,12 +588,12 @@ property, but also the `letter` and the `door`. When the property's value
 changes, these child entities are deactivated. Their state (eg. door being
 open) is remembered.
 
-### More on entity behaviour
+### More on entity configuration
 
 The above only covers the basics. More can be defined in the `.yml` files
 for the entities. See the documentation covering more on entities.
 
-## Dealing with long values using aliases
+## Using aliases to shorten long values
 
 There are cases where the value of a property might be so long as to
 be unwieldy in code. For instance, if an entity representing an in-game
@@ -715,8 +715,98 @@ graph weather {
 ```
 
 The same strategy of putting different properties in different files can be 
-applied to the `.md` and `.yml` files. As such, the story directory structure 
-could look as such:
+applied to the text `.md` files as well. If there's a `text.md` file such as
+the following:
+
+```markdown
+
+# location
+
+## bedroom
+
+You are in the bedroom.
+
+## kitchen
+
+You are in the kitchen.
+
+...
+
+# weather
+
+## sunny
+
+It is sunny.
+
+## overcast
+
+There are clouds overhead.
+
+## raining
+
+It is raining.
+```
+
+It could be split into two files, `location.md` and `weather.md`:
+
+```markdown
+# location
+
+## bedroom
+
+You are in the bedroom.
+
+## kitchen
+
+You are in the kitchen.
+
+...
+```
+
+```markdown
+# weather
+
+## sunny
+
+It is sunny.
+
+## overcast
+
+There are clouds overhead.
+
+## raining
+
+It is raining.
+```
+
+The configuration file `.yml` can also be split up. Take the following 
+`entity.yml` file:
+
+```yaml
+location:
+  value: bedroom
+
+weather:
+  value: sunny
+```
+
+It could be split up into `location.yml` and `weather.yml`:
+
+```yaml
+# location.yml
+location:
+  value: bedroom
+```
+
+```yaml
+# weather.yml
+weather:
+  value: sunny
+```
+
+The text files are most likely to be the longest among all your entity files.
+So they're the most likely candidates to get split up first. As such, the
+directory for an entity could look like this:
 
 ```
   story/
@@ -730,6 +820,8 @@ could look as such:
     | 
     |- story.yml
 ```
+
+Note there's a single `.yml` and `.dot` file, but multiple `.md` files.
 
 ### Sub-dividing properties
 
