@@ -17,12 +17,12 @@
   - [Defining entity behaviour (".yml" files)](#defining-entity-behaviour-yml-files)
     - [Value](#value)
     - [Actions](#actions)
-    - [Child Entities](#child-entities)
+    - [Child entities](#child-entities)
     - [More on entity behaviour](#more-on-entity-behaviour)
   - [Dealing with long values with aliases](#dealing-with-long-values-with-aliases)
   - [Organizing complex entities](#organizing-complex-entities)
-    - [Split files](#split-files)
-    - [Sub-divide properties](#sub-divide-properties)
+    - [Splitting files](#splitting-files)
+    - [Sub-dividing properties](#sub-dividing-properties)
 
 <!-- /TOC -->
 
@@ -523,7 +523,7 @@ directory. So if there's this directory structure for the story:
 
 The actions in the above example would be `close`, `describe` and `open`.
 
-### Child Entities
+### Child entities
 
 All entities can contain more entities. These are called child entities. 
 Together, these entities make a hiearchy, starting at the root entity. For
@@ -660,7 +660,7 @@ Everywhere else, only the alias would be used, that is to say, the shortcut.
 Individual entities can get pretty complex. There's a few strategies you can
 undertake To keep things readable for large entities.
 
-### Split files
+### Splitting files
 
 Simple entities might have a single `values.dot`, `text.md`, and `entities.yml`
 file that contains everything related to that entity.
@@ -728,7 +728,7 @@ could look as such:
     |- story.yml
 ```
 
-### Sub-divide properties
+### Sub-dividing properties
 
 Another strategy to manage large entities is to sub-divide the structure
 itself. For instance, The following `location` property has a lot of values
