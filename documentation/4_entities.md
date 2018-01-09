@@ -3,11 +3,12 @@
 <!-- TOC -->
 
 - [Entities](#entities)
-  - [What entities are](#what-entities-are)
+  - [About entities](#about-entities)
   - [Properties and values](#properties-and-values)
-  - [Directory](#directory)
-    - [Entity paths](#entity-paths)
-  - [Files](#files)
+  - [Entity directory and files](#entity-directory-and-files)
+    - [Entity directory](#entity-directory)
+    - [Entity path](#entity-path)
+    - [Entity files](#entity-files)
   - [Defining properties and values (".dot" files)](#defining-properties-and-values-dot-files)
     - [One-way relationships](#one-way-relationships)
   - [Defining in-game text (".md" files)](#defining-in-game-text-md-files)
@@ -26,7 +27,7 @@
 
 <!-- /TOC -->
 
-## What entities are
+## About entities
 
 In Adventure, every _thing_ in a story is defined in an entity. The world the 
 protagonist inhabits is defined in an entity. The house they walk to is 
@@ -66,7 +67,9 @@ and each property must have at least one value.
                                     ----- angry
 ```
 
-## Directory
+## Entity directory and files
+
+### Entity directory
 
 The files for each entity must be put inside a dedicated directory for that
 entity. The name of the directory will then become the name of the entity.
@@ -110,7 +113,7 @@ alongside all other character entities.
 Directory names should not contain any spaces, and by convention, 
 are lower-case.
 
-### Entity paths
+### Entity path
 
 Paths are used to refer to entities within Adventure. This is because 
 multiple entities can have the same name and therefore using names is not
@@ -151,7 +154,7 @@ entities/places/vancouver      -> places.vancouver
 entities/universe/earth/canada -> universe.earth.canada
 ```
 
-## Files
+### Entity files
 
 Entities are made up of three kinds of files: 
 
@@ -422,8 +425,8 @@ text.
 ### Messages trigger
 
 The third type of trigger is for messages. These are shown programatically
-by a rule in the `.yml` file. The triggers must be unique, and not correspond
-to a value.
+by a rule in the `.yml` file. The triggers must be unique; there can't be a
+value with the same name.
 
 Take the following example:
 
@@ -434,14 +437,14 @@ Take the following example:
 
 You are in the castle.
 
-# gameOver
+## gameOver
 
 Game over. You totes saved the prince!
 ```
 
-The `# gameOver` is a message trigger. `gameOver` isn't a property's value.
-It is triggered when there's a rule in the `.yml` file for the property
-that says `message: gameOver`.
+The `## gameOver` is a message trigger. There is no value for the `location` 
+property called `gameOver`. The message is shown to the player when there's a 
+rule in the `.yml` file for the property that says `message: gameOver`.
 
 ```yml
 location:
