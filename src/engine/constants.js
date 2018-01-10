@@ -2,7 +2,12 @@
 
 module.exports = {
 
+  // Versioning used for the story files.
+  // The story files are the stories written by authors.
+  STORY_FILES_VERSION: 1,
+
   // Versioning used for the story object.
+  // The story object is the internal representation.
   STORY_OBJECT_VERSION: 1,
 
   // Maximum recursion allowed for recursive functions.
@@ -43,6 +48,7 @@ module.exports = {
   KEY_TITLE: 'title',
   KEY_TRANSITION: 'transition',
   KEY_VALUE: 'value',
+  KEY_VERSION: 'version',
   KEY_WHEN: 'when',
 
   // File types.

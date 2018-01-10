@@ -25,10 +25,19 @@ class RawAction {
 /** The intermediate representation of a story object. */
 class RawStory {
   constructor(foundStory, config, actions, entities) {
+    
     this.foundStory = foundStory;
     this.config = config;
     this.actions = actions;
     this.entities = entities;
+
+    if (constants.KEY_VERSION in config) {
+      // Version specified. Load it in.
+      this.version = config[constants.KEY_VERSION];
+    } else {
+      // Version not specified. Assume latest.
+      this.version = constants.STORY_FILES_VERSION;
+    }
   }
 }
 
