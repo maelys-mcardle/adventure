@@ -3,6 +3,7 @@
 const loadFiles = require('./file/loadfiles');
 const fileToRaw = require('./raw/filetoraw');
 const rawToStory = require('./story/rawtostory');
+const constants = require('../constants');
 const errors = require('../errors');
 
 module.exports = {
@@ -21,6 +22,11 @@ function loadStory(storyDirectory) {
 
   // Parse the file contents to an intermediary representation.
   let rawStory = fileToRaw.parse(storyFiles);
+
+  // Show an error message if the story files are an unsupported version.
+  if (rawStory.version > constants.STORY_FILES_VERSION) {
+    console.log(errors.VERSION_TOO_NEW);
+  }
 
   // If a story was found, proceed.
   if (rawStory.foundStory) {

@@ -38,6 +38,7 @@ module.exports = {
   KEY_ENABLE: 'enable',
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',
+  KEY_ENTITY_PLACEHOLDER: '@entity',
   KEY_IS: 'is',
   KEY_LAST: '.last',
   KEY_MESSAGE: 'message',
@@ -48,6 +49,7 @@ module.exports = {
   KEY_TITLE: 'title',
   KEY_TRANSITION: 'transition',
   KEY_VALUE: 'value',
+  KEY_VALUE_PLACEHOLDER: '@value',
   KEY_VERSION: 'version',
   KEY_WHEN: 'when',
 

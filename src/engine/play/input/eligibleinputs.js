@@ -63,8 +63,8 @@ function getEligibleInputs(story, firstTemplateOnly) {
 function getInputsWithTemplate(template, eligibleAction) {
 
   let validInputs = [];
-  let hasPropertyVariable = template.includes('@value');
-  let hasEntityVariable = template.includes('@entity');
+  let hasPropertyVariable = template.includes(constants.KEY_VALUE_PLACEHOLDER);
+  let hasEntityVariable = template.includes(constants.KEY_ENTITY_PLACEHOLDER);
   let eligibleEntitiesNames = Object.keys(eligibleAction.entities);
 
   if (eligibleEntitiesNames.length === 0) {
@@ -78,7 +78,8 @@ function getInputsWithTemplate(template, eligibleAction) {
   for (let entityName of eligibleEntitiesNames) {
     let eligibleEntity = eligibleAction.entities[entityName];
     let templateWithEntity = 
-      template.replace('@entity', eligibleEntity.target.entity);
+      replacePlaceholder(template, constants.KEY_ENTITY_PLACEHOLDER, 
+        eligibleEntity.target.entity);
 
     let values = eligibleEntity.eligibleValues;
     let valueNames = Object.keys(values);
@@ -94,7 +95,8 @@ function getInputsWithTemplate(template, eligibleAction) {
       for (let valueName of valueNames) {
         let value = values[valueName];
         let templateWithValue = 
-          templateWithEntity.replace('@value', value.readableName);
+          replacePlaceholder(templateWithEntity, 
+            constants.KEY_VALUE_PLACEHOLDER, value.readableName);
 
         let eligibleInput =
           getEligibleInput(
@@ -230,3 +232,15 @@ function addEligibleAction(eligibleActions, action,
 
   return eligibleActions;
 }
+
+/**
+ * Replaces a placeholder with a substitute.
+ * @param {string} text The word containing the placeholder.
+ * @param {string} placeholder The placeholder.
+ * @param {string} substitute A replacement for the placeholder.
+ * @returns {string} The text with the placeholder replaced.
+ */
+function replacePlaceholder(text, placeholder, substitute) {
+  return text.replace(placeholder, substitute);
+}
+

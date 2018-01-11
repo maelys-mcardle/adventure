@@ -50,6 +50,10 @@ module.exports = {
   VALUE_DOES_NOT_EXIST:
     (value) => `Value ${value} does not exist.`,
 
+  VERSION_TOO_NEW:
+    `The story is written for a newer version of Adventure than this one. ` +
+    `There may be unexpected problems.`,
+
   WORD_NOT_IN_TEMPLATE:
     (word, template) => `Word ${word} not found in template ${template}`,
 }
