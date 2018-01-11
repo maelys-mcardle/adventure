@@ -690,7 +690,7 @@ Everywhere else, only the alias would be used, that is to say, the shortcut.
 ## Simplifying complex entities
 
 Individual entities can get pretty complex. There's a few strategies you can
-undertake To keep things readable for large entities.
+undertake to keep things readable for large entities.
 
 ### Splitting files
 
