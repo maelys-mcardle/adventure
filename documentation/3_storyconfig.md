@@ -57,13 +57,13 @@ If this field is not included, the story will be called `Untitled`.
 
 ### Author
 
-The `author` field specifies author(s) for the story.
+The `author` field specifies the author(s) for the story.
 
 ```yaml
-authors: Julie Smith & Jane Smyth
+author: Julie Smith & Jane Smyth
 ```
 
-If this field is not included, the authors will be `Anonymous`.
+If this field is not included, the author will be `Anonymous`.
 
 ### Description
 
