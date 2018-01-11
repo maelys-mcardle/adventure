@@ -469,8 +469,35 @@ propertyName:
 
 Where `propertyName` is the name of a property, and `value: someValue` means
 that when that property is created, the first value it will have is `someValue`.
+However, `value`, like all fields, are optional.
 
-These files contain multiple fields, covered below.
+A typical `entity.yml` file will likely have a number of fields:
+
+```yaml
+location:
+  value: bedroom
+  actions: [go, describe]
+  rules:
+    entrance -- lawn:
+      when entrance.objects.door.door is closed:
+        message: frontDoorNotOpen
+        value: .last
+    upstairsHallway -- masterBedroom:
+      when masterBedroom.objects.door.door is closed:
+        message: masterBedroomDoorLocked
+        value: .last
+  entities:
+    bedroom:
+      - objects.letter
+    entrance:
+      - objects.door
+    lawn:
+      - people.ada
+    masterBedroom:
+      - objects.door
+```
+
+Some of these fields are covered below.
 
 ### Initial value
 
