@@ -10,9 +10,11 @@
   - [Types of actions](#types-of-actions)
     - [Transition actions](#transition-actions)
     - [Description actions](#description-actions)
-  - [Templates](#templates)
-  - [Synonyms](#synonyms)
-  - [Defaults](#defaults)
+  - [Fields](#fields)
+    - [Action type](#action-type)
+    - [Templates](#templates)
+    - [Synonyms](#synonyms)
+    - [Defaults](#defaults)
 
 <!-- /TOC -->
 
@@ -33,8 +35,8 @@ is, and another to track how much of it was eaten.
 Each of these properties have values, representing all the states the property
 can be. So a the property for a door tracking whether it is open has two values:
 `open` and `closed`. A property for a loaf of bread tracking how much of it
-was eaten could have many values: `no slice`, `1 slice`, `2 slices`, 
-`3 slices`, etc.
+was eaten could have many values: `"no slice"`, `"1 slice"`, `"2 slices"`, 
+`"3 slices"`, etc.
 
 Here are some more examples of entities, their properties, and values:
 
@@ -63,7 +65,7 @@ Entities and values are fixed. They don't change. For stories to progress,
 things have to change. The protagonist has to move and interact with the world. 
 This is all done using `actions` in Adventure.
 
-Actions change the value in an entity's property. For example, the world 
+Actions can change the value in an entity's property. For example, the world 
 entity has a location property, which keeps track of where the protagonist
 is situated. The "walk" action will change that value to something.
 
@@ -139,8 +141,12 @@ There are two types of actions in
 
 ### Description actions
 
-## Templates
+## Fields
 
-## Synonyms
+### Action type
 
-## Defaults
+### Templates
+
+### Synonyms
+
+### Defaults
