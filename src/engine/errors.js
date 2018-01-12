@@ -2,13 +2,13 @@
 
 module.exports = {
 
+  ACTION_TYPE_INVALID: (action) => `Action ${action} is invalid.`,
+  
   ACTION_UNDEFINED:
     (action, property) => `${action} for ${property} hasn't been defined.`,
 
   CHILD_ENTITY_NOT_FOUND: 
     (path) => `Child entity ${path} could not be found.`,
-
-  DO_ACTION_INVALID: (action) => `Do action ${action} is invalid.`,
 
   DISABLED_VALUE_DOES_NOT_EXIST:
     (value, property) => 

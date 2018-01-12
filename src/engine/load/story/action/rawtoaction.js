@@ -28,8 +28,8 @@ function parseActions(rawActions, story) {
       action = parseDefaults(action, config[constants.KEY_DEFAULT]);
     }
 
-    if (constants.KEY_DO in config) {
-      action = parseDo(action, config[constants.KEY_DO]);
+    if (constants.KEY_ACTION in config) {
+      action = parseActionType(action, config[constants.KEY_ACTION]);
     }
 
     if (constants.KEY_SYNONYMS in config) {
@@ -78,8 +78,8 @@ function parseDefaults(action, defaults) {
  * @param {string} templates The action type.
  * @returns {Action} The updated action.
  */
-function parseDo(action, doAction) {
-  switch(doAction) {
+function parseActionType(action, actionType) {
+  switch(actionType) {
 
     case constants.KEY_TRANSITION:
       action.changesPropertyValue = true;
@@ -90,7 +90,7 @@ function parseDo(action, doAction) {
       break;
 
     default:
-      console.log(errors.DO_ACTION_INVALID(doAction));
+      console.log(errors.ACTION_TYPE_INVALID(actionType));
       break;
   }
 

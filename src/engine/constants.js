@@ -29,12 +29,12 @@ module.exports = {
   FILE_NAME_STORY: 'story',
 
   // Keys.
+  KEY_ACTION: 'action',
   KEY_ACTIONS: 'actions',
   KEY_AUTHOR: 'author',
   KEY_DEFAULT: 'default',
   KEY_DESCRIPTION: 'description',
   KEY_DISABLE: 'disable',
-  KEY_DO: 'do',
   KEY_ENABLE: 'enable',
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',

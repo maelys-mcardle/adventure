@@ -5,7 +5,7 @@ const getEntity = require('./entities/getentity');
 const getText = require('./text/gettext');
 
 module.exports = {
-  do: applyAction,
+  apply: applyAction,
 }
 
 /**

@@ -99,7 +99,7 @@ Actions are written in [YAML files](https://en.wikipedia.org/wiki/YAML). They
 will look like this:
 
 ```yaml
-do: transition
+action: transition
 templates:
   - go to the @value
   - go to @value
@@ -179,7 +179,7 @@ Each action has its own `.yml` file, written in the
 like the following:
 
 ```yaml
-do: transition
+action: transition
 templates:
   - say @value
   - say @entity @value
