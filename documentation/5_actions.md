@@ -191,6 +191,9 @@ synonyms:
     - ask
 ```
 
+What the fields like `do`, `templates`, `synonyms` mean is covered further
+below.
+
 ## Name and path
 
 The action name is the file name of the `.yml` defining the action.
