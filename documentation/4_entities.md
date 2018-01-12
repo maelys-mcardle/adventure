@@ -7,7 +7,7 @@
   - [Properties and values](#properties-and-values)
   - [Entity directory and files](#entity-directory-and-files)
     - [Entity directory](#entity-directory)
-    - [Entity path](#entity-path)
+    - [Entity name and path](#entity-name-and-path)
     - [Entity files](#entity-files)
   - [Defining properties and values (".dot" files)](#defining-properties-and-values-dot-files)
     - [One-way relationships](#one-way-relationships)
@@ -113,12 +113,30 @@ alongside all other character entities.
 Directory names should not contain any spaces, and by convention, 
 are lower-case.
 
-### Entity path
+### Entity name and path
 
-Paths are used to refer to entities within Adventure. This is because 
-multiple entities can have the same name and therefore using names is not
-enough. For example, there are two entities named `door` in the following
-example:
+The entity name is the name of the directory containing the entity files.
+Take the following example:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- characters/
+    |          |- elizabeth/
+    |                |- entity.yml
+    |                |- text.md
+    |                |- values.dot
+    |
+    |- story.yml
+```
+
+The entity files `entity.yml`, `text.md` and `values.md` are contained in
+the directory `elizabeth`. As such, `elizabeth` would be the entity name.
+
+However, multiple entities can have the same name, and so when refering to
+specific entities within Adventure, using names is not enough. For example, 
+there are two entities named `door` in the following example:
 
 ```
   story/
@@ -553,6 +571,32 @@ directory. So if there's this directory structure for the story:
 ```
 
 The actions in the above example would be `close`, `describe` and `open`.
+Like entities, actions can also be put into subdirectories. For example:
+
+```
+  story/
+    |- actions/
+    |     |- inspect/
+    |     |    |- listen.yml
+    |     |    |- look.yml
+    |     |    |- smell.yml
+    |     |
+    |     |- movement/
+    |          |- drive.yml
+    |          |- walk.yml
+    |
+    |- entities/
+    |- story.yml
+```
+
+This changes how actions are refered to. Like entities, the path has to be
+specified:
+
+```yaml
+location:
+  value: downtown
+  actions: [inspect.look, movement.walk]
+```
 
 ### Child entities
 

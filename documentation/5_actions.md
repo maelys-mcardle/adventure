@@ -7,6 +7,7 @@
   - [Action directory and file](#action-directory-and-file)
     - [Directory](#directory)
     - [File](#file)
+    - [Action name and path](#action-name-and-path)
   - [Types of actions](#types-of-actions)
     - [Transition actions](#transition-actions)
     - [Description actions](#description-actions)
@@ -131,11 +132,122 @@ the action:
 
 ### Directory
 
+Each action has its own `.yml` file and those are put in the `actions` 
+directory. All the actions for all of the entities are put in this directory,
+and it will look something like this:
+
+```
+  story/
+    |- actions/
+    |     |- close.yml
+    |     |- describe.yml
+    |     |- open.yml
+    |     |- walk.yml
+    |
+    |- entities/
+    |- story.yml
+```
+
+As more actions are added, for organizational purposes, sub-directories can
+be created as well:
+
+```
+  story/
+    |- actions/
+    |     |- inspect/
+    |     |    |- listen.yml
+    |     |    |- look.yml
+    |     |    |- smell.yml
+    |     |
+    |     |- movement/
+    |          |- drive.yml
+    |          |- walk.yml
+    |
+    |- entities/
+    |- story.yml
+```
+
+Directory and action names should not contain any spaces, and by convention, 
+are lower-case. Action names should be unique - it is advised against having
+more than one action with the same name; for instance by having two `open.yml`
+files in two sub-directories.
+
 ### File
+
+Each action has its own `.yml` file, written in the 
+[YAML language](https://en.wikipedia.org/wiki/YAML). The files look 
+like the following:
+
+```yaml
+do: transition
+templates:
+  - say @value
+  - say @entity @value
+  - say to @entity @value
+synonyms:
+  say:
+    - tell
+    - speak
+    - ask
+```
+
+### Action name and path
+
+The action name is the file name of the `.yml` defining the action.
+
+```
+  story/
+    |- actions/
+    |     |- close.yml
+    |     |- describe.yml
+    |     |- open.yml
+    |     |- walk.yml
+    |
+    |- entities/
+    |- story.yml
+```
+
+The actions in the example above would be `close`, `describe`, `open` and
+`walk`.
+
+If the actions are placed in a directory, the full path should be specified.
+The path is the list of directories it takes to get from the `actions/` 
+directory to the action `.yml` file, separated by dots (`.`). Take the 
+following example:
+
+```
+  story/
+    |- actions/
+    |     |- inspect/
+    |     |    |- listen.yml
+    |     |    |- look.yml
+    |     |    |- smell.yml
+    |     |
+    |     |- movement/
+    |          |- drive.yml
+    |          |- walk.yml
+    |
+    |- entities/
+    |- story.yml
+```
+
+The path for the `listen` action would be `inspect.listen`. The path for the
+`drive` action would be `movement.drive`.
+
+Here are a few more examples of how directories translate to paths in
+Adventure:
+
+```
+directory                         path in Adventure
+---------                         -----------------
+actions/describe.yml              -> describe
+actions/car/turnon.yml            -> car.turnon
+actions/body/eyes/blink.yml       -> body.eyes.blink
+```
 
 ## Types of actions
 
-There are two types of actions in 
+There are two types of actions in Adventure: transition and description.
 
 ### Transition actions
 
