@@ -4,10 +4,10 @@
 
 - [Actions](#actions)
   - [About actions](#about-actions)
-  - [Action directory and file](#action-directory-and-file)
+  - [Directory and file](#directory-and-file)
     - [Directory](#directory)
     - [File](#file)
-  - [Action name and path](#action-name-and-path)
+  - [Name and path](#name-and-path)
   - [Types of actions](#types-of-actions)
     - [Transition actions](#transition-actions)
     - [Description actions](#description-actions)
@@ -128,7 +128,7 @@ the action:
     |- story.yml
 ```
 
-## Action directory and file
+## Directory and file
 
 ### Directory
 
@@ -191,7 +191,7 @@ synonyms:
     - ask
 ```
 
-## Action name and path
+## Name and path
 
 The action name is the file name of the `.yml` defining the action.
 
