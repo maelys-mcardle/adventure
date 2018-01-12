@@ -254,17 +254,24 @@ There are two types of actions in Adventure: transition and description.
 
 ### Transition
 
-Transition actions change the value of an entity's property. They also do
-the following:
+Transition actions change the value of an entity's property. The name 
+*transition* refers to the fact that it transitions properties from one
+value to another.
 
-* Change the value of the property.
-* Execute any rules for the transition from the old value to the new one.
-* Output any text for the transition and the new value.
+In addition to changing the value of a property, transition actions also 
+do the following:
+
+* Execute rules for the transition from one value to another.
+* Output text for the transition from one value to another.
+* Output text for the new value.
 * Execute any rules for the new value.
 
 ### Description
 
-Description actions output the text for the property's current value.
+Description actions do **not** change the value of an entity's property. 
+Instead, they output the text for the property's current value. The name
+*description* refers to the fact that it describes the property's current
+value.
 
 ## Fields
 
