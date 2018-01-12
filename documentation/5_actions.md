@@ -7,7 +7,7 @@
   - [Action directory and file](#action-directory-and-file)
     - [Directory](#directory)
     - [File](#file)
-    - [Action name and path](#action-name-and-path)
+  - [Action name and path](#action-name-and-path)
   - [Types of actions](#types-of-actions)
     - [Transition actions](#transition-actions)
     - [Description actions](#description-actions)
@@ -191,7 +191,7 @@ synonyms:
     - ask
 ```
 
-### Action name and path
+## Action name and path
 
 The action name is the file name of the `.yml` defining the action.
 
@@ -251,7 +251,17 @@ There are two types of actions in Adventure: transition and description.
 
 ### Transition actions
 
+Transition actions change the value of an entity's property. They also do
+the following:
+
+* Change the value of the property.
+* Execute any rules for the transition from the old value to the new one.
+* Output any text for the transition and the new value.
+* Execute any rules for the new value.
+
 ### Description actions
+
+Description actions output the text for the property's current value.
 
 ## Fields
 
