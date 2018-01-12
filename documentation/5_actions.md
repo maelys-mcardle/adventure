@@ -191,7 +191,7 @@ synonyms:
     - ask
 ```
 
-What the fields like `do`, `templates`, `synonyms` mean is covered further
+What the fields like `action`, `templates`, `synonyms` mean is covered further
 below.
 
 ## Name and path
