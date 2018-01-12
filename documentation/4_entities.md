@@ -6,9 +6,9 @@
   - [About entities](#about-entities)
   - [Properties and values](#properties-and-values)
   - [Entity directory and files](#entity-directory-and-files)
-    - [Entity directory](#entity-directory)
-    - [Entity name and path](#entity-name-and-path)
-    - [Entity files](#entity-files)
+    - [Directory](#directory)
+    - [Name and path](#name-and-path)
+    - [Files](#files)
   - [Defining properties and values (".dot" files)](#defining-properties-and-values-dot-files)
     - [One-way relationships](#one-way-relationships)
   - [Defining in-game text (".md" files)](#defining-in-game-text-md-files)
@@ -69,7 +69,7 @@ and each property must have at least one value.
 
 ## Entity directory and files
 
-### Entity directory
+### Directory
 
 The files for each entity must be put inside a dedicated directory for that
 entity. The name of the directory will then become the name of the entity.
@@ -113,7 +113,7 @@ alongside all other character entities.
 Directory names should not contain any spaces, and by convention, 
 are lower-case.
 
-### Entity name and path
+### Name and path
 
 The entity name is the name of the directory containing the entity files.
 Take the following example:
@@ -172,7 +172,7 @@ entities/places/vancouver      -> places.vancouver
 entities/universe/earth/canada -> universe.earth.canada
 ```
 
-### Entity files
+### Files
 
 Entities are made up of three kinds of files: 
 

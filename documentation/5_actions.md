@@ -9,8 +9,8 @@
     - [File](#file)
   - [Name and path](#name-and-path)
   - [Types of actions](#types-of-actions)
-    - [Transition actions](#transition-actions)
-    - [Description actions](#description-actions)
+    - [Transition](#transition)
+    - [Description](#description)
   - [Fields](#fields)
     - [Action type](#action-type)
     - [Templates](#templates)
@@ -240,16 +240,16 @@ Adventure:
 ```
 directory                         path in Adventure
 ---------                         -----------------
-actions/describe.yml              -> describe
-actions/car/turnon.yml            -> car.turnon
-actions/body/eyes/blink.yml       -> body.eyes.blink
+actions/describe.yml           -> describe
+actions/car/turnon.yml         -> car.turnon
+actions/body/eyes/blink.yml    -> body.eyes.blink
 ```
 
 ## Types of actions
 
 There are two types of actions in Adventure: transition and description.
 
-### Transition actions
+### Transition
 
 Transition actions change the value of an entity's property. They also do
 the following:
@@ -259,7 +259,7 @@ the following:
 * Output any text for the transition and the new value.
 * Execute any rules for the new value.
 
-### Description actions
+### Description
 
 Description actions output the text for the property's current value.
 
