@@ -668,8 +668,8 @@ open) is remembered.
 ### More on entity configuration
 
 The above only covers the basics. More can be defined in the `.yml` files
-for the entities. See the [documentation covering entities](6_moreentities.md)
-in more detail.
+for the entities. See the documentation on 
+[entity configuration](6_entityconfig.md).
 
 ## Using aliases to shorten long values
 
