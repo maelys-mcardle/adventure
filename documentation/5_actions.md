@@ -11,9 +11,10 @@
   - [Types of actions](#types-of-actions)
     - [Transition](#transition)
     - [Description](#description)
-  - [Fields](#fields)
+  - [Writing the file](#writing-the-file)
     - [Action type](#action-type)
     - [Templates](#templates)
+      - [The first template acts as the example](#the-first-template-acts-as-the-example)
     - [Synonyms](#synonyms)
     - [Defaults](#defaults)
 
@@ -256,15 +257,21 @@ There are two types of actions in Adventure: transition and description.
 
 Transition actions change the value of an entity's property. The name 
 *transition* refers to the fact that it transitions properties from one
-value to another.
+value to another. For instance, for a door entity, the value might transition 
+from `open` to `closed`.
 
 In addition to changing the value of a property, transition actions also 
 do the following:
 
-* Execute rules for the transition from one value to another.
+* Apply rules for the transition from one value to another.
 * Output text for the transition from one value to another.
 * Output text for the new value.
-* Execute any rules for the new value.
+* Apply rules for the new value.
+
+The text that is outputted in the steps above is defined in the 
+[entity's text files](4_entities.md). The rules are defined in the
+[entity's configuration files](4_entities.md). If there are no rules,
+or no text, the step is skipped.
 
 ### Description
 
@@ -273,11 +280,46 @@ Instead, they output the text for the property's current value. The name
 *description* refers to the fact that it describes the property's current
 value.
 
-## Fields
+The text that is outputted in the steps above is defined in the 
+[entity's text files](4_entities.md).
+
+## Writing the file
+
+The file is written using [YAML](https://en.wikipedia.org/wiki/YAML), and looks
+like this:
+
+```yaml
+action: transition
+templates:
+  - read the @entity
+  - read @entity
+default:
+  value: reading
+```
+
+The fields are as follows.
 
 ### Action type
 
+The action type specifies the kind of action to be performed, whether it is
+a transition or description action:
+
+```yaml
+action: transition
+```
+
+```yaml
+action: description
+```
+
+Most actions will be transition actions.
+
 ### Templates
+
+Templates define the phrase(s) that the input provided by the player must be 
+matched against in order for the action to be triggered. 
+
+#### The first template acts as the example
 
 ### Synonyms
 

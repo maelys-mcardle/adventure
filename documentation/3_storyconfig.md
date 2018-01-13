@@ -4,7 +4,7 @@
 
 - [Story Configuration](#story-configuration)
   - [Overview](#overview)
-  - [Fields](#fields)
+  - [Writing the file](#writing-the-file)
     - [Title](#title)
     - [Author](#author)
     - [Description](#description)
@@ -30,7 +30,7 @@ This `story.yml` is the story's configuration file. It contains the main
 information for a story, such as its title and author. It also specifies
 the root entity - more on that below.
 
-## Fields
+## Writing the file
 
 The file is written using [YAML](https://en.wikipedia.org/wiki/YAML), and looks
 like this:

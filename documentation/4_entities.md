@@ -598,6 +598,11 @@ location:
   actions: [inspect.look, movement.walk]
 ```
 
+The same actions can be used in many entities. For instance, both a door 
+entity and an entity for a jar of jam could use the `open` action. However,
+within an entity, if an action is used with one property, the same action 
+can not be also used on another property. 
+
 ### Child entities
 
 All entities can contain more entities. These are called child entities. 
