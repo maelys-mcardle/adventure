@@ -16,6 +16,7 @@
   - [Writing the file](#writing-the-file)
     - [Action type](#action-type)
     - [Templates](#templates)
+      - [Entity and value placeholders](#entity-and-value-placeholders)
       - [The first template acts as the example](#the-first-template-acts-as-the-example)
     - [Synonyms](#synonyms)
     - [Defaults](#defaults)
@@ -533,6 +534,8 @@ Note that if the entity isn't specified in the player's input, and there
 are two entities that can be eaten before the player (eg. hamburger and a
 hot dog) then it will be ambiguous as to which entity the action applies.
 Adventure will display a message accordingly.
+
+#### Entity and value placeholders
 
 There are two possible placeholders in templates: `@entity` and `@value`.
 It marks the spot where the player would specify the entity and value that the
