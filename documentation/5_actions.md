@@ -10,13 +10,16 @@
   - [Name and path](#name-and-path)
   - [Types of actions](#types-of-actions)
     - [Transition](#transition)
+      - [An example](#an-example)
     - [Description](#description)
+      - [An example](#an-example-1)
   - [Writing the file](#writing-the-file)
     - [Action type](#action-type)
     - [Templates](#templates)
       - [The first template acts as the example](#the-first-template-acts-as-the-example)
     - [Synonyms](#synonyms)
     - [Defaults](#defaults)
+      - [Default value](#default-value)
 
 <!-- /TOC -->
 
@@ -273,6 +276,94 @@ The text that is outputted in the steps above is defined in the
 [entity's configuration files](4_entities.md). If there are no rules,
 or no text, the step is skipped.
 
+#### An example
+
+Let's take a door entity as an example again, and say the entity has the
+following file structure:
+
+```
+  story/
+    |- actions/
+    |     |- close.yml
+    |     |- open.yml
+    |
+    |- entities/
+    |     |- door/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+With the following `entity.yml`:
+
+```yaml
+door:
+  value: closed
+  actions: [open]
+  rules:
+    open:
+      actions: [close]
+    closed:
+      actions: [open]
+```
+
+And the following `text.md`:
+
+```markdown
+# door
+
+## closed
+
+The door is closed.
+
+## open
+
+The door is open.
+
+## closed -> open
+
+You opened the door.
+```
+
+And the following `values.dot`:
+
+```dot
+graph door {
+  closed -- open
+}
+```
+
+And let's say there are two actions, `close` (close the door) and `open` (open
+the door), each with their own action file:
+
+```yaml
+# open.yml
+action: transition
+templates:
+  - open the @entity
+```
+
+```yaml
+# close.yml
+action: transition
+templates:
+  - open the @entity
+```
+
+The door's initial value is `closed` and when the transition action `open`
+happens, the following occurs:
+
+* The value for the `door` property is set to `open`.
+* There are no rules in the `entity.yml` file for `closed -> open`, so
+  Adventure goes to the next step.
+* The text for `closed -> open` is shown: "You opened the door."
+* The text for `open` is shown: "The door is open."
+* There are rules in the `entity.yml` file for `open`. They change the
+  actions the player can use on the property with `actions: [close]`. 
+  Now, the only action that can be performed is `close`.
+
 ### Description
 
 Description actions do **not** change the value of an entity's property. 
@@ -282,6 +373,78 @@ value.
 
 The text that is outputted in the steps above is defined in the 
 [entity's text files](4_entities.md).
+
+#### An example
+
+Let's continue with the door entity example above. The entity has the
+following file structure:
+
+```
+  story/
+    |- actions/
+    |     |- close.yml
+    |     |- look.yml
+    |     |- open.yml
+    |
+    |- entities/
+    |     |- door/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+With the following `entity.yml`:
+
+```yaml
+door:
+  value: closed
+  actions: [open, look]
+  rules:
+    open:
+      actions: [close, look]
+    closed:
+      actions: [open, look]
+```
+
+And the following `text.md`:
+
+```markdown
+# door
+
+## closed
+
+The door is closed.
+
+## open
+
+The door is open.
+```
+
+And the following `values.dot`:
+
+```dot
+graph door {
+  closed -- open
+}
+```
+
+And let's say there is the action `describe`:
+
+```yaml
+# look.yml
+action: description
+templates:
+  - look at the @entity
+  - describe the @entity
+```
+
+The door's initial value is `closed` and when the description action `look`
+happens, the following occurs:
+
+* The door's current value is `closed`. The text for `closed` is shown:
+  "The door is closed."
 
 ## Writing the file
 
@@ -306,21 +469,224 @@ a transition or description action:
 
 ```yaml
 action: transition
+templates:
+  - turn on @entity
 ```
 
 ```yaml
 action: description
+templates:
+  - look at @entity
 ```
 
-Most actions will be transition actions.
+Usually most actions will be transition actions.
 
 ### Templates
 
 Templates define the phrase(s) that the input provided by the player must be 
-matched against in order for the action to be triggered. 
+matched against in order for the action to be triggered.
+
+Take the following `eat.yml` action file:
+
+```yaml
+action: transition
+templates:
+  - eat the @entity
+  - eat @entity
+  - eat
+synonyms:
+  eat:
+    - consume
+default:
+  value: eaten
+```
+
+Let's say there's a `hamburger` entity with the `eat` action defined above.
+Then when the player inputs the following when playing the game in Adventure,
+the eat action will be applied to the hamburger:
+
+```
+eat the hamburger
+```
+
+```
+eat hamburger
+```
+
+```
+eat
+```
+
+```
+consume the hamburger
+```
+
+```
+consume hamburger
+```
+
+```
+consume
+```
+
+Note that if the entity isn't specified in the player's input, and there
+are two entities that can be eaten before the player (eg. hamburger and a
+hot dog) then it will be ambiguous as to which entity the action applies.
+Adventure will display a message accordingly.
+
+There are two possible placeholders in templates: `@entity` and `@value`.
+It marks the spot where the player would specify the entity and value that the
+entity's property is to be changed to. There is no placeholder for properties,
+since actions only apply to a single property in an entity. The same action
+cannot be reused by another property in the same entity, though it can be
+reused by other entities.
+
+When no value is specified in the input, the value in the `default` field
+is used in lieu. More on the `default` below.
+
+Let's do another example for templates, this time to speak to an 
+entity with `say.yml`:
+
+```yaml
+action: transition
+templates:
+  - say @value
+  - say @entity @value
+  - say to @entity @value
+synonyms:
+  say:
+    - tell
+    - speak
+    - ask
+```
+
+Let's say there's an `Eliot` entity with a `conversation` property that has
+the values `"Hello there!"` and `"What is your name?"`.
+
+The player could input the following. Note that capitalization and punctuation
+are ignored by Adventure:
+
+```
+say "hello there"
+```
+
+```
+ask Eliot "What is your name?"
+```
+
+```
+tell eliot hello
+```
+
+In all cases the `say` action would be applied to the `Eliot` entity, changing
+the value of its `conversation` property.
 
 #### The first template acts as the example
 
+Adventure can provide examples of input to the player. This is a list of
+eligible statements the player could give to Adventure which would execute
+an action on an entity. The statements cover all possible actions given
+the protagonist's current situation.
+
+When Adventure compiles this list, it only grabs the first template for each
+action. If there's an action with multiple templates like so:
+
+```yaml
+action: transition
+templates:
+  - walk to the @value
+  - walk @value
+```
+
+Then only the first template, `walk to the @value` would be chosen. If the
+protagonist can walk to multiple locations, then the example input would look
+like so:
+
+```
+You can:
+ walk to the kitchen
+ walk to the lawn
+ walk to the living room
+ walk to the stairs
+```
+
 ### Synonyms
 
+The `synonyms` fied is used to define synonyms for words in the templates.
+
+Take the following action file:
+
+```yaml
+action: transition
+templates:
+  - walk to the @value
+  - walk @value
+synonyms:
+  walk:
+    - go
+    - jog
+    - run
+```
+
+There's a list of synonyms for the word `walk`. This means that `go`, `jog`
+and `run` can be used in lieu of the word `walk` in the player input, and
+this action will still be triggered. So the player can input the following:
+
+```
+walk to the shop
+```
+
+But they can also input the following:
+
+```
+go to the shop
+```
+
+Or this:
+
+```
+run to the shop
+```
+
 ### Defaults
+
+The defaults are used to specify defaults if placeholders are not used
+in the templates.
+
+#### Default value
+
+If a `@value` placeholder is not specified in the template for the action,
+then it could be ambiguous as to which value to transition to. For instance,
+take the following `values.dot` for a dog entity:
+
+```dot
+graph feelings {
+  happy -- sad
+  happy -- angry -- sad
+}
+```
+
+Let's say the dog is currently `sad`. Then there are two possible values
+for the dog to go to: `happy` and `angry`. If a transition action were to be
+performed like the `pet` action defined in the `pet.yml` file below, it would
+not be clear whether the dog should transition to `happy` or `angry`:
+
+```yaml
+action: transition
+templates:
+  - pet the @entity
+  - pet @entity
+```
+
+Specifying a default value would make it unambiguous that the property 
+representing the dog's feelings transition to `happy`:
+
+```yaml
+action: transition
+templates:
+  - pet the @entity
+  - pet @entity
+default:
+  value: happy
+```
+
