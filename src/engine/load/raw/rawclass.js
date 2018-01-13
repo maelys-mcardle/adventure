@@ -31,11 +31,13 @@ class RawStory {
     this.actions = actions;
     this.entities = entities;
 
-    if (constants.KEY_VERSION in config) {
-      // Version specified. Load it in.
+    if (constants.KEY_VERSION in config && 
+        Number.isInteger(config[constants.KEY_VERSION])) {
+    
+      // Version specified and an integer. Load it in.
       this.version = config[constants.KEY_VERSION];
     } else {
-      // Version not specified. Assume latest.
+      // Version not specified or not an integer. Assume latest.
       this.version = constants.STORY_FILES_VERSION;
     }
   }
