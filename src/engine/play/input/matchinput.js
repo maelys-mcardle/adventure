@@ -22,11 +22,11 @@ function matchInput(story, input) {
 
   let bestMatch = 
     stringSimilarity.findBestMatch(
-      removePunctuation(input),
-      allEligibleInputs.map(i => removePunctuation(i.text))).bestMatch;
+      normalizeString(input),
+      allEligibleInputs.map(i => normalizeString(i.text))).bestMatch;
 
   for (let eligibleInput of allEligibleInputs) {
-    if (bestMatch.target === removePunctuation(eligibleInput.text)) {
+    if (bestMatch.target === normalizeString(eligibleInput.text)) {
 
       if (bestMatch.rating >= constants.RATING_MATCH) {
         matchingInput.match = eligibleInput;
@@ -49,10 +49,10 @@ function matchInput(story, input) {
  * @param {string} text The text to remove the punctuation.
  * @returns {string} The text with punctuation removed.
  */
-function removePunctuation(text) {
+function normalizeString(text) {
   return text
     .replace(/[\W_]+/g," ") // Replace non-aphanumeric characters with spaces
-    .replace(/ +(?= )/g,'') // Replace multiple spaces with single space.
+    .replace(/ +(?= )/g,'') // Replace multiple spaces with single space
     .trim()
     .toLowerCase();
 }
