@@ -499,11 +499,11 @@ location:
     entrance -- lawn:
       when entrance.objects.door.door is closed:
         message: frontDoorNotOpen
-        value: .last
+        value: .revert
     upstairsHallway -- masterBedroom:
       when masterBedroom.objects.door.door is closed:
         message: masterBedroomDoorLocked
-        value: .last
+        value: .revert
   entities:
     bedroom:
       - objects.letter

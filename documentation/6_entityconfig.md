@@ -7,7 +7,7 @@
   - [Initially disabled values](#initially-disabled-values)
   - [Rules](#rules)
     - [Setting the property's value](#setting-the-propertys-value)
-      - [".last" value](#last-value)
+      - [".revert" value](#revert-value)
     - [Displaying a message](#displaying-a-message)
     - [Disabling and enabling values](#disabling-and-enabling-values)
     - [Redefining eligible actions](#redefining-eligible-actions)
@@ -36,11 +36,11 @@ location:
     entrance -- lawn:
       when entrance.objects.door.door is closed:
         message: frontDoorNotOpen
-        value: .last
+        value: .revert
     upstairsHallway -- masterBedroom:
       when masterBedroom.objects.door.door is closed:
         message: masterBedroomDoorLocked
-        value: .last
+        value: .revert
   entities:
     bedroom:
       - objects.letter
@@ -198,9 +198,9 @@ When the character is asked a question, you want to go back into the
 This is done by setting the value with `value: waitingForQuestion` after
 the question has been asked or answered.
 
-#### ".last" value
+#### ".revert" value
 
-There is a special value that can be set called `.last`. This value sets
+There is a special value that can be set called `.revert`. This value sets
 the property to its previous value. This only applies to transitional triggers.
 
 Take the following example:
@@ -211,12 +211,12 @@ door:
   actions: [open]
   rules:
     closed -> open:
-      value: .last
+      value: .revert
       message: doorLocked
 ```
 
 There is a door. The door is closed. When the door's value changes from `closed`
-to `open`, the trigger `closed -> open` is executed. The `value: .last`, which
+to `open`, the trigger `closed -> open` is executed. The `value: .revert`, which
 changes the value back to the last value for the door: closed. A message is
 also displayed, informing the player that the door is locked. It cannot be
 opened.

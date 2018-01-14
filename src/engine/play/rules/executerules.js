@@ -140,7 +140,7 @@ function applyRuleValue(rules, property, oldValue) {
 
   if (constants.KEY_VALUE in rules) {
     let newValue = rules[constants.KEY_VALUE];
-    if (newValue === constants.KEY_LAST) {
+    if (newValue === constants.KEY_REVERT) {
       property.currentValue = oldValue;
     } else if (newValue in property.values) {
       property.currentValue = newValue;
