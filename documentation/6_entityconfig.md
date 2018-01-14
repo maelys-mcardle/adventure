@@ -11,7 +11,7 @@
     - [Displaying a message](#displaying-a-message)
     - [Disabling and enabling values](#disabling-and-enabling-values)
     - [Setting the eligible actions](#setting-the-eligible-actions)
-    - [Conditional rules](#conditional-rules)
+    - [Adding extra conditions](#adding-extra-conditions)
       - [Condition: when an action was performed](#condition-when-an-action-was-performed)
       - [Condition: when property of a child entity has a value](#condition-when-property-of-a-child-entity-has-a-value)
 
@@ -375,13 +375,47 @@ the door is `open`, the actions that can be performed on the door change:
 the `open` action is no longer eligible, replaced with a `close` action. The
 `describe` action remains.
 
-### Conditional rules
+### Adding extra conditions
 
 All rules are conditional in that they only execute when a condition is met,
-defined by the trigger. However, there are additional conditions which can
-be applied to rules. These ensure that statements are only executed when
-further conditions are met.
+defined by the trigger. Take the example below:
+
+```yaml
+engine:
+  value: off
+  actions: [turnOn]
+  rules:
+    off -> on:
+      message: vehicleSputtersSmoke
+    on:
+      actions: [turnOff]
+```
+
+The trigger `off -> on` is a condition, one which only executes the statements
+below it when the engine goes from off to on. Same with the `on` trigger. 
+However, there are additional conditions which can be applied to rules.
+
+```yaml
+engine:
+  value: off
+  actions: [turnOn, turnOff]
+  rules:
+    off -> on:
+      when turnOff:
+        message: engineAlreadyOff
+        value: .revert
+    on -> off:
+      when turnOn:
+        message: engineAlreadyOn
+        value: .revert
+```
+
+In the above example, a second condition, `when turnOff` and `when turnOn`
+are added. So now, when the player turns off the engine when the engine
+is already off, the message for `engineAlreadyOff` is displayed.
 
 #### Condition: when an action was performed
+
+A
 
 #### Condition: when property of a child entity has a value
