@@ -70,7 +70,7 @@ do you think?".
 All values would still be represented in the `values.dot` file:
 
 ```dot
-graph conversation {
+digraph conversation {
   idle -> whatDoYouThink
   idle -> whatDoYouReallyThink
 }
@@ -140,7 +140,7 @@ For example, take an entity for a character that can be conversed with. Here
 would be its `values.dot` file:
 
 ```dot
-graph conversation {
+digraph conversation {
   waitingForQuestion -> howAreYou
   waitingForQuestion -> howIsTheWeather
 }
@@ -213,7 +213,7 @@ Messages are text displayed to the player. They are invoked using the
 Take an entity with the following values in its `values.dot` file:
 
 ```dot
-graph clock {
+digraph clock {
   morning -> afternoon -> evenining -> night
   night -> morning
 }
