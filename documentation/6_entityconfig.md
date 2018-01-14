@@ -6,10 +6,11 @@
   - [Overview](#overview)
   - [Initially disabled values](#initially-disabled-values)
   - [Rules](#rules)
-    - [Changing the property's value](#changing-the-propertys-value)
+    - [Setting the property's value](#setting-the-propertys-value)
       - [".last" value](#last-value)
     - [Displaying a message](#displaying-a-message)
     - [Disabling and enabling values](#disabling-and-enabling-values)
+    - [Redefining eligible actions](#redefining-eligible-actions)
     - [Conditional rules](#conditional-rules)
       - [When action](#when-action)
       - [When property value](#when-property-value)
@@ -93,7 +94,7 @@ Here's an example `entity.yml` with a few rules:
 
 ```yaml
 propertyName:
-  value: someValue
+  value: aValue
   rules:
     someValue:
       message: messageOne
@@ -104,12 +105,12 @@ propertyName:
 Rules require a trigger. There are two kinds of triggers: value triggers and
 transition triggers.
 
-Value triggers, like `someValue` above, evaluate the statements beneath it
+Value triggers, like `someValue:` above, evaluate the statements beneath it
 when the property's current value matches the value in the trigger. In the 
 example above, `messageOne` is shown to the player when the property has
 the value `someValue`.
 
-Transition triggers, like `oneValue -- anotherValue` above, evaluate the
+Transition triggers, like `oneValue -- anotherValue:` above, evaluate the
 statements beneath it when the property transitions from one value to another
 specified in the trigger. In the example above, when the property's value 
 changes from `oneValue` to `anotherValue`, or from `anotherValue` to `oneValue`,
@@ -122,13 +123,148 @@ property transitions from the left value to the right value, or the right
 value to the left value. The latter would only execute when the property
 transitions from the left value to the right value.
 
-### Changing the property's value
+### Setting the property's value
+
+The property's current value can be changed by using the `value` field.
+
+At its simplest it would take the following format:
+
+```yaml
+propertyName:
+  rules:
+    someValue:
+      value: someOtherValue
+```
+
+For example, take an entity for a character that can be conversed with. Here
+would be its `values.dot` file:
+
+```dot
+graph conversation {
+  waitingForQuestion -> howAreYou
+  waitingForQuestion -> howIsTheWeather
+}
+```
+
+Its `text.md` file:
+
+```markdown
+# conversation
+
+## waitingForQuestion
+
+"Yes?" says the character.
+
+## howAreYou: "how are you?"
+
+"I am fine!" she replies.
+
+## howIsTheWeather: "how is the weather?"
+
+"Oh, just dreadful", she responds.
+```
+
+And this would be its `entity.yml` file:
+
+```yaml
+conversation:
+  value: waitingForQuestion
+  actions: [say]
+  rules:
+    howAreYou:
+      value: waitingForQuestion
+    howIsTheWeather:
+      value: waitingForQuestion
+```
+
+When the character is asked a question, you want to go back into the 
+`waitingForQuestion` state as to allow the player to ask another question.
+This is done by setting the value with `value: waitingForQuestion` after
+the question has been asked or answered.
 
 #### ".last" value
 
+There is a special value that can be set called `.last`. This value sets
+the property to its previous value. This only applies to transitional triggers.
+
+Take the following example:
+
+```yaml
+door:
+  value: closed
+  actions: [open]
+  rules:
+    closed -> open:
+      value: .last
+      message: doorLocked
+```
+
+There is a door. The door is closed. When the door's value changes from `closed`
+to `open`, the trigger `closed -> open` is executed. The `value: .last`, which
+changes the value back to the last value for the door: closed. A message is
+also displayed, informing the player that the door is locked. It cannot be
+opened.
+
 ### Displaying a message
 
+Messages are text displayed to the player. They are invoked using the 
+`message` field.
+
+Take an entity with the following values in its `values.dot` file:
+
+```dot
+graph clock {
+  morning -> afternoon -> evenining -> night
+  night -> morning
+}
+```
+
+And the following text in its `text.md` file:
+
+```markdown
+# clock
+
+## morning
+
+It is morning.
+
+## afternoon
+
+It is afternoon.
+
+## evening
+
+It is the evening.
+
+## night
+
+It is night.
+
+## bellsChime
+
+The clock's bells chime.
+```
+
+And the following `entity.yml`:
+
+```yaml
+clock:
+  value: morning
+  action: [advanceTime]
+  rules:
+    morning -> afternoon:
+      message: bellsChime
+```
+
+When the clock goes from `morning` to `afternoon`, the rules say to show
+the message `bellsChime`: "The clock's bells chime".
+
+The `bellsChime` message is defined in the entity's text file. It is not
+defined in the values file.
+
 ### Disabling and enabling values
+
+### Redefining eligible actions
 
 ### Conditional rules
 
