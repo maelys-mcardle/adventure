@@ -136,8 +136,24 @@ propertyName:
       value: someOtherValue
 ```
 
-For example, take an entity for a character that can be conversed with. Here
-would be its `values.dot` file:
+For example, take an entity for a character that can be conversed with named
+Juliette. The entity would have the following file structure:
+
+```
+  story/
+    |- actions/
+    |     |- ask.yml
+    |
+    |- entities/
+    |     |- juliette/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+Here would be its `values.dot` file:
 
 ```dot
 digraph conversation {
@@ -169,7 +185,7 @@ And this would be its `entity.yml` file:
 ```yaml
 conversation:
   value: waitingForQuestion
-  actions: [say]
+  actions: [ask]
   rules:
     howAreYou:
       value: waitingForQuestion
@@ -210,7 +226,23 @@ opened.
 Messages are text displayed to the player. They are invoked using the 
 `message` field.
 
-Take an entity with the following values in its `values.dot` file:
+Take a clock entity with the following file structure:
+
+```
+  story/
+    |- actions/
+    |     |- advanceTime.yml
+    |
+    |- entities/
+    |     |- clock/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+With the following `values.dot` file:
 
 ```dot
 digraph clock {
