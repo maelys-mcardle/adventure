@@ -427,7 +427,9 @@ propertyName:
         message: someMessage
 ```
 
-The condition is `when <actionName>`. Take the example of a door:
+The format of the condition is `when <actionName>`. 
+
+Take the example of a door:
 
 ```yaml
 door:
@@ -453,3 +455,89 @@ is performed on a closed door, the value is reverted to `closed` with the
 special `.revert` value and the message for `doorAlreadyClosed` is displayed.
 
 #### Condition: when property of a child entity has a value
+
+There is another type of condition that can be added, that executes statements
+only when a child entity of the property has a specific value.
+
+Take the following example:
+
+```yaml
+location:
+  value: bedroom
+  actions: [walk]
+  rules:
+    entrance -- lawn:
+      when entrance.objects.door.door is closed:
+        message: frontDoorNotOpen
+        value: .revert
+    upstairsHallway -- masterBedroom:
+      when masterBedroom.objects.door.door is closed:
+        message: masterBedroomDoorLocked
+        value: .revert
+  entities:
+    entrance:
+      - objects.door
+    masterBedroom:
+      - objects.door
+```
+
+There is a `door` entity in the `entrance` value, as well as in the
+`masterBedroom` value. Let's look at the rule more closely:
+
+```yaml
+location:
+  ...
+  rules:
+    entrance -- lawn:
+      when entrance.objects.door.door is closed:
+        message: frontDoorNotOpen
+        value: .revert
+```
+
+Note the `when entrance.objects.door.door is closed` conditional.
+
+The format of the conditional is: 
+
+```
+when <value.childEntityPath.childEntityProperty> is <childEntityValue>:
+```
+
+This is the logic:
+
+* When the protagonist attempts to go from the entrance to the lawn...
+* When the door entity in the entrance has the current value `closed`...
+* Show a message that the door is not open
+* Revert the value, so if the player
+
+
+The conditional can also look at child entities of child entities. Also,
+the full path does not have to be specified. If there was one door instead
+of two, this would have worked:
+
+
+```yaml
+location:
+  ...
+  rules:
+    entrance -- lawn:
+      when entrance.objects.door.door is closed:
+        message: frontDoorNotOpen
+        value: .revert
+```
+
+...but so too would have this:
+
+
+```yaml
+location:
+  ...
+  rules:
+    entrance -- lawn:
+      when door is closed:
+        message: frontDoorNotOpen
+        value: .revert
+```
+
+The full path is only necessary when there are multiple matches that would
+make the conditional ambiguous as to which entity is supposed to be looked at
+for the value.
