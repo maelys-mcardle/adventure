@@ -6,7 +6,7 @@
   - [Overview](#overview)
   - [Initially disabled values](#initially-disabled-values)
   - [Rules](#rules)
-    - [Changing the property's current value](#changing-the-propertys-current-value)
+    - [Changing the property's value](#changing-the-propertys-value)
       - [".last" value](#last-value)
     - [Displaying a message](#displaying-a-message)
     - [Disabling and enabling values](#disabling-and-enabling-values)
@@ -87,8 +87,9 @@ conversation:
 
 ## Rules
 
-Rules allow for more complex entity behaviour. Rules are defined in the
-`rules` field:
+Rules allow for more complex entity behaviour. Rules are a set of statements
+to be executed when a condition is met. They are defined in the `rules` field.
+Here's an example `entity.yml` with a few rules:
 
 ```yaml
 propertyName:
@@ -100,11 +101,28 @@ propertyName:
       message: messageTwo
 ```
 
-Rules all have a trigger. In the example above, there are two triggers:
-`someValue` and `oneValue -- anotherValue`. There are two kinds of triggers,
+Rules require a trigger. There are two kinds of triggers: value triggers and
+transition triggers.
 
+Value triggers, like `someValue` above, evaluate the statements beneath it
+when the property's current value matches the value in the trigger. In the 
+example above, `messageOne` is shown to the player when the property has
+the value `someValue`.
 
-### Changing the property's current value
+Transition triggers, like `oneValue -- anotherValue` above, evaluate the
+statements beneath it when the property transitions from one value to another
+specified in the trigger. In the example above, when the property's value 
+changes from `oneValue` to `anotherValue`, or from `anotherValue` to `oneValue`,
+the `messageTwo` is shown to the player. 
+
+Transition triggers support bidirectional transitions like 
+`oneValue -- anotherValue` as well as unidirectional transitions like
+`oneValue -> anotherValue`. The former would execute statements when the 
+property transitions from the left value to the right value, or the right
+value to the left value. The latter would only execute when the property
+transitions from the left value to the right value.
+
+### Changing the property's value
 
 #### ".last" value
 
