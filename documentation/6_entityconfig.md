@@ -250,7 +250,7 @@ And the following `entity.yml`:
 ```yaml
 clock:
   value: morning
-  action: [advanceTime]
+  actions: [advanceTime]
   rules:
     morning -> afternoon:
       message: bellsChime
