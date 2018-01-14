@@ -4,16 +4,16 @@
 
 - [Entity Configuration (Continued)](#entity-configuration-continued)
   - [Overview](#overview)
-  - [Initially disabled values](#initially-disabled-values)
+  - [Disabling values](#disabling-values)
   - [Rules](#rules)
     - [Setting the property's value](#setting-the-propertys-value)
       - [".revert" value](#revert-value)
     - [Displaying a message](#displaying-a-message)
     - [Disabling and enabling values](#disabling-and-enabling-values)
-    - [Redefining eligible actions](#redefining-eligible-actions)
+    - [Setting the eligible actions](#setting-the-eligible-actions)
     - [Conditional rules](#conditional-rules)
-      - [When action](#when-action)
-      - [When property value](#when-property-value)
+      - [Condition: when an action was performed](#condition-when-an-action-was-performed)
+      - [Condition: when property of a child entity has a value](#condition-when-property-of-a-child-entity-has-a-value)
 
 <!-- /TOC -->
 
@@ -56,11 +56,11 @@ The fields discussed in the entity documentation were sufficient to write
 many stories; the material covered in this documentation allows for more
 complex behaviour.
 
-## Initially disabled values
+## Disabling values
 
 A property can have one or more values. Sometimes, it is desirable to disable
-some of these values. Disabling values means that for all intents and purposes, 
-those values do not exist until such time as they are enabled again.
+some of these values initially. Disabling values means that for all intents and 
+purposes, those values do not exist until such time as they are enabled again.
 
 For instance, for a property representing a conversation, it could be desirable 
 not to have all values immediately available. If, for example, the player
@@ -83,8 +83,12 @@ be disabled as such:
 conversation:
   value: idle
   actions: [say]
-  disabled: [whatDoYouReallyThink]
+  disable: [whatDoYouReallyThink]
 ```
+
+There is no equivalent `enabled` field, as it is redundant: all values are 
+enabled unless otherwise specified initially. To enable values, it takes
+a rule.
 
 ## Rules
 
@@ -125,7 +129,11 @@ transitions from the left value to the right value.
 
 ### Setting the property's value
 
-The property's current value can be changed by using the `value` field.
+In the [entities documentation](4_entities.md), the `value` field was covered
+to the extent of defining an initial value for the property.
+
+The property's current value can be changed by using the `value` field
+in a rule.
 
 At its simplest it would take the following format:
 
@@ -136,8 +144,8 @@ propertyName:
       value: someOtherValue
 ```
 
-For example, take an entity for a character that can be conversed with named
-Juliette. The entity would have the following file structure:
+For example, take an entity for a character that can be conversed with.
+The entity would have the following file structure:
 
 ```
   story/
@@ -296,10 +304,84 @@ defined in the values file.
 
 ### Disabling and enabling values
 
-### Redefining eligible actions
+In a previous section, it was shown how to disable values. That is to say,
+that for all intents and purposes, those values do not exist until such time 
+as they are enabled again.
+
+The `enable` and `disable` fields allow values to be enabled/disabled in
+a story.
+
+For instance, for a property representing a conversation, it could be desirable 
+not to have all values immediately available. If, for example, the player
+should only ask "What do you really think?" after having first asked "What
+do you think?". 
+
+All values would still be represented in the `values.dot` file:
+
+```dot
+digraph conversation {
+  idle -> whatDoYouThink
+  idle -> whatDoYouReallyThink
+}
+```
+
+Then in the `entity.yml` file, the question "What do you really think?" could
+be disabled with `disable: [whatDoYouReallyThink]`:
+
+```yaml
+conversation:
+  value: idle
+  actions: [say]
+  disable: [whatDoYouReallyThink]
+  rules:
+    whatDoYouThink:
+      enable: [whatDoYouReallyThink]
+      disable: [whatDoYouThink]
+      value: idle
+```
+
+Then, when the player asks "what do you think?", the rules for `whatDoYouThink`
+are executed: 
+
+* Enable "what do you really think?" (`whatDoYouReallyThink`)
+* Disable "what do you think?" (`whatDoYouThink`)
+* Set the value for the property back to `idle` so the player is able
+  to ask the question.
+
+### Setting the eligible actions
+
+In the [entities documentation](4_entities.md), the `actions` field was covered
+to the extent of defining the list of eligible actions for the property.
+
+The list of eligible actions for a property can also be changed after the
+fact with the `actions` field in a rule.
+
+Take the following example:
+
+```yaml
+door:
+  value: closed
+  actions: [open, describe]
+  rules:
+    open:
+      actions: [close, describe]
+    closed:
+      actions: [open, describe]
+```
+
+There is a door. The door is closed. Initially, there are two actions that can
+be performed on the door: `open` and `describe`. The rules dictate that when
+the door is `open`, the actions that can be performed on the door change:
+the `open` action is no longer eligible, replaced with a `close` action. The
+`describe` action remains.
 
 ### Conditional rules
 
-#### When action
+All rules are conditional in that they only execute when a condition is met,
+defined by the trigger. However, there are additional conditions which can
+be applied to rules. These ensure that statements are only executed when
+further conditions are met.
 
-#### When property value
+#### Condition: when an action was performed
+
+#### Condition: when property of a child entity has a value
