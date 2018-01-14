@@ -416,6 +416,40 @@ is already off, the message for `engineAlreadyOff` is displayed.
 
 #### Condition: when an action was performed
 
-A
+A condition in which the statements beneath it are only executed when a
+specific action was performed takes the following format:
+
+```yaml
+propertyName:
+  rules:
+    someValue -> anotherValue:
+      when actionName:
+        message: someMessage
+```
+
+The condition is `when <actionName>`. Take the example of a door:
+
+```yaml
+door:
+  value: closed
+  actions: [close, open]
+  rules:
+    closed -> open:
+      when close:
+        message: doorAlreadyClosed
+        value: .revert
+    open -> closed:
+      when open:
+        message: doorAlreadyOpen
+        value: .revert
+```
+
+Keep in mind that transition actions always change the value, despite the name.
+So a `close` action could open the door, if the door is already closed. It
+doesn't matter what the action is called; it changes the value.
+
+So in the example above, a condition is added, such that when the `close` action
+is performed on a closed door, the value is reverted to `closed` with the 
+special `.revert` value and the message for `doorAlreadyClosed` is displayed.
 
 #### Condition: when property of a child entity has a value
