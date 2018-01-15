@@ -3,6 +3,7 @@
 const path = require('path');
 const constants = require('../../../constants');
 const errors = require('../../../errors');
+const log = require('../../../log');
 
 module.exports = {
   replacePlaceholders: replacePlaceholders,
@@ -27,7 +28,7 @@ function replacePlaceholders(story, entities) {
 
   } else {
 
-    console.log(errors.NO_ENTITIES_IN_STORY);
+    log.warn(errors.NO_ENTITIES_IN_STORY);
 
   }
 
@@ -61,7 +62,7 @@ function replacePlaceholdersInEntities(entities) {
 function replacePlaceholdersInChildEntities(entities, entity, recursion) {
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return entity;
   }
       
@@ -126,7 +127,7 @@ function getEntityWithPath(entities, path) {
     }
   }
 
-  console.log(errors.CHILD_ENTITY_NOT_FOUND(path));
+  log.warn(errors.CHILD_ENTITY_NOT_FOUND(path));
   return path;
 }
 

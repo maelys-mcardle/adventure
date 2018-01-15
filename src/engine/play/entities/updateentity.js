@@ -2,6 +2,7 @@
 
 const constants = require('../../constants');
 const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   updateProperty: updateProperty,
@@ -33,7 +34,7 @@ function updateProperty(story, target, updatedProperty) {
 function updatePropertyRecursive(entity, target, updatedProperty, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return entity;
   }
 

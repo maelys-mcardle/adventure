@@ -3,6 +3,7 @@
 const {EligibleInput, EligibleAction} = require('./eligibleclass');
 const constants = require('../../constants');
 const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   listAll: getAllEligibleInputs,
@@ -70,7 +71,7 @@ function getInputsWithTemplate(template, eligibleAction) {
   if (eligibleEntitiesNames.length === 0) {
     return validInputs;
   } else if (!hasEntityVariable && eligibleEntitiesNames.length > 1) {
-    console.log(errors.TEMPLATE_AMBIGUOUS(
+    log.warn(errors.TEMPLATE_AMBIGUOUS(
       template, eligibleEntitiesNames.join(', ')));
     return validInputs;
   }
@@ -88,7 +89,7 @@ function getInputsWithTemplate(template, eligibleAction) {
       if (valueNames.length === 0) {
         continue;
       } else if (!hasPropertyVariable && valueNames.length > 1) {
-        console.log(errors.TEMPLATE_AMBIGUOUS(template, valueNames.join(', ')));
+        log.warn(errors.TEMPLATE_AMBIGUOUS(template, valueNames.join(', ')));
         continue;
       }
 
@@ -162,7 +163,7 @@ function getEligibleActionsFromEntity(eligibleActions,
   actions, entity, recursion) {
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return eligibleActions;
   }
 

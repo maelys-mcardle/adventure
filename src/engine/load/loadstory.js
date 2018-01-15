@@ -5,6 +5,7 @@ const fileToRaw = require('./raw/filetoraw');
 const rawToStory = require('./story/rawtostory');
 const constants = require('../constants');
 const errors = require('../errors');
+const log = require('../log');
 
 module.exports = {
   load: loadStory
@@ -25,7 +26,7 @@ function loadStory(storyDirectory) {
 
   // Show an error message if the story files are an unsupported version.
   if (rawStory.version > constants.STORY_FILES_VERSION) {
-    console.log(errors.VERSION_TOO_NEW);
+    log.warn(errors.VERSION_TOO_NEW);
   }
 
   // If a story was found, proceed.
@@ -38,7 +39,7 @@ function loadStory(storyDirectory) {
   }
   
   // No story found. Produce error.
-  console.log(errors.NO_STORY_FOUND(storyDirectory));
+  log.error(errors.NO_STORY_FOUND(storyDirectory));
 
   return null;
 }

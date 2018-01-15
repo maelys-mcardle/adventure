@@ -2,6 +2,7 @@
 
 const constants = require('../../constants');
 const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   findEntity: findEntity,
@@ -48,7 +49,7 @@ function findProperty(story, target) {
 function getEntityRecursive(entity, target, recursion) {
 
  if (recursion >= constants.MAX_RECURSION) {
-   console.log(errors.MAX_RECURSION);
+   log.warn(errors.MAX_RECURSION);
    return null;
  }
 

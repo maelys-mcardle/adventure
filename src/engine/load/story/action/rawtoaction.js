@@ -1,11 +1,12 @@
 'use strict';
 
+const constants = require('../../../constants');
+const errors = require('../../../errors');
+const log = require('../../../log');
+
 module.exports = {
   parse: parseActions
 };
-
-const constants = require('../../../constants');
-const errors = require('../../../errors');
 
 /**
  * Parses the actions in the intermediary format and updates the story. 
@@ -90,7 +91,7 @@ function parseActionType(action, actionType) {
       break;
 
     default:
-      console.log(errors.ACTION_TYPE_INVALID(actionType));
+      log.warn(errors.ACTION_TYPE_INVALID(actionType));
       break;
   }
 
@@ -140,7 +141,7 @@ function parseSingleSynonym(word, synonymForWord, templates) {
       let templateWithSynonym = replaceWord(template, word, synonymForWord);
       newTemplates.push(templateWithSynonym);
     } else {
-      console.log(errors.WORD_NOT_IN_TEMPLATE(word, template));
+      log.warn(errors.WORD_NOT_IN_TEMPLATE(word, template));
     }
   }
 

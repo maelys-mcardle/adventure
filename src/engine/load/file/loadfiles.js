@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const {File} = require('./fileclass');
 const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   load: loadFiles
@@ -37,7 +38,7 @@ function getFilePaths(rootDirectory) {
         next(); 
       },
       errors: function(fileDirectory, nodeStats, next) {
-        console.log(errors.LISTING_FILE(fileDirectory));
+        log.warn(errors.LISTING_FILE(fileDirectory));
         next(); 
       }
     }

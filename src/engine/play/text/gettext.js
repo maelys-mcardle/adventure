@@ -2,6 +2,7 @@
 
 const constants = require('../../constants');
 const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   getAll: getStoryText,
@@ -18,7 +19,7 @@ module.exports = {
 function getStoryText(story) {
 
   if (story.rootEntity == null) {
-    console.log(errors.ROOT_ENTITY_UNDEFINED);
+    log.error(errors.ROOT_ENTITY_UNDEFINED);
     return '';
   }
 
@@ -52,7 +53,7 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   let text = [];
   
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return text;
   }
 
@@ -128,7 +129,7 @@ function getEntityTextRecursive(entity, recursion) {
   let text = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return text;
   }
 

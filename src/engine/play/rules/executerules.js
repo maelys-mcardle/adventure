@@ -1,9 +1,10 @@
 'use strict';
 
-const constants = require('../../constants');
-const errors = require('../../errors');
 const getEntity = require('../entities/getentity');
 const updateEntity = require('../entities/updateentity');
+const constants = require('../../constants');
+const errors = require('../../errors');
+const log = require('../../log');
 
 module.exports = {
   execute: executeRules,
@@ -28,7 +29,7 @@ function executeRules(story, action, target, newValue, isTransition) {
   let property = getEntity.findProperty(story, target);
   
   if (property == null) {
-    console.log(
+    log.warn(
       errors.ENTITY_PROPERTY_NOT_FOUND(target.entity, target.property));
     return [story, messages];
   }
@@ -112,7 +113,7 @@ function applyRules(rules, action, property, oldValue, newValue, recursion) {
   let messages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return [property, messages];
   }
 
@@ -145,7 +146,7 @@ function applyRuleValue(rules, property, oldValue) {
     } else if (newValue in property.values) {
       property.currentValue = newValue;
     } else {
-      console.log(errors.NOT_FOUND(newValue));
+      log.warn(errors.NOT_FOUND(newValue));
     }
   }
 
@@ -166,7 +167,7 @@ function applyRuleDisable(rules, property) {
       if (disableValue in property.values) {
         property.values[disableValue].disabled = true;
       } else {
-        console.log(errors.NOT_FOUND(disableValue));
+        log.warn(errors.NOT_FOUND(disableValue));
       }
     }
   }
@@ -188,7 +189,7 @@ function applyRuleEnable(rules, property) {
       if (enableValue in property.values) {
         property.values[enableValue].disabled = false;
       } else {
-        console.log(errors.NOT_FOUND(enableValue));
+        log.warn(errors.NOT_FOUND(enableValue));
       }
     }
   }
@@ -225,7 +226,7 @@ function applyRuleMessage(rules, property, messages) {
       let messageText = property.messages[messageKey];
       messages.push(messageText);
     } else {
-      console.log(errors.NOT_FOUND(messageKey));
+      log.warn(errors.NOT_FOUND(messageKey));
     }
   }
 
@@ -356,7 +357,7 @@ function isCurrentValue(property, propertyPrefix, targetProperty,
   //  property.childEntity.childProperty.[..].childProperty
 
   if (recursion >= constants.MAX_RECURSION) {
-    console.log(errors.MAX_RECURSION);
+    log.warn(errors.MAX_RECURSION);
     return false;
   }
 

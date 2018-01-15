@@ -4,6 +4,7 @@ const placeholders = require('./placeholders');
 const {Trigger} = require('./triggerclass');
 const constants = require('../../../constants');
 const errors = require('../../../errors');
+const log = require('../../../log');
 
 module.exports = {
   parse: parseEntities
@@ -173,7 +174,7 @@ function parseYaml(entity, actions, rawYaml) {
       entity.properties[propertyName] = property;
 
     } else {
-      console.log(errors.NO_PROPERTY_IN_CONFIG(propertyName));
+      log.warn(errors.NO_PROPERTY_IN_CONFIG(propertyName));
     }
   }
   
@@ -194,7 +195,7 @@ function loadCurrentValue(property, config) {
     if (currentValue in property.values) {
       property.currentValue = currentValue;
     } else {
-      console.log(errors.VALUE_DOES_NOT_EXIST(currentValue))
+      log.warn(errors.VALUE_DOES_NOT_EXIST(currentValue))
     }
   } else {
     // Value not specified. Grab the first one.
@@ -219,7 +220,7 @@ function loadActions(property, actions, config) {
       if (action in actions) {
         property.actions.push(action);
       } else {
-        console.log(errors.ACTION_UNDEFINED(action, property.name));
+        log.warn(errors.ACTION_UNDEFINED(action, property.name));
       }
     }
   }
@@ -238,7 +239,7 @@ function loadDisabled(property, config) {
       if (disabledPropertyValue in property.values) {
         property.values[disabledPropertyValue].disabled = true;
       } else {
-        console.log(errors.DISABLED_VALUE_DOES_NOT_EXIST(
+        log.warn(errors.DISABLED_VALUE_DOES_NOT_EXIST(
           disabledPropertyValue, property.name));
       }
     }
@@ -264,7 +265,7 @@ function loadRules(property, config) {
         if (trigger.left in property.values) {
           property.values[trigger.left].rules = triggerRules;
         } else {
-          console.log(errors.TRIGGER_NOT_FOUND(trigger.left));
+          log.warn(errors.TRIGGER_NOT_FOUND(trigger.left));
         }
   
       } else {
@@ -308,7 +309,7 @@ function loadChildEntities(property, config) {
 function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!(propertyName in entity.properties)) {
-    console.log(errors.NO_PROPERTY_FOR_TRIGGER(propertyName, rawTrigger));
+    log.warn(errors.NO_PROPERTY_FOR_TRIGGER(propertyName, rawTrigger));
     return entity;
   }
 
@@ -361,7 +362,7 @@ function addRelationshipData(property, trigger, key, value) {
 
   } else {
 
-    console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
+    log.warn(errors.RELATIONSHIP_NOT_DEFINED(trigger.left, trigger.right));
 
   }
 
@@ -374,7 +375,7 @@ function addRelationshipData(property, trigger, key, value) {
 
     } else {
 
-      console.log(errors.RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
+      log.warn(errors.RELATIONSHIP_NOT_DEFINED(trigger.right, trigger.left));
 
     }
   }
