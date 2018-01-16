@@ -68,6 +68,8 @@ The entity might have the following file structure:
 ```
   story/
     |- actions/
+    |     |- say.yml
+    |
     |- entities/
     |     |- character/
     |          |- entity.yml
