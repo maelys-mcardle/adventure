@@ -4,7 +4,7 @@
 
 - [Entity Configuration (Continued)](#entity-configuration-continued)
   - [Overview](#overview)
-  - [Disabling values](#disabling-values)
+  - [Disabling values initially](#disabling-values-initially)
   - [Rules](#rules)
     - [Setting the property's value](#setting-the-propertys-value)
       - [".revert" value](#revert-value)
@@ -56,16 +56,31 @@ The fields discussed in the entity documentation were sufficient to write
 many stories; the material covered in this documentation allows for more
 complex behaviour.
 
-## Disabling values
+## Disabling values initially
 
 A property can have one or more values. Sometimes, it is desirable to disable
 some of these values initially. Disabling values means that for all intents and 
 purposes, those values do not exist until such time as they are enabled again.
 
-For instance, for a property representing a conversation, it could be desirable 
-not to have all values immediately available. If, for example, the player
-should only ask "What do you really think?" after having first asked "What
-do you think?". 
+For instance, take a character entity that the protagonist can converse with.
+The entity might have the following file structure:
+
+```
+  story/
+    |- actions/
+    |- entities/
+    |     |- character/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+The character entity has a property representing a conversation. It could be 
+desirable not to have all values immediately available. If, for example, the 
+player should only ask "What do you really think?" after having first asked 
+"What do you think?". 
 
 All values would still be represented in the `values.dot` file:
 
@@ -76,7 +91,7 @@ digraph conversation {
 }
 ```
 
-Then in the `entity.yml` file, the question "What do you really think?" could
+But in the `entity.yml` file, the question "What do you really think?" would
 be disabled as such:
 
 ```yaml
@@ -232,7 +247,8 @@ opened.
 ### Displaying a message
 
 Messages are text displayed to the player. They are invoked using the 
-`message` field.
+`message` field. The text for the message is defined in the entity's text
+file.
 
 Take a clock entity with the following file structure:
 
@@ -299,8 +315,9 @@ clock:
 When the clock goes from `morning` to `afternoon`, the rules say to show
 the message `bellsChime`: "The clock's bells chime".
 
-The `bellsChime` message is defined in the entity's text file. It is not
-defined in the values file.
+Notice that the `bellsChime` message is defined in the entity's text file, but
+not in the the values `values.dot` file. This is because messages are not 
+values. They only need be defined in the text file.
 
 ### Disabling and enabling values
 
@@ -446,13 +463,23 @@ door:
         value: .revert
 ```
 
-Keep in mind that transition actions always change the value, despite the name.
-So a `close` action could open the door, if the door is already closed. It
-doesn't matter what the action is called; it changes the value.
+Let's say that the player tries to close the door with the `close` action 
+while the door is already closed (property's current value is `closed`):
 
-So in the example above, a condition is added, such that when the `close` action
-is performed on a closed door, the value is reverted to `closed` with the 
-special `.revert` value and the message for `doorAlreadyClosed` is displayed.
+* The `closed -> open:` rule is triggered. This is counter-intuitive: the
+  player used the `closed` action, so why would the door transition to `open`?
+  This is because what the action is called is irrelevant. All transition 
+  actions behave the same way, no matter what their name. The `close` action
+  is identical in behaviour to the `open` action. They both change the value.
+  The door was closed. An action to change the value was invoked. The door's
+  value changed to open.
+* The `when close:` conditional is checked. The rules that follow are only
+  executed when the action that triggered the change is the `close` action.
+  This is the case in this example.
+* Show the `doorAlreadyClosed` message, which informs the player that the
+  door was already closed.
+* Revert the property's value back to what it was using the special `.revert`
+  value. The value had been changed to `open`; it's now back to `closed`.
 
 #### Condition: when property of a child entity has a value
 
@@ -499,7 +526,7 @@ Note the `when entrance.objects.door.door is closed` conditional.
 The format of the conditional is: 
 
 ```
-when <value.childEntityPath.childEntityProperty> is <childEntityValue>:
+when <value.childEntityPath.childProperty> is <childPropertyValue>:
 ```
 
 This is the logic:
@@ -509,11 +536,14 @@ This is the logic:
 * Show a message that the door is not open
 * Revert the value, so if the player
 
+The full path does not have to be specified. If there was one door instead
+of two, this format for the conditional would have worked:
 
-The conditional can also look at child entities of child entities. Also,
-the full path does not have to be specified. If there was one door instead
-of two, this would have worked:
+```
+when <childProperty> is <childPropertyValue>:
+```
 
+So while this worked:
 
 ```yaml
 location:
@@ -525,7 +555,7 @@ location:
         value: .revert
 ```
 
-...but so too would have this:
+So too would have this:
 
 
 ```yaml
@@ -541,3 +571,20 @@ location:
 The full path is only necessary when there are multiple matches that would
 make the conditional ambiguous as to which entity is supposed to be looked at
 for the value.
+
+Adventure looks right-to-left of the first field for the first eligible match.
+Going back to the example above, if there was only one door, all these
+conditions would have worked:
+
+* `when entrance.objects.door.door is closed:`
+* `when objects.door.door is closed:`
+* `when door.door is closed:`
+* `when door is closed:`
+
+The conditional can also look at child entities of child entities, with the
+format:
+
+```
+when <value.childEntityPath.childProperty.childValue
+     .childChildEntityPath.childChildProperty> is <childChildPropertyValue>:
+```
