@@ -7,7 +7,7 @@
   - [Installing adventure](#installing-adventure)
   - [Playing a game](#playing-a-game)
   - [Learning how to create games](#learning-how-to-create-games)
-  - [Developing with Adventure](#developing-with-adventure)
+  - [Developing with Adventure (NodeJS)](#developing-with-adventure-nodejs)
 
 <!-- /TOC -->
 
@@ -51,9 +51,10 @@ directory contains information on how to write these. The [examples](examples)
 directory contains stories written for the game, that you can peruse to see 
 how they're put together.
 
-## Developing with Adventure
+## Developing with Adventure (NodeJS)
 
-You can also integrate adventure in your own software using its API.
+You can also integrate adventure in your own projects written in NodeJS 
+using its API.
 
 Add Adventure as a dependency in your `package.json` file:
 
