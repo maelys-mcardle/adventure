@@ -46,9 +46,10 @@ Use the `help` command to get a listing of all possible commands.
 
 ## Learning how to create games
 
-Games in Adventure are called stories. The `documentation` directory contains
-information on how to write these. The `examples` directory contains stories
-written for the game, that you can peruse to see how they're put together.
+Games in Adventure are called stories. The [documentation](documentation) 
+directory contains information on how to write these. The [examples](examples) 
+directory contains stories written for the game, that you can peruse to see 
+how they're put together.
 
 ## Developing with Adventure
 
@@ -60,7 +61,6 @@ Add Adventure as a dependency in your `package.json` file:
 {
   "name": "your-package",
   "version": "1.0.0",
-  ...
   "dependencies": {
     "adventure": "maelys-mcardle/adventure"
   }
