@@ -297,7 +297,7 @@ function listEligibleActions(story) {
 
   if (possibleActions.length > 0) {
     output = 'You can:\n' + 
-      possibleActions.map(a => ' ' + a.text).sort().join('\n');
+      possibleActions.map(example => ' ' + example).sort().join('\n');
   }
   
   return output;

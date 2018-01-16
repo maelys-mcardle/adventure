@@ -58,6 +58,7 @@ function getOutput(story) {
  * @returns {string[]} The examples of commands.
  */
 function getInputExamples(story) {
-  let output = eligibleInputs.listExamples(story);
-  return output;
+  let inputExamples = eligibleInputs.listExamples(story);
+  let inputExamplesText = inputExamples.map(example => example.text);
+  return inputExamplesText;
 }
