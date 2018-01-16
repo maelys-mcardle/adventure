@@ -79,7 +79,7 @@ let story = adventure.loadStory('node_modules/adventure/examples/thehouse');
 let text = adventure.getStoryOutput(story);
 console.log(text);
 
-/* Prints out:
+/* Output:
 [ 'You are in the bedroom. It hasn\'t changed since your childhood.
    Your pink bed sheets. The blue walls. Your plush animals. Your polly pocket 
    and transformers lining the shelves. Traces of your teenage self - the boxes
@@ -88,25 +88,40 @@ console.log(text);
   'A letter is on the bedside table.' ]
 */
 
-// Gets examples of eligible inputs the player could use.
+// Get examples of eligible inputs that the player could use.
+// It provides one example per unique thing the protagonist can do.
 let inputExamples = adventure.getInputExamples(story);
 console.log(inputExamples);
 
-/* Prints out:
+/* Output:
 [ 'go to the upstairs hallway',
   'read the letter',
   'describe world' ]
 */
 
-// Alternatively, get all eligible inputs the player could use.
+// Alternatively, get all the eligible inputs that the player could use.
 let allEligibleInputs = adventure.getAllInputs(story);
 console.log(allEligibleInputs);
+
+/* Output:
+[ 'go to the upstairs hallway',
+  'go to upstairs hallway',
+  'go the upstairs hallway',
+  'go upstairs hallway',
+  'travel to the upstairs hallway',
+  ...
+  'inspect at the world',
+  'examine world',
+  'examine at world',
+  'examine the world',
+  'examine at the world' ]
+*/
 
 // Execute a player input, which will move the story forward.
 [story, text] = adventure.evaluateInput(story, 'walk to upstairs hallway');
 console.log(text);
 
-/* Prints out:
+/* Output:
 [ 'You are in the upstairs hallway. Paintings line the wall.' ]
 */
 ```
