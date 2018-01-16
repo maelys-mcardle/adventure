@@ -7,5 +7,6 @@ module.exports = {
   loadStory: loadStory.load,
   evaluateInput: playStory.evaluateInput,
   getStoryOutput: playStory.getOutput,
-  getInputExamples: playStory.getInputExamples
+  getInputExamples: playStory.getInputExamples,
+  getAllInputs: playStory.getAllInputs
 }

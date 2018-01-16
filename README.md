@@ -6,8 +6,8 @@
   - [Overview](#overview)
   - [Installing adventure](#installing-adventure)
   - [Playing a game](#playing-a-game)
-  - [Learning how to create games](#learning-how-to-create-games)
-  - [Developing with Adventure (NodeJS)](#developing-with-adventure-nodejs)
+  - [Creating games](#creating-games)
+  - [Adventure API](#adventure-api)
 
 <!-- /TOC -->
 
@@ -46,28 +46,22 @@ with the `load` command:
 
 Use the `help` command to get a listing of all possible commands.
 
-## Learning how to create games
+## Creating games
 
 Games in Adventure are called stories. The [documentation](documentation) 
 directory contains information on how to write these. The [examples](examples) 
 directory contains stories written for the game, that you can peruse to see 
 how they're put together.
 
-## Developing with Adventure (NodeJS)
+## Adventure API
 
-You can also integrate adventure in your own projects written in NodeJS 
-using its API.
+You can also integrate adventure in your own [NodeJS](https://nodejs.org/) 
+projects written.
 
-Add Adventure as a dependency in your `package.json` file:
+Add Adventure to your project by running the following command:
 
-```json
-{
-  "name": "your-package",
-  "version": "1.0.0",
-  "dependencies": {
-    "adventure": "maelys-mcardle/adventure"
-  }
-}
+```bash
+npm install --save maelys-mcardle/adventure
 ```
 
 Then you can use the game engine in your code:
@@ -75,7 +69,7 @@ Then you can use the game engine in your code:
 ```js
 'use strict';
 
-// Import the Adventure API.
+// Import the module for the Adventure API.
 const adventure = require('adventure');
 
 // Loads a story from a directory. Here it loads a sample.
@@ -94,7 +88,7 @@ console.log(text);
   'A letter is on the bedside table.' ]
 */
 
-// Gets examples of eligible player input to move the story forward.
+// Gets examples of eligible inputs the player could use.
 let inputExamples = adventure.getInputExamples(story);
 console.log(inputExamples);
 
@@ -103,6 +97,10 @@ console.log(inputExamples);
   'read the letter',
   'describe world' ]
 */
+
+// Alternatively, get all eligible inputs the player could use.
+let allEligibleInputs = adventure.getAllInputs(story);
+console.log(allEligibleInputs);
 
 // Execute a player input, which will move the story forward.
 [story, text] = adventure.evaluateInput(story, 'walk to upstairs hallway');

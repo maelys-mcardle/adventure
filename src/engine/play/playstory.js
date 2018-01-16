@@ -9,6 +9,7 @@ const strings = require('../strings');
 module.exports = {
   evaluateInput: evaluateInput,
   getOutput: getOutput,
+  getAllInputs: getAllInputs,
   getInputExamples: getInputExamples
 }
 
@@ -55,10 +56,21 @@ function getOutput(story) {
 /**
  * Gets a list of example inputs for the user.
  * @param {Story} story The story object.
- * @returns {string[]} The examples of commands.
+ * @returns {string[]} Examples of eligible commands.
  */
 function getInputExamples(story) {
   let inputExamples = eligibleInputs.listExamples(story);
   let inputExamplesText = inputExamples.map(example => example.text);
   return inputExamplesText;
+}
+
+/**
+ * Gets a list of all eligible inputs
+ * @param {Story} story The story object.
+ * @returns {string[]} All eligible commands.
+ */
+function getAllInputs(story) {
+  let inputs = eligibleInputs.listAll(story);
+  let inputsText = inputExamples.map(example => example.text);
+  return inputsText;
 }
