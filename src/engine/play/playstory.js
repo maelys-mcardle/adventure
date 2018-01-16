@@ -71,6 +71,6 @@ function getInputExamples(story) {
  */
 function getAllInputs(story) {
   let inputs = eligibleInputs.listAll(story);
-  let inputsText = inputExamples.map(example => example.text);
+  let inputsText = inputs.map(example => example.text);
   return inputsText;
 }
