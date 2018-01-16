@@ -19,6 +19,8 @@ It lets you create interactive fiction without needing to learn how to program.
 Games are written in a declarative language instead which is used to define the 
 game world and the actions within it.
 
+![Screenshot](screenshot.gif)
+
 ## Installing adventure
 
 Make sure you have [NodeJS](https://nodejs.org/) installed. Then run:
