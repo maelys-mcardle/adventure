@@ -56,7 +56,7 @@ how they're put together.
 ## Adventure API
 
 You can also integrate adventure in your own [NodeJS](https://nodejs.org/) 
-projects written.
+projects.
 
 Add Adventure to your project by running the following command:
 
