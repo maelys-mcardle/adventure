@@ -64,13 +64,18 @@ function getEligibleInputs(story, firstTemplateOnly) {
 function getInputsWithTemplate(template, eligibleAction) {
 
   let validInputs = [];
-  let hasPropertyVariable = template.includes(constants.KEY_VALUE_PLACEHOLDER);
-  let hasEntityVariable = template.includes(constants.KEY_ENTITY_PLACEHOLDER);
   let eligibleEntitiesNames = Object.keys(eligibleAction.entities);
+  
+  let hasValuePlaceholder = 
+    template.includes(constants.KEY_VALUE_PLACEHOLDER);
+  let hasPropertyPlaceholder = 
+    template.includes(constants.KEY_PROPERTY_PLACEHOLDER);
+  let hasEntityPlaceholder = 
+    template.includes(constants.KEY_ENTITY_PLACEHOLDER);
 
   if (eligibleEntitiesNames.length === 0) {
     return validInputs;
-  } else if (!hasEntityVariable && eligibleEntitiesNames.length > 1) {
+  } else if (!hasEntityPlaceholder && eligibleEntitiesNames.length > 1) {
     log.warn(errors.TEMPLATE_AMBIGUOUS(
       template, eligibleEntitiesNames.join(', ')));
     return validInputs;
@@ -88,7 +93,7 @@ function getInputsWithTemplate(template, eligibleAction) {
     if (eligibleAction.action.changesPropertyValue) {
       if (valueNames.length === 0) {
         continue;
-      } else if (!hasPropertyVariable && valueNames.length > 1) {
+      } else if (!hasValuePlaceholder && valueNames.length > 1) {
         log.warn(errors.TEMPLATE_AMBIGUOUS(template, valueNames.join(', ')));
         continue;
       }

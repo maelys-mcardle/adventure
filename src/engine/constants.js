@@ -41,6 +41,7 @@ module.exports = {
   KEY_ENTITY_PLACEHOLDER: '@entity',
   KEY_IS: 'is',
   KEY_MESSAGE: 'message',
+  KEY_PROPERTY_PLACEHOLDER: '@property',
   KEY_REVERT: '.revert',
   KEY_RULES: 'rules',
   KEY_SYNONYMS: 'synonyms',
