@@ -55,10 +55,10 @@ how they're put together.
 
 ## Adventure API
 
-You can also integrate adventure in your own [NodeJS](https://nodejs.org/) 
+You can also integrate Adventure in your own [NodeJS](https://nodejs.org/) 
 projects.
 
-Add Adventure to your project by running the following command:
+Install Adventure inside your project by running the following command:
 
 ```bash
 npm install --save maelys-mcardle/adventure
