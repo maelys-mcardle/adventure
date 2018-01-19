@@ -4,7 +4,7 @@
 
 - [Adventure](#adventure)
   - [Overview](#overview)
-  - [Installing adventure](#installing-adventure)
+  - [Installing Adventure](#installing-adventure)
   - [Playing a game](#playing-a-game)
   - [Creating games](#creating-games)
   - [Adventure API](#adventure-api)
@@ -21,7 +21,7 @@ game world and the actions within it.
 
 ![Screenshot](screenshot.gif)
 
-## Installing adventure
+## Installing Adventure
 
 Make sure you have [NodeJS](https://nodejs.org/) installed. Then run:
 
@@ -48,10 +48,13 @@ Use the `help` command to get a listing of all possible commands.
 
 ## Creating games
 
-Games in Adventure are called stories. The [documentation](documentation) 
-directory contains information on how to write these. The [examples](examples) 
-directory contains stories written for the game, that you can peruse to see 
-how they're put together.
+Games in Adventure are called stories. There are resources provided to help
+you write them:
+
+* The [documentation](documentation) directory contains information on 
+  how to write stories. 
+* The [examples](examples) directory contains sample stories written for 
+  Aventure, that you can try out and see how they're put together.
 
 ## Adventure API
 
@@ -118,8 +121,9 @@ console.log(allEligibleInputs);
 */
 
 // Execute a player input, which will move the story forward.
-[story, text] = adventure.evaluateInput(story, 'walk to upstairs hallway');
-console.log(text);
+let [updatedStory, newText] = 
+  adventure.evaluateInput(story, 'walk to upstairs hallway');
+console.log(newText);
 
 /* Output:
 [ 'You are in the upstairs hallway. Paintings line the wall.' ]
