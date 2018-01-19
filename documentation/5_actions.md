@@ -16,7 +16,7 @@
   - [Writing the file](#writing-the-file)
     - [Action type](#action-type)
     - [Templates](#templates)
-      - [Entity and value placeholders](#entity-and-value-placeholders)
+      - [Entity, property and value placeholders (@entity, @property, @value)](#entity-property-and-value-placeholders-entity-property-value)
       - [The first template acts as the example](#the-first-template-acts-as-the-example)
     - [Synonyms](#synonyms)
     - [Defaults](#defaults)
@@ -535,14 +535,16 @@ are two entities that can be eaten before the player (eg. hamburger and a
 hot dog) then it will be ambiguous as to which entity the action applies.
 Adventure will display a message accordingly.
 
-#### Entity and value placeholders
+#### Entity, property and value placeholders (@entity, @property, @value)
 
-There are two possible placeholders in templates: `@entity` and `@value`.
-It marks the spot where the player would specify the entity and value that the
-entity's property is to be changed to. There is no placeholder for properties,
-since actions only apply to a single property in an entity. The same action
-cannot be reused by another property in the same entity, though it can be
-reused by other entities.
+There are three possible placeholders in templates: `@entity`, `@property` and 
+`@value`. It marks the spot where the player would fill in the entity, property
+and/or value.
+
+Having the player specify these things makes it clear to Adventure what value of
+which entity/property is supposed to be changed (transition actions), or which 
+entity/property is supposed to be described. Most times, having only the 
+`@value` placeholder is sufficient.
 
 When no value is specified in the input, the value in the `default` field
 is used in lieu. More on the `default` below.

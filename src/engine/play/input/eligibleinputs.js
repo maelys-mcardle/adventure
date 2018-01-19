@@ -64,65 +64,86 @@ function getEligibleInputs(story, firstTemplateOnly) {
 function getInputsWithTemplate(template, eligibleAction) {
 
   let validInputs = [];
-  let eligibleEntitiesNames = Object.keys(eligibleAction.entities);
+  let eligibleEntities = Object.keys(eligibleAction.entities);
   
-  let hasValuePlaceholder = 
-    template.includes(constants.KEY_VALUE_PLACEHOLDER);
-  let hasPropertyPlaceholder = 
-    template.includes(constants.KEY_PROPERTY_PLACEHOLDER);
-  let hasEntityPlaceholder = 
-    template.includes(constants.KEY_ENTITY_PLACEHOLDER);
-
-  if (eligibleEntitiesNames.length === 0) {
-    return validInputs;
-  } else if (!hasEntityPlaceholder && eligibleEntitiesNames.length > 1) {
-    log.warn(errors.TEMPLATE_AMBIGUOUS(
-      template, eligibleEntitiesNames.join(', ')));
+  if (eligibleEntities.length === 0) {
     return validInputs;
   }
 
-  for (let entityName of eligibleEntitiesNames) {
+  for (let entityName of eligibleEntities) {
     let eligibleEntity = eligibleAction.entities[entityName];
+
+    let hasValuePlaceholder = 
+      template.includes(constants.KEY_VALUE_PLACEHOLDER);
+    let hasPropertyPlaceholder = 
+      template.includes(constants.KEY_PROPERTY_PLACEHOLDER);
+    let hasEntityPlaceholder = 
+      template.includes(constants.KEY_ENTITY_PLACEHOLDER);
+      
     let templateWithEntity = 
-      replacePlaceholder(template, constants.KEY_ENTITY_PLACEHOLDER, 
+      replacePlaceholder(template, 
+        constants.KEY_ENTITY_PLACEHOLDER, 
         eligibleEntity.target.entity);
+    
+    let templateWithProperty = 
+      replacePlaceholder(templateWithEntity, 
+        constants.KEY_PROPERTY_PLACEHOLDER, 
+        eligibleEntity.target.property);
 
     let values = eligibleEntity.eligibleValues;
     let valueNames = Object.keys(values);
 
     if (eligibleAction.action.changesPropertyValue) {
+
       if (valueNames.length === 0) {
-        continue;
-      } else if (!hasValuePlaceholder && valueNames.length > 1) {
-        log.warn(errors.TEMPLATE_AMBIGUOUS(template, valueNames.join(', ')));
         continue;
       }
 
       for (let valueName of valueNames) {
         let value = values[valueName];
         let templateWithValue = 
-          replacePlaceholder(templateWithEntity, 
-            constants.KEY_VALUE_PLACEHOLDER, value.readableName);
+          replacePlaceholder(templateWithProperty, 
+            constants.KEY_VALUE_PLACEHOLDER, 
+            value.readableName);
 
         let eligibleInput =
           getEligibleInput(
             templateWithValue, eligibleAction, eligibleEntity, valueName);
         
-        validInputs.push(eligibleInput);
+        validInputs = 
+          addUniqueInput(validInputs, eligibleInput, templateWithValue);
       }
     }
 
     if (eligibleAction.action.describesPropertyValue) {
     
       let eligibleInput = 
-        getEligibleInput(templateWithEntity, eligibleAction, 
+        getEligibleInput(templateWithProperty, eligibleAction, 
           eligibleEntity, null);
       
-      validInputs.push(eligibleInput);
+      validInputs = 
+        addUniqueInput(validInputs, eligibleInput, templateWithProperty);
     }
   }
 
   return validInputs;
+}
+
+/**
+ * Add an input to a list of inputs.
+ * @param {string[]} inputs The list of all inputs.
+ * @param {string} input A single input to add.
+ * @returns {string[]} The list of all inputs.
+ */
+function addUniqueInput(inputs, input, template) {
+
+  if (input in inputs) {
+    log.warn(errors.TEMPLATE_AMBIGUOUS(template));
+  } else {
+    inputs.push(input);
+  }
+  
+  return inputs;
 }
 
 /**

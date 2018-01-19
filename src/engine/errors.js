@@ -42,7 +42,7 @@ module.exports = {
 
   TEMPLATE_AMBIGUOUS:
     (template, options) => 
-      `${template} is ambiguous and can refer to: ${options}`,
+      `${template} is ambiguous and can refer to multiple entities/values.`,
 
   TRIGGER_NOT_FOUND:
     (trigger) => `Could not find ${trigger} to apply rule to.`,
