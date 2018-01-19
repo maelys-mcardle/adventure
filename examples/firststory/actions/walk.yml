@@ -1,4 +1,4 @@
-action: transition
+action: change
 templates:
   - walk to the @value
   - walk to @value

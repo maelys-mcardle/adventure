@@ -82,11 +82,11 @@ function parseDefaults(action, defaults) {
 function parseActionType(action, actionType) {
   switch(actionType) {
 
-    case constants.KEY_TRANSITION:
+    case constants.KEY_CHANGE:
       action.changesPropertyValue = true;
       break;
 
-    case constants.KEY_DESCRIPTION:
+    case constants.KEY_DESCRIBE:
       action.describesPropertyValue = true;
       break;
 

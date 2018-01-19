@@ -9,9 +9,9 @@
     - [File](#file)
   - [Name and path](#name-and-path)
   - [Types of actions](#types-of-actions)
-    - [Transition](#transition)
+    - [Change property value](#change-property-value)
       - [An example](#an-example)
-    - [Description](#description)
+    - [Describe property value](#describe-property-value)
       - [An example](#an-example-1)
   - [Writing the file](#writing-the-file)
     - [Action type](#action-type)
@@ -104,7 +104,7 @@ Actions are written in [YAML files](https://en.wikipedia.org/wiki/YAML). They
 will look like this:
 
 ```yaml
-action: transition
+action: change
 templates:
   - go to the @value
   - go to @value
@@ -184,7 +184,7 @@ Each action has its own `.yml` file, written in the
 like the following:
 
 ```yaml
-action: transition
+action: change
 templates:
   - say @value
   - say @entity @value
@@ -255,16 +255,18 @@ actions/body/eyes/blink.yml    -> body.eyes.blink
 
 ## Types of actions
 
-There are two types of actions in Adventure: transition and description.
+There are two types of actions in Adventure: one to change the value
+of an entity's property (`change` actions), and another to describe it
+(`describe` actions).
 
-### Transition
+### Change property value
 
-Transition actions change the value of an entity's property. The name 
-*transition* refers to the fact that it transitions properties from one
-value to another. For instance, for a door entity, the value might transition 
-from `open` to `closed`.
+The `change` actions change the value of an entity's property. They're sometimes
+called transition actions as they transition properties from one value to 
+another. This action applied to a door entity, the value would change from one
+value like `open` to another like `closed`.
 
-In addition to changing the value of a property, transition actions also 
+In addition to changing the value of a property, change actions also 
 do the following:
 
 * Apply rules for the transition from one value to another.
@@ -341,19 +343,19 @@ the door), each with their own action file:
 
 ```yaml
 # open.yml
-action: transition
+action: change
 templates:
   - open the @entity
 ```
 
 ```yaml
 # close.yml
-action: transition
+action: change
 templates:
   - open the @entity
 ```
 
-The door's initial value is `closed` and when the transition action `open`
+The door's initial value is `closed` and when the change action `open`
 happens, the following occurs:
 
 * The value for the `door` property is set to `open`.
@@ -365,11 +367,11 @@ happens, the following occurs:
   actions the player can use on the property with `actions: [close]`. 
   Now, the only action that can be performed is `close`.
 
-### Description
+### Describe property value
 
-Description actions do **not** change the value of an entity's property. 
+The `describe` actions do **not** change the value of an entity's property. 
 Instead, they output the text for the property's current value. The name
-*description* refers to the fact that it describes the property's current
+*describe* refers to the fact that it describes the property's current
 value.
 
 The text that is outputted in the steps above is defined in the 
@@ -435,13 +437,13 @@ And let's say there is the action `describe`:
 
 ```yaml
 # look.yml
-action: description
+action: describe
 templates:
   - look at the @entity
   - describe the @entity
 ```
 
-The door's initial value is `closed` and when the description action `look`
+The door's initial value is `closed` and when the describe action `look`
 happens, the following occurs:
 
 * The door's current value is `closed`. The text for `closed` is shown:
@@ -453,7 +455,7 @@ The file is written using [YAML](https://en.wikipedia.org/wiki/YAML), and looks
 like this:
 
 ```yaml
-action: transition
+action: change
 templates:
   - read the @entity
   - read @entity
@@ -466,21 +468,21 @@ The fields are as follows.
 ### Action type
 
 The action type specifies the kind of action to be performed, whether it is
-a transition or description action:
+a change or describe action:
 
 ```yaml
-action: transition
+action: change
 templates:
   - turn on @entity
 ```
 
 ```yaml
-action: description
+action: describe
 templates:
   - look at @entity
 ```
 
-Usually most actions will be transition actions.
+Usually most actions will be change actions.
 
 ### Templates
 
@@ -490,7 +492,7 @@ matched against in order for the action to be triggered.
 Take the following `eat.yml` action file:
 
 ```yaml
-action: transition
+action: change
 templates:
   - eat the @entity
   - eat @entity
@@ -542,9 +544,9 @@ There are three possible placeholders in templates: `@entity`, `@property` and
 and/or value.
 
 Having the player specify these things makes it clear to Adventure what value of
-which entity/property is supposed to be changed (transition actions), or which 
-entity/property is supposed to be described. Most times, having only the 
-`@value` placeholder is sufficient.
+which entity/property is supposed to be changed (change actions), or which 
+entity/property is supposed to be described (describe actions). Most times, 
+having only the `@value` placeholder is sufficient.
 
 When no value is specified in the input, the value in the `default` field
 is used in lieu. More on the `default` below.
@@ -553,7 +555,7 @@ Let's do another example for templates, this time to speak to an
 entity with `say.yml`:
 
 ```yaml
-action: transition
+action: change
 templates:
   - say @value
   - say @entity @value
@@ -597,7 +599,7 @@ When Adventure compiles this list, it only grabs the first template for each
 action. If there's an action with multiple templates like so:
 
 ```yaml
-action: transition
+action: change
 templates:
   - walk to the @value
   - walk @value
@@ -622,7 +624,7 @@ The `synonyms` fied is used to define synonyms for words in the templates.
 Take the following action file:
 
 ```yaml
-action: transition
+action: change
 templates:
   - walk to the @value
   - walk @value
@@ -672,12 +674,12 @@ graph feelings {
 ```
 
 Let's say the dog is currently `sad`. Then there are two possible values
-for the dog to go to: `happy` and `angry`. If a transition action were to be
+for the dog to go to: `happy` and `angry`. If a change action were to be
 performed like the `pet` action defined in the `pet.yml` file below, it would
 not be clear whether the dog should transition to `happy` or `angry`:
 
 ```yaml
-action: transition
+action: change
 templates:
   - pet the @entity
   - pet @entity
@@ -687,7 +689,7 @@ Specifying a default value would make it unambiguous that the property
 representing the dog's feelings transition to `happy`:
 
 ```yaml
-action: transition
+action: change
 templates:
   - pet the @entity
   - pet @entity

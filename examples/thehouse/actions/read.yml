@@ -1,4 +1,4 @@
-action: transition
+action: change
 templates:
   - read the @entity
   - read @entity

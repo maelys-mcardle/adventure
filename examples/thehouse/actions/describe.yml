@@ -1,4 +1,4 @@
-action: description
+action: describe
 templates:
   - describe @entity
   - describe at @entity

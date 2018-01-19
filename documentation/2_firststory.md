@@ -356,7 +356,7 @@ now look as such:
 Edit the `walk.yml` file so that it contains the following:
 
 ```yaml
-action: transition
+action: change
 templates:
   - walk to the @value
   - walk to @value
@@ -367,7 +367,7 @@ synonyms:
     - run
 ```
 
-Here `action: transition` means that this action will change the value of the
+Here `action: change` means that this action will change the value of the
 property to whatever the player specifies. 
 
 The templates specify what the player can put in to trigger this action. 

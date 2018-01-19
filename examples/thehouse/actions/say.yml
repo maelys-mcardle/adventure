@@ -1,4 +1,4 @@
-action: transition
+action: change
 templates:
   - say @value
   - say @entity @value

@@ -1,4 +1,4 @@
-action: transition
+action: change
 templates:
   - open the @entity
   - open @entity
