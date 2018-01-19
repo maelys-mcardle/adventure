@@ -137,7 +137,7 @@ function getInputsWithTemplate(template, eligibleAction) {
  */
 function addUniqueInput(inputs, input, template) {
 
-  if (input in inputs) {
+  if (inputs.includes(input)) {
     log.warn(errors.TEMPLATE_AMBIGUOUS(template));
   } else {
     inputs.push(input);
