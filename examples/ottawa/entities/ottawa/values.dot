@@ -1,0 +1,28 @@
+graph location {
+
+  subgraph streets {
+    Bank -- Wellington -- Elgin
+    Bank -- Cooper -- Elgin
+    Bank -- Somerset -- Elgin
+    Bank -- Gilmore -- Elgin
+
+    Wellington -- Rideau
+
+    Rideau -- Sussex
+    Rideau -- Dalhousie
+    Rideau -- KingEdward
+
+    Sussex -- George -- Dalhousie
+    Sussex -- Clarence -- Dalhousie
+    George -- KingEdward
+    Clarence -- KingEdward
+  }
+
+  subgraph appartment {
+    aptRoom -- aptLivingSpace -- aptNook
+    aptLivingSpace -- aptKitchen
+    aptLivingSpace -- aptBathroom
+    aptLivingSpace -- aptEntrance -- aptHallway 
+    aptHallway -- aptBuildingEntrance -- Cooper
+  }
+}

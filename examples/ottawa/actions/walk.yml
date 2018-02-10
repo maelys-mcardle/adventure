@@ -1,0 +1,14 @@
+action: change
+templates:
+  - go to the @value
+  - go to @value
+  - go the @value
+  - go @value
+synonyms:
+  go:
+    - walk
+    - go
+    - travel
+    - run
+    - head
+    - enter
