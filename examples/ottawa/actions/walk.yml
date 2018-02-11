@@ -1,9 +1,9 @@
 action: change
 templates:
-  - Walk to @value
-  - Walk to the @value
-  - Walk the @value
-  - Walk @value
+  - Walk to @value.
+  - Walk to the @value.
+  - Walk the @value.
+  - Walk @value.
 synonyms:
   Walk:
     - go
