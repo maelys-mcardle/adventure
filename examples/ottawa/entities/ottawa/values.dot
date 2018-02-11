@@ -1,28 +1,34 @@
 graph location {
 
   subgraph streets {
-    Bank -- Wellington -- Elgin
-    Bank -- Cooper -- Elgin
-    Bank -- Somerset -- Elgin
-    Bank -- Gilmore -- Elgin
+    bank -- wellington -- elgin
+    bank -- cooper -- elgin
+    bank -- somerset -- elgin
+    bank -- gilmour -- elgin
 
-    Wellington -- Rideau
+    bronson -- wellington
+    bronson -- cooper
+    bronson -- somerset
+    bronson -- gilmour   
 
-    Rideau -- Sussex
-    Rideau -- Dalhousie
-    Rideau -- KingEdward
+    wellington -- rideau
 
-    Sussex -- George -- Dalhousie
-    Sussex -- Clarence -- Dalhousie
-    George -- KingEdward
-    Clarence -- KingEdward
+    rideau -- sussex
+    rideau -- dalhousie
+    rideau -- kingEdward
+
+    sussex -- george -- dalhousie
+    sussex -- clarence -- dalhousie
+    somerset -- kingEdward
+    george -- kingEdward
+    clarence -- kingEdward
   }
 
   subgraph appartment {
-    aptRoom -- aptLivingSpace -- aptNook
+    aptRoom -- aptLivingSpace -- aptTunnel
     aptLivingSpace -- aptKitchen
     aptLivingSpace -- aptBathroom
     aptLivingSpace -- aptEntrance -- aptHallway 
-    aptHallway -- aptBuildingEntrance -- Cooper
+    aptHallway -- aptBuildingEntrance -- cooper
   }
 }

@@ -1,12 +1,11 @@
 action: change
 templates:
-  - go to the @value
-  - go to @value
-  - go the @value
-  - go @value
+  - Walk to @value
+  - Walk to the @value
+  - Walk the @value
+  - Walk @value
 synonyms:
-  go:
-    - walk
+  Walk:
     - go
     - travel
     - run
