@@ -195,9 +195,10 @@ function getEligibleActionsFromEntity(eligibleActions,
 
   for (let propertyName of Object.keys(entity.properties)) {
     let property = entity.properties[propertyName];
+    let currentPropertyValue = property.values[property.currentValue];
+    
     for (let actionName of property.actions) {
       let action = actions[actionName];
-      let currentPropertyValue = property.values[property.currentValue];
       let eligiblePropertyValuesNames = 
         Object.keys(currentPropertyValue.relationships);
       let eligiblePropertyValues = {};
@@ -216,12 +217,12 @@ function getEligibleActionsFromEntity(eligibleActions,
 
       eligibleActions = addEligibleAction(eligibleActions, action,
         entity, propertyName, eligiblePropertyValues, property.currentValue);
+    }
 
-      for (let childEntity of currentPropertyValue.childEntities) {
-        eligibleActions = 
-          getEligibleActionsFromEntity(eligibleActions, 
-            actions, childEntity, recursion + 1);
-      }
+    for (let childEntity of currentPropertyValue.childEntities) {
+      eligibleActions = 
+        getEligibleActionsFromEntity(eligibleActions, 
+          actions, childEntity, recursion + 1);
     }
   }
 
