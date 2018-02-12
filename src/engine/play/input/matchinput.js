@@ -20,6 +20,10 @@ function matchInput(story, input) {
   let matchingInput = new MatchingInput();
   let allEligibleInputs = eligibleInputs.listAll(story, input);
 
+  if (allEligibleInputs.length == 0) {
+    return matchingInput;
+  }
+
   let bestMatch = 
     stringSimilarity.findBestMatch(
       normalizeString(input),
