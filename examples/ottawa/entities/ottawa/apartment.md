@@ -1,6 +1,6 @@
 # location
 
-## appartment
+## apartment
 
 ### aptRoom: your bedroom
 
@@ -28,15 +28,15 @@ You are in your kitchen.
 
 You are in your bathroom.
 
-### aptEntrance: your appartment unit entrance
+### aptEntrance: your apartment unit entrance
 
-You are in the entrance to your appartment unit.
+You are in the entrance to your apartment unit.
 
 ### aptHallway: building hallway
 
-You are in the hallway of your appartment building.
+You are in the hallway of your apartment building.
 
-### aptBuildingEntrance: your appartment building entrance
+### aptBuildingEntrance: your apartment building entrance
 
-You are in the entrance to your appartment building.
+You are in the entrance to your apartment building.
 

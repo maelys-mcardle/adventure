@@ -24,7 +24,7 @@ graph location {
     clarence -- kingEdward
   }
 
-  subgraph appartment {
+  subgraph apartment {
     aptRoom -- aptLivingSpace -- aptTunnel
     aptLivingSpace -- aptKitchen
     aptLivingSpace -- aptBathroom
