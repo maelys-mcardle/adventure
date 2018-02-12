@@ -1,5 +1,5 @@
 map:
-  actions: [show]
+  actions: [remember]
   rules:
     visible:
       value: hidden

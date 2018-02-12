@@ -1,0 +1,6 @@
+action: change
+templates:
+  - Remember @property.
+  - Remember the @property.
+default:
+  value: visible
