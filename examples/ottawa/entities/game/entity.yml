@@ -1,6 +1,5 @@
-root:
-  value: interface
+game:
   entities:
-    interface:
+    display:
       - ottawa
       - inventory
