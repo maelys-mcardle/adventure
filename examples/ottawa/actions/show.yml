@@ -1,0 +1,11 @@
+action: change
+templates:
+  - Show @property.
+  - Show at @property.
+  - Show at the @property.
+synonyms:
+  Show:
+    - display
+    - look
+default:
+  value: visible

@@ -1,0 +1,6 @@
+root:
+  value: interface
+  entities:
+    interface:
+      - ottawa
+      - inventory

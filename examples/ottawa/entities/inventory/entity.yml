@@ -1,0 +1,5 @@
+map:
+  actions: [show]
+  rules:
+    visible:
+      value: hidden
