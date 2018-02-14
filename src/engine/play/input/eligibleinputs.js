@@ -88,7 +88,7 @@ function getInputsWithTemplate(template, eligibleAction) {
     let templateWithProperty = 
       replacePlaceholder(templateWithEntity, 
         constants.KEY_PROPERTY_PLACEHOLDER, 
-        eligibleEntity.target.property);
+        eligibleEntity.target.propertyReadableName);
 
     let values = eligibleEntity.eligibleValues;
     let valueNames = Object.keys(values);
@@ -216,7 +216,7 @@ function getEligibleActionsFromEntity(eligibleActions,
       }
 
       eligibleActions = addEligibleAction(eligibleActions, action,
-        entity, propertyName, eligiblePropertyValues, property.currentValue);
+        entity, property, eligiblePropertyValues, property.currentValue);
     }
 
     for (let childEntity of currentPropertyValue.childEntities) {
@@ -234,13 +234,13 @@ function getEligibleActionsFromEntity(eligibleActions,
  * @param {Object} eligibleActions The eligible actions.
  * @param {Action} action The actions to add.
  * @param {Entity} entity The entity to add the action for.
- * @param {string} propertyName The property to add the action for.
+ * @param {Property} property The property to add the action for.
  * @param {string[]} eligibleValues All eligible values for the property.
  * @param {string} currentValue The current value for the property.
  * @returns {Object} The eligible actions.
  */
 function addEligibleAction(eligibleActions, action, 
-  entity, propertyName, eligibleValues, currentValue) {
+  entity, property, eligibleValues, currentValue) {
 
   if (!(action.name in eligibleActions)) {
     eligibleActions[action.name] = new EligibleAction(action);
@@ -251,7 +251,8 @@ function addEligibleAction(eligibleActions, action,
 
   eligibleEntity.target.entity = entity.name;
   eligibleEntity.target.path = entity.path;
-  eligibleEntity.target.property = propertyName;
+  eligibleEntity.target.property = property.name;
+  eligibleEntity.target.propertyReadableName = property.readableName;
   eligibleEntity.eligibleValues = eligibleValues;
   eligibleEntity.currentValue = currentValue;
 

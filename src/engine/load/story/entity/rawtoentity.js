@@ -130,7 +130,11 @@ function parseMarkdown(entity, rawMarkdown) {
       let headerText = entry[2];
       
       if (entry[1].level === 1) {
-        property = headerText;
+
+        let [propertyName, readableName] = getReadableName(headerText);
+        entity.properties[propertyName].readableName = readableName;
+        
+        property = propertyName;
         text = [];
       } else {
         trigger = headerText;
@@ -323,15 +327,17 @@ function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
   if (!trigger.isTransition) {
 
-      // For property.
-      if (trigger.left in property.values) {
-        property.values[trigger.left].text = text;
-        property.values[trigger.left].readableName = trigger.readableName;
+    let [name, readableName] = getReadableName(trigger.left);
 
-      // For message.
-      } else {
-        property.messages[trigger.left] = text;
-      }
+    // For property.
+    if (name in property.values) {
+      property.values[name].text = text;
+      property.values[name].readableName = readableName;
+
+    // For message.
+    } else {
+      property.messages[trigger.left] = text;
+    }
 
   } else {
 
@@ -381,4 +387,19 @@ function addRelationshipData(property, trigger, key, value) {
   }
 
   return property;
+}
+
+/**
+ * Gets the name / readable name from a markdown header,
+ * which is formatted as "name" or "name: readableName".
+ * @param {string} header The header that contains the name/readable name.
+ * @returns {[string, string]} The name and readable name.
+ */
+function getReadableName(header)
+{
+  if (header.includes(':')) {
+    return header.split(':').map(s => s.trim());
+  } else {
+    return [header, header];
+  }
 }

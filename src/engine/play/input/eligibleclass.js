@@ -50,6 +50,7 @@ class Target {
     this.entity = null;
     this.path = null;
     this.property = null;
+    this.propertyReadableName = null;
   }
 }
 

@@ -736,6 +736,21 @@ She looks towards the sky.
 
 Everywhere else, only the alias would be used, that is to say, the shortcut.
 
+Alias can also be used on the property name. In this example, the property
+with the name `map` has the alias `country map`.
+
+```
+# map: country map
+
+## east: east of country
+
+This is the map of the east half of the country.
+
+## west: west of country
+
+This is the map of the west half of the country.
+```
+
 ## Simplifying complex entities
 
 Individual entities can get pretty complex. There's a few strategies you can

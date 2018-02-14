@@ -11,7 +11,6 @@ class Trigger {
     this.right = '';
     this.isTransition = false;
     this.isBidirectional = false;
-    this.readableName = '';
     this.parseTrigger(trigger);
   }
 
@@ -25,7 +24,6 @@ class Trigger {
     //    left -- right (from left to right, right to left)
     //    left -> right (from left to right)
     //    left (for only left)
-    //    left: readableName
 
     if (trigger.includes('--')) {
       [this.left, this.right] = trigger.split('--').map(s => s.trim());
@@ -37,12 +35,6 @@ class Trigger {
       this.isTransition = true;
     } else {
       this.left = trigger;
-    }
-
-    if (this.left.includes(':')) {
-      [this.left, this.readableName] = this.left.split(':').map(s => s.trim());
-    } else {
-      this.readableName = this.left;
     }
   }
 }

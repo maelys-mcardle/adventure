@@ -78,6 +78,7 @@ class Entity {
 class Property {
   constructor(name) {
     this.name = name;
+    this.readableName = name;
     this.messages = {};
     this.values = {};
     this.actions = [];
