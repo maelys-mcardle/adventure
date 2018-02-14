@@ -1,5 +1,8 @@
-map:
+memory:
+  value: list
   actions: [remember]
   rules:
-    visible:
-      value: hidden
+    map:
+      value: list
+    todo:
+      value: list

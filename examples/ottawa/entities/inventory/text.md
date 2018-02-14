@@ -1,6 +1,10 @@
-# map
+# memory
 
-## visible
+## list
+
+You have a mental map of the city and a to-do list.
+
+## map: city map
 
 You draw on your mental map of the city.
 
@@ -21,6 +25,9 @@ considered the Byward Market. Everything south is considered Sandy Hill.
 Centretown and the Byward Market / Sandy Hill are connected by Somerset, as
 well as Wellington, which becomes Rideau.
 
-## hidden
+Your apartment is on Cooper.
 
-You have a mental map of the city.
+## todo: to-do list
+
+Things to-do today: Go for coffee and a croissant. Get groceries.
+Go to your laser hair removal appointment.
