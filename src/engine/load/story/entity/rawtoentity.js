@@ -133,7 +133,7 @@ function parseMarkdown(entity, rawMarkdown) {
 
         let [propertyName, readableName] = getReadableName(headerText);
         entity.properties[propertyName].readableName = readableName;
-        
+
         property = propertyName;
         text = [];
       } else {
@@ -336,7 +336,7 @@ function addTextToProperty(entity, propertyName, rawTrigger, text) {
 
     // For message.
     } else {
-      property.messages[trigger.left] = text;
+      property.messages[name] = text;
     }
 
   } else {
