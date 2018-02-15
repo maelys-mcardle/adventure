@@ -40,9 +40,10 @@ function updatePropertyRecursive(entity, target, updatedProperty, recursion) {
 
   // See if current entity matches.
   // If it does, update the property.
-  if (entity.name == target.entity && entity.path == target.path) {
+  if (entity.name == target.entity.name && 
+      entity.path == target.entity.path) {
     
-    entity.properties[target.property] = updatedProperty;
+    entity.properties[target.property.name] = updatedProperty;
 
   // If the current entity does not match, search its children.
   } else {

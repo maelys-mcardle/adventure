@@ -30,7 +30,8 @@ function executeRules(story, action, target, newValue, isTransition) {
   
   if (property == null) {
     log.warn(
-      errors.ENTITY_PROPERTY_NOT_FOUND(target.entity, target.property));
+      errors.ENTITY_PROPERTY_NOT_FOUND(
+        target.entity.name, target.property.name));
     return [story, messages];
   }
 

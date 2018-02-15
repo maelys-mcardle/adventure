@@ -83,12 +83,12 @@ function getInputsWithTemplate(template, eligibleAction) {
     let templateWithEntity = 
       replacePlaceholder(template, 
         constants.KEY_ENTITY_PLACEHOLDER, 
-        eligibleEntity.target.entity);
+        eligibleEntity.target.entity.name);
     
     let templateWithProperty = 
       replacePlaceholder(templateWithEntity, 
         constants.KEY_PROPERTY_PLACEHOLDER, 
-        eligibleEntity.target.propertyReadableName);
+        eligibleEntity.target.property.readableName);
 
     let values = eligibleEntity.eligibleValues;
     let valueNames = Object.keys(values);
@@ -249,10 +249,8 @@ function addEligibleAction(eligibleActions, action,
   let eligibleAction = eligibleActions[action.name];
   let eligibleEntity = eligibleAction.newEligibleEntity();
 
-  eligibleEntity.target.entity = entity.name;
-  eligibleEntity.target.path = entity.path;
-  eligibleEntity.target.property = property.name;
-  eligibleEntity.target.propertyReadableName = property.readableName;
+  eligibleEntity.target.entity = entity;
+  eligibleEntity.target.property = property;
   eligibleEntity.eligibleValues = eligibleValues;
   eligibleEntity.currentValue = currentValue;
 

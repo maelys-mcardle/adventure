@@ -33,7 +33,7 @@ function findProperty(story, target) {
   let property = null;
   
   if (entity != null) {
-    property = entity.properties[target.property];
+    property = entity.properties[target.property.name];
   }
 
   return property;
@@ -54,7 +54,9 @@ function getEntityRecursive(entity, target, recursion) {
  }
 
  // current entity matches.
- if (entity.name == target.entity && entity.path == target.path) {
+ if (entity.name == target.entity.name && 
+     entity.path == target.entity.path) {
+       
    return entity;
 
  // search children.
