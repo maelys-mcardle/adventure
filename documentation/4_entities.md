@@ -739,7 +739,7 @@ Everywhere else, only the alias would be used, that is to say, the shortcut.
 Alias can also be used on the property name. In this example, the property
 with the name `map` has the alias `country map`.
 
-```
+```markdown
 # map: country map
 
 ## east: east of country
