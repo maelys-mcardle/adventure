@@ -22,6 +22,13 @@ You are on Bronson Street.
 
 You are on Clarence Street.
 
+This is the heart of the Byward Market. There are pubs lining the street,
+tourist traps, and food vendors. Tourists invade the market during the day,
+university students come at night to drink.
+
+Everyone else who lives in Ottawa tends to avoid the market unless they work 
+nearby. There's simply not much to do here.
+
 ### cooper: Cooper Street
 
 You are on Cooper Street.
