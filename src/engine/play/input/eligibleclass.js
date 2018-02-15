@@ -48,9 +48,7 @@ class EligibleEntity {
 class Target {
   constructor() {
     this.entity = null;
-    this.path = null;
     this.property = null;
-    this.propertyReadableName = null;
   }
 }
 
