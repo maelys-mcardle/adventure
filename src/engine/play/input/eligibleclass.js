@@ -44,7 +44,7 @@ class EligibleEntity {
   }
 }
 
-/** This class specify's an entity's name, path, and property name. */
+/** This class specify's an entity and its property. */
 class Target {
   constructor() {
     this.entity = null;
