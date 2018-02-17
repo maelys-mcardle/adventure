@@ -1,4 +1,7 @@
-graph memory {
-  list -- map
-  list -- todo
+graph map {
+  hidden -- visible
+}
+
+graph todo {
+  hidden -- visible
 }

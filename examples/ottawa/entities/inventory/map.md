@@ -1,10 +1,10 @@
-# memory
+# map: city map
 
-## list
+## hidden
 
-You have a mental map of the city and a to-do list.
+You have a mental map of the city.
 
-## map: city map
+## visible
 
 You draw on your mental map of the city.
 
@@ -26,8 +26,3 @@ Centretown and the Byward Market / Sandy Hill are connected by Somerset, as
 well as Wellington, which becomes Rideau.
 
 Your apartment is on Cooper.
-
-## todo: to-do list
-
-Things to-do today: Go for coffee and a croissant. Get groceries.
-Go to your laser hair removal appointment.

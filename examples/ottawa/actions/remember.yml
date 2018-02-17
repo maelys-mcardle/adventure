@@ -1,4 +1,6 @@
 action: change
 templates:
-  - Remember @value.
-  - Remember the @value.
+  - Remember @property.
+  - Remember the @property.
+default:
+  value: visible
