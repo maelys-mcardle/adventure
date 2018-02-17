@@ -1,6 +1,7 @@
 'use strict';
 
 const stringSimilarity = require('string-similarity');
+const removeDiacritics = require('diacritics').remove;
 const eligibleInputs = require('./eligibleinputs');
 const {MatchingInput} = require('./matchclass');
 const constants = require('../../constants');
@@ -54,9 +55,9 @@ function matchInput(story, input) {
  * @returns {string} The text with punctuation removed.
  */
 function normalizeString(text) {
-  return text
-    .replace(/[\W_]+/g," ") // Replace non-aphanumeric characters with spaces
-    .replace(/ +(?= )/g,'') // Replace multiple spaces with single space
+  return removeDiacritics(text // Remove diacritics from characters
+    .replace(/[\W_]+/g," ")    // Replace non-aphanumeric characters with spaces
+    .replace(/ +(?= )/g,'')    // Replace multiple spaces with single space
     .trim()
-    .toLowerCase();
+    .toLowerCase());
 }

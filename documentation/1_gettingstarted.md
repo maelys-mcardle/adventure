@@ -180,11 +180,11 @@ So would this:
 > go upstairs hallway
 ```
 
-Furthermore, punctuation and capitalization are ignored when Adventure tries
-to understand commands. So writing the following:
+Furthermore, diacritics, punctuation and capitalization are ignored when 
+Adventure tries to understand commands. So writing the following:
 
 ```
-> Say "hi there!"
+> Say "hi thëre!"
 ```
 
 Is the same as writing:
