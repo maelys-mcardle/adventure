@@ -64,14 +64,12 @@ function getEligibleInputs(story, firstTemplateOnly) {
 function getInputsWithTemplate(template, eligibleAction) {
 
   let validInputs = [];
-  let eligibleEntities = Object.keys(eligibleAction.entities);
-  
-  if (eligibleEntities.length === 0) {
+
+  if (eligibleAction.entities.length === 0) {
     return validInputs;
   }
 
-  for (let entityName of eligibleEntities) {
-    let eligibleEntity = eligibleAction.entities[entityName];
+  for (let eligibleEntity of eligibleAction.entities) {
 
     let hasValuePlaceholder = 
       template.includes(constants.KEY_VALUE_PLACEHOLDER);

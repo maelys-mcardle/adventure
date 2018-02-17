@@ -14,7 +14,7 @@ class EligibleInput {
 class EligibleAction {
   constructor(action) {
     this.action = action;
-    this.entities = {};
+    this.entities = [];
   }
 
   /**
@@ -31,7 +31,7 @@ class EligibleAction {
    * @returns {undefined}
    */
   addEligibleEntity(eligibleEntity) {
-    this.entities[eligibleEntity.entityName] = eligibleEntity;
+    this.entities.push(eligibleEntity);
   }
 }
 
