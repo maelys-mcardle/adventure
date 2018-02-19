@@ -58,32 +58,55 @@ function getEntityDeltaText(oldEntity, newEntity, recursion) {
   }
 
   for (let propertyName of Object.keys(oldEntity.properties)) {
+
     let oldProperty = oldEntity.properties[propertyName];
     let newProperty = newEntity.properties[propertyName]; 
-    let oldValue = oldProperty.currentValue;
-    let newValue = newProperty.currentValue;
 
-    // Value changed. Describe everything.
-    if (oldValue != newValue) {
-      
-      let propertyTransitionText = 
-        getTransitionText(oldProperty, oldValue, newValue);
+    // Get the text for the property.
+    let propertyText = 
+      getPropertyDeltaText(oldProperty, newProperty, recursion);
 
-      let propertyValueText = getEntityText(newEntity);
+    // Append the property text.
+    text = appendParagraphs(text, [propertyText]);
+  }
 
-      text = text.
-        concat(propertyTransitionText).
-        concat(propertyValueText).
-        filter(value => value != '');
+  return text;
+}
+
+/**
+ * Gets only the text that changed for the property.
+ * @param {Property} oldProperty The property object.
+ * @param {Property} newProperty The property object.
+ * @param {number} recursion Tracks recursive invocations of function.
+ * @returns {string[]} The paragraphs of text.
+ */
+function getPropertyDeltaText(oldProperty, newProperty, recursion) {
+
+  let text = [];
+  let oldValue = oldProperty.currentValue;
+  let newValue = newProperty.currentValue;
+
+  if (recursion >= constants.MAX_RECURSION) {
+    log.warn(errors.MAX_RECURSION);
+    return text;
+  }
+
+  // Value changed. Describe everything.
+  if (oldValue != newValue) {
     
-    // Value same. See if child changed.
-    } else {
-      for (let childIndex in newProperty.values[newValue].childEntities) {
-        let oldChild = oldProperty.values[oldValue].childEntities[childIndex];
-        let newChild = newProperty.values[newValue].childEntities[childIndex];
-        let childText = getEntityDeltaText(oldChild, newChild, recursion + 1);
-        text = text.concat(childText);
-      }
+    let propertyTransitionText = 
+      getTransitionText(oldProperty, oldValue, newValue);
+
+    let propertyValueText = getPropertyText(newProperty);
+    text = appendParagraphs(text, [propertyTransitionText, propertyValueText]);
+  
+  // Value same. See if child changed.
+  } else {
+    for (let childIndex in newProperty.values[newValue].childEntities) {
+      let oldChild = oldProperty.values[oldValue].childEntities[childIndex];
+      let newChild = newProperty.values[newValue].childEntities[childIndex];
+      let childText = getEntityDeltaText(oldChild, newChild, recursion + 1);
+      text = appendParagraphs(text, [childText]);
     }
   }
 
@@ -136,7 +159,7 @@ function getEntityTextRecursive(entity, recursion) {
   for (let propertyName of Object.keys(entity.properties)) {
     let property = entity.properties[propertyName];
     let propertyText = getPropertyTextRecursive(property, recursion);
-    text = text.concat(propertyText);
+    text = appendParagraphs(text, [propertyText]);
   }
 
   return text;
@@ -156,8 +179,23 @@ function getPropertyTextRecursive(property, recursion) {
 
   for (let childEntity of property.values[value].childEntities) {
     let childEntityText = getEntityTextRecursive(childEntity, recursion + 1);
-    text = text.concat(childEntityText);
+    text = appendParagraphs(text, [childEntityText]);
   }
 
   return text;
+}
+
+/**
+ * Appends paragraphs to an existing set of paragraphs.
+ * @param {string[]} baseText The base document.
+ * @param {string[][]} textsToAppend Paragraphs to append.
+ * @returns {string[]} The paragraphs of text.
+ */
+function appendParagraphs(baseText, textsToAppend) {
+
+  for (let textToAppend of textsToAppend) {
+    baseText = baseText.concat(textToAppend).filter(value => value != '');
+  }
+
+  return baseText;
 }
