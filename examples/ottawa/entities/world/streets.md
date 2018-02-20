@@ -25,6 +25,12 @@ There is a grocery store on this street.
 
 You are on Bronson Street.
 
+This is a working class neighbourhood right next to Chinatown and Ottawa's
+highrises. There are houses divided up into multiple apartments lining the
+entire street with relatively affordable rent. Like other aging neighbourhoods
+that haven't been gentrified away, the houses are all old and unlike one 
+another.
+
 ### clarence: Clarence Street
 
 You are on Clarence Street.
@@ -40,13 +46,43 @@ nearby. There's simply not much to do here.
 
 You are on Cooper Street.
 
+Aging apartment buildings line this downtown street. They're all no more than
+three stories tall, with 6 or so apartments on each floor. Your building was
+built in the 1930's at the latest, and most other buildings here seem to be
+from the same era.
+
+The Community Health Clinic is also on this street. They're the whole reason
+you moved here, so you could be in their catchment area and get trans health
+care from the only provider you know can give you a referral when you don't
+have a doctor.
+
 ### dalhousie: Dalhousie Street
 
 You are on Dalhousie Street.
 
+This street on the edge of the Byward Market has boutiques with high-end
+clothing, two full emergency shelters, a church that was sold to become a 
+community space and hosted a BDSM event you went to, and a bunch of food joints
+including a great Mexican restaurant that's in the basement of one of the
+buildings.
+
+The startup you worked at is also on this street, on the second floor of
+one of these buildings.
+
 ### elgin: Elgin Street
 
 You are on Elgin Street.
+
+City Hall and the provincial court are on this street.
+
+This street is home to one of Ottawa's most famous hotels. This is where
+movie stars and hockey players tend to stay when they're in town. They used
+to have a bar in the basement, which is one of the places where gay people 
+would go in the 1960's to chill and cruise.
+
+There are also a bunch of pubs and one of Ottawa's most famous diners on this
+street. During weekend evenings, these will be full of young professionals
+getting shit faced, before then going to the 24 hour diner.
 
 ### george: George Street
 
