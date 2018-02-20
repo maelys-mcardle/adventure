@@ -1,7 +1,7 @@
 {
   "name": "adventure",
   "version": "1.0.0",
-  "description": "",
+  "description": "Adventure is a game engine for text adventures.",
   "main": "./src/engine/engine.js",
   "repository": {
     "type": "git",

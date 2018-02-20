@@ -193,9 +193,11 @@ function getPropertyTextRecursive(property, recursion) {
  */
 function appendParagraphs(baseText, textsToAppend) {
 
+  // Append the paragraphs.
   for (let textToAppend of textsToAppend) {
-    baseText = baseText.concat(textToAppend).filter(value => value != '');
+    baseText = baseText.concat(textToAppend);
   }
 
-  return baseText;
+  // Return pagraphs (omitting empty paragraphs).
+  return baseText.filter(value => value != '');
 }
