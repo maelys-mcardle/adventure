@@ -1,8 +1,16 @@
 # location
 
+## start
+
+This is a story about a period of my life in my home-town of Ottawa.
+
+You'll get to walk through my shoes.
+
+To start the game, enter your bedroom.
+
 ## apartment
 
-### aptRoom: your bedroom
+### aptBedroom: your bedroom
 
 You are in your bedroom.
 

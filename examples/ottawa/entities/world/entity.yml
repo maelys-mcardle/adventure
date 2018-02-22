@@ -1,3 +1,6 @@
 location:
   actions: [walk]
-  value: aptRoom
+  value: start
+  rules:
+    aptBedroom:
+      disable: [start]

@@ -88,17 +88,53 @@ getting shit faced, before then going to the 24 hour diner.
 
 You are on George Street.
 
+You are in the heart of the Byward Market. There is a perpetual farmer's 
+market here, with fresh local produce. A large open-concept building is at
+the center of the stalls containing bakeries, souvenier shops, and take-out 
+joints aimed largely at tourists.
+
+There is also a beaver tail stall and independent ice cream parlour here. 
+In the century old buildings lining the street are French-language book store, 
+a shop in a particularly drafty old building that sells designer furniture and 
+housewares, an art gallery, and niche food joints.
+
 ### gilmour: Gilmour Street
 
 You are on Gilmour Street.
+
+This street is residential, in the heart of Centretown. A series of old
+buildings line the streets, not one like the other.
 
 ### kingEdward: King Edward Avenue
 
 You are on King Edward Avenue.
 
+This arterial road connects the bridge to Quebec on one end, with the highway
+further down the other. On the north side of Rideau, the road is situated on 
+the outer edge of the Byward Market side. There's a car garage here, a few 
+emergency shelters, a place that sells tombstones.
+
+On the south side of Rideau, the busy road is in Sandy Hill. This area is
+largely residential, and the street is dotted with a number of churches.
+
 ### rideau: Rideau Street
 
-You are on Rideau Street. This becomes Wellington Street further west.
+You are on Rideau Street. 
+
+This is a central road to Ottawa's downtown. The city's fanciest mall is
+situated on one end, along with one of the city's most famous and expensive
+hotels that looks like a castle.
+
+Just past that, the street becomes morphs into something very different. There 
+are businesses aimed at helping recent immigrants from Haiti and French-speaking
+Africa. There are amazing inexpensive restaurants in buildings whose exterior 
+has been largely ignored. There's a pharmacy that was shut down for an opiod
+theft organized by the pharmacist that owned it.
+
+There are always street youth panhandling, and the same group of older 
+regulars who approach people waiting at the bus stops for money.
+
+Further to the west this road becomes Wellington Street.
 
 ### somerset: Somerset Street
 
@@ -118,8 +154,25 @@ cuisine, and your favourite coffee shop.
 
 You are on Sussex Drive.
 
+The Prime Minister's residence is located on this street, as is the Governor
+General's. The mint is here too, along with the national art gallery and the
+revenue agency. It's not unusual to spot the motorcade of the Prime Minister 
+go down this street, or that of foreign dignitaries.
+
+The American embassy is also situated on this road. They're easy to spot, as
+they decided to permanently cut two lanes of traffic in one of the city's
+most historic roads, placing ugly concrete barriers. Because the other set
+of concrete barriers they already had, plus twelve foot tall steel fence,
+and bomb-proof windows, was apparently insufficient.
+
 ### wellington: Wellington Street
 
-You are on Wellington Street. This becomes Rideau Street further east.
+You are on Wellington Street. 
 
+This becomes Rideau Street further east. On this street is located the
+Parliament and a series of buildings housing the bureaucracy supporting the
+federal government. 
 
+This street goes over the canal, which in winter becomes the world's longest 
+ice skating rink. Every family in this city has brought their child to the
+canal in winter.

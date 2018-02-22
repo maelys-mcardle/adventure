@@ -1,5 +1,7 @@
 graph location {
 
+  start -- aptBedroom
+
   subgraph streets {
     bank -- wellington -- elgin
     bank -- cooper -- elgin
@@ -25,7 +27,7 @@ graph location {
   }
 
   subgraph apartment {
-    aptRoom -- aptLivingSpace -- aptTunnel
+    aptBedroom -- aptLivingSpace -- aptTunnel
     aptLivingSpace -- aptKitchen
     aptLivingSpace -- aptBathroom
     aptLivingSpace -- aptEntrance -- aptHallway 
