@@ -33,4 +33,8 @@ graph location {
     aptLivingSpace -- aptEntrance -- aptHallway 
     aptHallway -- aptBuildingEntrance -- cooper
   }
+
+  subgraph shops {
+    bank -- shopGayCoffee
+  }
 }
