@@ -6,4 +6,4 @@ location:
       disable: [start]
   entities:
     bank:
-      - people.pedestrians.bank
+      - events.bank
