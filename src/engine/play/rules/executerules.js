@@ -7,7 +7,8 @@ const errors = require('../../errors');
 const log = require('../../log');
 
 module.exports = {
-  execute: executeRules,
+  executeTransition: executeTransitionRules,
+  executeCurrent: executeCurrentRules
 }
 
 /**
@@ -16,16 +17,13 @@ module.exports = {
  * @param {Action} action The action that triggered the rule execution.
  * @param {Target} target The entity/property that was acted upon.
  * @param {string} newValue The new value for the entity/property.
- * @param {bool} isTransition Whether the rules to execute are those between
- *                            values (in transition) or those for the current
- *                            value.
  * @returns {[Story, string[]]} The updated story and messages to output.
  */
-function executeRules(story, action, target, newValue, isTransition) {
+function executeTransitionRules(story, action, target, newValue) {
 
   let messages = [];
   
-  // Get entity property.
+  // Get property.
   let property = getEntity.findProperty(story, target);
   
   if (property == null) {
@@ -35,19 +33,27 @@ function executeRules(story, action, target, newValue, isTransition) {
     return [story, messages];
   }
 
-  // Apply rules to property.
-  // There are two sets of rules: one for transitioning from one value to 
-  // another, and another for the being at a given value.
-  if (isTransition) {
-    [property, messages] = 
+  // Execute rules.
+  [property, messages] = 
       executeRulesForBetweenValues(action, property, newValue);
-  } else {
-    [property, messages] = 
-      executeRulesForCurrentValue(action, property);
-  }
 
-  // Update entity.
+  // Update property.
   story = updateEntity.updateProperty(story, target, property);
+
+  return [story, messages];
+}
+
+/**
+ * Executes rules for all the current values of all properties.
+ * @param {Story} story The story object.
+ * @returns {[Story, string[]]} The updated story and messages to output.
+ */
+function executeCurrentRules(story) {
+
+  let [updatedEntity, messages] = 
+    executeRulesForCurrentValue(story.rootEntity, 0);
+
+  story.rootEntity = updatedEntity;
 
   return [story, messages];
 }
@@ -79,24 +85,48 @@ function executeRulesForBetweenValues(action, property, newValue) {
 }
 
 /**
- * Executes rules for the current value of an entity's property.
- * @param {Action} action The action that triggered the rule execution.
- * @param {Property} property The property that was acted upon.
- * @returns {[Property, string[]]} The updated property and messages to output.
+ * Executes rules for the current value of an entity's properties.
+ * @param {Entity} entity The entity whose current values to execute rules.
+ * @param {number} recursion Prevents infinite loops.
+ * @returns {[Entity, string[]]} The updated entity and messages to output.
  */
-function executeRulesForCurrentValue(action, property) {
+function executeRulesForCurrentValue(entity, recursion) {
 
   let messages = [];
 
-  // Set property value.
-  let newValue = property.currentValue;
+  if (recursion >= constants.MAX_RECURSION) {
+    log.warn(errors.MAX_RECURSION);
+    return [entity, messages];
+  }
 
-  // Execute property value rules.
-  let rules = property.values[newValue].rules;
-  [property, messages] = 
-    applyRules(rules, action, property, newValue, newValue, 0);
-  
-  return [property, messages];
+  for (let propertyName of Object.keys(entity.properties)) {
+    let property = entity.properties[propertyName];
+    let currentValue = property.currentValue;
+    let rules = property.values[currentValue].rules;
+    let children = property.values[currentValue].childEntities;
+
+    // Apply rule for the property's current value.
+    [property, messages] = 
+      applyRules(rules, null, property, currentValue, currentValue, 0);
+
+    // Apply rule for the current values of the property's children.
+    for (let childIndex in children) {
+
+      // Apply the rules.
+      let [childEntity, childMessage] = 
+        executeRulesForCurrentValue(children[childIndex], recursion + 1);
+
+      // Update the output.
+      messages = messages.concat(childMessage);
+      
+      // Update the entity.
+      property.values[currentValue].childEntities[childIndex] = childEntity;
+    }
+
+    entity.properties[propertyName] = property;
+  }
+
+  return [entity, messages];
 }
 
 /**
@@ -292,7 +322,8 @@ function applyRuleWhenAction(rules, action, property, oldValue, newValue,
   let messages = [];
 
   // To handle "when {action}:"
-  if (words.length == 2 && 
+  if (action != null &&
+      words.length == 2 && 
       words[0] == constants.KEY_WHEN &&
       words[1] == action.name) {
         
