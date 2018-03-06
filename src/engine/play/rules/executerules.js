@@ -8,7 +8,7 @@ const log = require('../../log');
 
 module.exports = {
   executeTransition: executeTransitionRules,
-  executeCurrent: executeCurrentRules
+  executeCurrent: executeCurrentValueRules
 }
 
 /**
@@ -48,7 +48,7 @@ function executeTransitionRules(story, action, target, newValue) {
  * @param {Story} story The story object.
  * @returns {[Story, string[]]} The updated story and messages to output.
  */
-function executeCurrentRules(story) {
+function executeCurrentValueRules(story) {
 
   let [updatedEntity, messages] = 
     executeRulesForCurrentValue(story.rootEntity, 0);
