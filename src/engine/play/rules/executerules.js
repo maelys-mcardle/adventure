@@ -99,6 +99,8 @@ function executeRulesForCurrentValue(entity, recursion) {
     return [entity, messages];
   }
 
+  // Go through each of the entity's properties, and apply rules
+  // related to their current values.
   for (let propertyName of Object.keys(entity.properties)) {
     let property = entity.properties[propertyName];
     let currentValue = property.currentValue;
@@ -107,7 +109,8 @@ function executeRulesForCurrentValue(entity, recursion) {
 
     // Apply rule for the property's current value.
     [property, messages] = 
-      applyRules(rules, null, property, currentValue, currentValue, 0);
+      applyRules(rules, constants.KEY_NONE, property, 
+        currentValue, currentValue, 0);
 
     // Apply rule for the current values of the property's children.
     for (let childIndex in children) {
@@ -322,8 +325,7 @@ function applyRuleWhenAction(rules, action, property, oldValue, newValue,
   let messages = [];
 
   // To handle "when {action}:"
-  if (action != null &&
-      words.length == 2 && 
+  if (words.length == 2 && 
       words[0] == constants.KEY_WHEN &&
       words[1] == action.name) {
         
