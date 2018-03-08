@@ -1,0 +1,7 @@
+action: change
+templates:
+  - Do the @property.
+  - Do @property.
+synonyms:
+  Do:
+    - Perform
