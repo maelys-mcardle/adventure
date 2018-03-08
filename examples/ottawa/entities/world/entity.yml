@@ -1,6 +1,6 @@
 location:
   actions: [walk]
-  value: rideau
+  value: start
   rules:
     aptBedroom:
       disable: [start]
