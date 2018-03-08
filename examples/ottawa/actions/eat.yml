@@ -1,0 +1,7 @@
+action: change
+templates:
+  - Eat the @property.
+  - Eat @property.
+synonyms:
+  Eat:
+    - Consume

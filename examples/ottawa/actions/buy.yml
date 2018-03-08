@@ -1,0 +1,8 @@
+action: change
+templates:
+  - Buy a @property.
+  - Buy the @property.
+  - Buy @property.
+synonyms:
+  Buy:
+    - Purchase

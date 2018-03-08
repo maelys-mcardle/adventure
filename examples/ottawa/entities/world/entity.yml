@@ -1,9 +1,11 @@
 location:
   actions: [walk]
-  value: start
+  value: bank
   rules:
     aptBedroom:
       disable: [start]
   entities:
     bank:
       - events.bank
+    shopGayCoffee:
+      - people.barrista

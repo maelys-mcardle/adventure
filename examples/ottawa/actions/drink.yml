@@ -1,0 +1,7 @@
+action: change
+templates:
+  - Drink the @property.
+  - Drink @property.
+synonyms:
+  Drink:
+    - Sip

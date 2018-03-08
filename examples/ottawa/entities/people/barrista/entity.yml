@@ -1,0 +1,35 @@
+coffee:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [drink]
+    unpurchased:
+      actions: [buy]
+
+latte:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [drink]
+    unpurchased:
+      actions: [buy]
+
+croissant:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [eat]
+    unpurchased:
+      actions: [buy]
+
+muffin:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [eat]
+    unpurchased:
+      actions: [buy]

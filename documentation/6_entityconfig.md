@@ -446,7 +446,9 @@ propertyName:
         message: someMessage
 ```
 
-The format of the condition is `when <actionName>`. 
+The format of the condition is `when <actionName>`. This conditional only
+applies to transitional triggers. Value triggers take place after after the
+transition has completed and do not therefore have an associated action.
 
 Take the example of a door:
 

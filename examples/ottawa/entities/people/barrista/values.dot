@@ -1,0 +1,15 @@
+graph coffee {
+  unpurchased -- purchased
+}
+
+graph latte {
+  unpurchased -- purchased
+}
+
+graph croissant {
+  unpurchased -- purchased
+}
+
+graph muffin {
+  unpurchased -- purchased
+}
