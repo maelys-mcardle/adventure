@@ -37,4 +37,13 @@ graph location {
   subgraph shops {
     bank -- shopGayCoffee
   }
+
+  subgraph mall {
+    rideau -- mallMain 
+    dalhousie -- mallMain
+
+    mallMain -- mallFoodCourt
+    mallMain -- mallLaserHairRemoval
+    mallFoodCourt -- mallLaserHairRemoval
+  }
 }

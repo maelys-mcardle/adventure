@@ -1,6 +1,6 @@
 location:
   actions: [walk]
-  value: bank
+  value: rideau
   rules:
     aptBedroom:
       disable: [start]
@@ -9,3 +9,5 @@ location:
       - events.bank
     shopGayCoffee:
       - people.barrista
+    mallLaserHairRemoval:
+      - people.badhairremoval
