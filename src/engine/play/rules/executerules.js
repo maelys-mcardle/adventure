@@ -441,6 +441,79 @@ function applyRuleForBlock(rules, action, property, oldValue,
     if (words.length == 2 &&
         words[0] == constants.KEY_FOR) {
 
+        let targetProperty = words[1];
+        let targetRules = rules[trigger];
+        let executeMessages = [];
+
+        [property, executeMessages] = 
+          executeRulesForChildProperty(property, '', targetRules,
+            targetProperty, action, recursion);
+        
+        messages = messages.concat(executeMessages);
+    }
+  }
+
+  return [property, messages];
+}
+
+/**
+ * Execute rules for specified child property.
+ * @param {Property} property The current property.
+ * @param {string} propertyPrefix The path to the current property.
+ * @param {Object} targetRules The rules to execute on the target property.
+ * @param {string} targetProperty The property to target.
+ * @param {string} action The action that took place on the parent property.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {bool} True if the target property has the target value.
+ */
+function executeRulesForChildProperty(property, 
+  propertyPrefix, targetRules, targetProperty, action, recursion)
+{
+  // property can be:
+  //  property
+  //  property.childEntity.childProperty
+  //  property.childEntity.childProperty.[..].childProperty
+
+  let messages = [];
+  
+  if (recursion >= constants.MAX_RECURSION) {
+    log.warn(errors.MAX_RECURSION);
+    return [property, messages];
+  }
+
+  let currentPropertyName = propertyPrefix + property.name;
+  if (currentPropertyName.endsWith(targetProperty) && 
+      property.currentValue == targetValue) {
+    
+      [property, messages] = 
+        applyRules(targetRules, action, property, property.currentValue, 
+          recursion + 1);
+
+  } else {
+    for (let value of Object.keys(property.values)) {
+      for (let childEntityIndex in property.values[value].childEntities) {
+
+        let childEntity = 
+          property.values[value].childEntities[childEntityIndex];
+        
+        let prefix = childEntity.path + constants.PATH_SEP + 
+          childEntity.name + constants.PATH_SEP;
+
+        for (let propertyName of Object.keys(childEntity.properties)) {
+
+          let childProperty = childEntity.properties[propertyName];
+          let childMessages = [];
+
+          [childProperty, childMessages] = executeRulesForChildProperty(
+            childProperty, prefix, targetRules, targetProperty, action, 
+            recursion + 1);
+          
+          messages = messages.concat(childMessages);
+          childEntity.properties[propertyName] = childProperty;
+        }
+
+        property.values[value].childEntities[childEntityIndex] = childEntity;
+      }
     }
   }
 
