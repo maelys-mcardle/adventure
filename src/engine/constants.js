@@ -41,6 +41,7 @@ module.exports = {
   KEY_ENTITIES: 'entities',
   KEY_ENTITY: 'entity',
   KEY_ENTITY_PLACEHOLDER: '@entity',
+  KEY_FOR: 'for',
   KEY_IS: 'is',
   KEY_MESSAGE: 'message',
   KEY_NONE: '.none',

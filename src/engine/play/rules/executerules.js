@@ -110,7 +110,7 @@ function executeRulesForCurrentValue(entity, recursion) {
     // Apply rule for the property's current value.
     [property, messages] = 
       applyRules(rules, constants.KEY_NONE, property, 
-        currentValue, currentValue, 0);
+        currentValue, 0);
 
     // Apply rule for the current values of the property's children.
     for (let childIndex in children) {
@@ -138,11 +138,10 @@ function executeRulesForCurrentValue(entity, recursion) {
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string} newValue The new value for the property.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRules(rules, action, property, oldValue, newValue, recursion) {
+function applyRules(rules, action, property, oldValue, recursion) {
 
   let messages = [];
 
@@ -159,6 +158,10 @@ function applyRules(rules, action, property, oldValue, newValue, recursion) {
 
   [property, messages] = 
     applyRuleWhenBlock(rules, action, property, oldValue, 
+      messages, recursion);
+
+  [property, messages] = 
+    applyRuleForBlock(rules, action, property, oldValue, 
       messages, recursion);
 
   return [property, messages];
@@ -415,4 +418,31 @@ function isCurrentValue(property, propertyPrefix, targetProperty,
   }
 
   return false;
+}
+
+/**
+ * Conditional rule (for block) with contents to execute if true.
+ * @param {Object} rules The rules to execute.
+ * @param {Action} action The action that triggered the rule execution.
+ * @param {Property} property The property that was acted upon.
+ * @param {string} oldValue The previous value for the property.
+ * @param {string[]} messages The messages for the property.
+ * @param {number} recursion To prevent infinite loops.
+ * @returns {[Property, string[]]} The updated property and messages to output.
+ */
+function applyRuleForBlock(rules, action, property, oldValue, 
+  messages, recursion) {
+
+  for (let trigger of Object.keys(rules)) {
+
+    let words = trigger.split(' ');
+
+    // To handle "for {property}:"
+    if (words.length == 2 &&
+        words[0] == constants.KEY_FOR) {
+
+    }
+  }
+
+  return [property, messages];
 }
