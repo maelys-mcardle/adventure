@@ -79,7 +79,7 @@ function executeRulesForBetweenValues(action, property, newValue) {
   let rules = property.values[oldValue].relationships[newValue].rules;
 
   [property, messages] = 
-    applyRules(rules, action, property, oldValue, newValue, 0);
+    applyRules(rules, action, property, oldValue, 0);
 
   return [property, messages];
 }
@@ -158,7 +158,7 @@ function applyRules(rules, action, property, oldValue, newValue, recursion) {
   messages = applyRuleMessage(rules, property, messages);
 
   [property, messages] = 
-    applyRuleWhenBlock(rules, action, property, oldValue, newValue, 
+    applyRuleWhenBlock(rules, action, property, oldValue, 
       messages, recursion);
 
   return [property, messages];
@@ -273,12 +273,11 @@ function applyRuleMessage(rules, property, messages) {
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string} newValue The new value for the property.
  * @param {string[]} messages The messages for the property.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleWhenBlock(rules, action, property, oldValue, newValue, 
+function applyRuleWhenBlock(rules, action, property, oldValue, 
   messages, recursion) {
 
   for (let trigger of Object.keys(rules)) {
@@ -294,11 +293,11 @@ function applyRuleWhenBlock(rules, action, property, oldValue, newValue,
 
       [property, actionMessages] = 
         applyRuleWhenAction(whenBlockRules, action, property, oldValue, 
-          newValue, words, recursion);
+          words, recursion);
 
       [property, propertyMessages] = 
         applyRuleWhenValue(whenBlockRules, action, property, oldValue, 
-          newValue, words, recursion);
+          words, recursion);
 
       messages = messages.concat(actionMessages).concat(propertyMessages);
     }
@@ -314,12 +313,11 @@ function applyRuleWhenBlock(rules, action, property, oldValue, newValue,
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string} newValue The new value for the property.
  * @param {string[]} words The words in the if statement.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleWhenAction(rules, action, property, oldValue, newValue,
+function applyRuleWhenAction(rules, action, property, oldValue,
     words, recursion) {
 
   let messages = [];
@@ -330,7 +328,7 @@ function applyRuleWhenAction(rules, action, property, oldValue, newValue,
       words[1] == action.name) {
         
     [property, messages] = 
-      applyRules(rules, action, property, oldValue, newValue, recursion + 1);
+      applyRules(rules, action, property, oldValue, recursion + 1);
   }
 
   return [property, messages];
@@ -343,12 +341,11 @@ function applyRuleWhenAction(rules, action, property, oldValue, newValue,
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string} newValue The new value for the property.
  * @param {string[]} words The words in the if statement.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleWhenValue(rules, action, property, oldValue, newValue,
+function applyRuleWhenValue(rules, action, property, oldValue,
   words, recursion) {
 
   let messages = [];
@@ -366,7 +363,7 @@ function applyRuleWhenValue(rules, action, property, oldValue, newValue,
     if (isCurrentValue(property, '', targetProperty, targetValue, 0)) {
 
       [property, messages] = 
-        applyRules(rules, action, property, oldValue, newValue, recursion + 1);
+        applyRules(rules, action, property, oldValue, recursion + 1);
     }
   }
 
