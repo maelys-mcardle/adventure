@@ -14,6 +14,7 @@
     - [Adding extra conditions](#adding-extra-conditions)
       - [Condition: when an action was performed](#condition-when-an-action-was-performed)
       - [Condition: when property of a child entity has a value](#condition-when-property-of-a-child-entity-has-a-value)
+    - [Setting the value and other properties a child property](#setting-the-value-and-other-properties-a-child-property)
 
 <!-- /TOC -->
 
@@ -592,3 +593,10 @@ format:
 when <value.childEntityPath.childProperty.childValue
      .childChildEntityPath.childChildProperty> is <childChildPropertyValue>:
 ```
+
+### Setting the value and other properties a child property
+
+In the previous section, it was shown how to run code based on the value of
+a child property using the `when` keyword. It is also possible to set the
+value and other properties of a child property using the `for` keyword.
+
