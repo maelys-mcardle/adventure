@@ -1,7 +1,7 @@
 'use strict';
 
 const executeRules = require('./rules/executerules');
-const getEntity = require('./entities/getentity');
+const getProperty = require('./entities/getproperty');
 const getText = require('./text/gettext');
 
 module.exports = {
@@ -42,7 +42,7 @@ function describeValue(story, target) {
 
   // Get entity property.
   let property = 
-    getEntity.findProperty(story, target);
+    getProperty.getProperty(story, target);
 
   if (property == null) {
     return paragraphs;

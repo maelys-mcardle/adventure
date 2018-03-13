@@ -1,7 +1,7 @@
 'use strict';
 
-const getEntity = require('../entities/getentity');
-const updateEntity = require('../entities/updateentity');
+const getProperty = require('../entities/getproperty');
+const setProperty = require('../entities/setproperty');
 const constants = require('../../constants');
 const errors = require('../../errors');
 const log = require('../../log');
@@ -24,7 +24,7 @@ function executeTransitionRules(story, action, target, newValue) {
   let messages = [];
   
   // Get property.
-  let property = getEntity.findProperty(story, target);
+  let property = getProperty.getProperty(story, target);
   
   if (property == null) {
     log.warn(
@@ -38,7 +38,7 @@ function executeTransitionRules(story, action, target, newValue) {
       executeRulesForBetweenValues(action, property, newValue);
 
   // Update property.
-  story = updateEntity.updateProperty(story, target, property);
+  story = setProperty.setProperty(story, target, property);
 
   return [story, messages];
 }
@@ -144,6 +144,8 @@ function executeRulesForCurrentValue(entity, recursion) {
 function applyRules(rules, action, property, oldValue, recursion) {
 
   let messages = [];
+  let whenMessages = [];
+  let forMessages = [];
 
   if (recursion >= constants.MAX_RECURSION) {
     log.warn(errors.MAX_RECURSION);
@@ -154,15 +156,15 @@ function applyRules(rules, action, property, oldValue, recursion) {
   property = applyRuleDisable(rules, property);
   property = applyRuleEnable(rules, property);
   property = applyRuleActions(rules, property);
-  messages = applyRuleMessage(rules, property, messages);
+  messages = applyRuleMessage(rules, property);
 
-  [property, messages] = 
-    applyRuleWhenBlock(rules, action, property, oldValue, 
-      messages, recursion);
+  [property, whenMessages] = 
+    applyRuleWhenBlock(rules, action, property, oldValue, recursion);
 
-  [property, messages] = 
-    applyRuleForBlock(rules, action, property, oldValue, 
-      messages, recursion);
+  [property, forMessages] = 
+    applyRuleForBlock(rules, action, property, oldValue, recursion);
+
+  messages = messages.concat(whenMessages).concat(forMessages);
 
   return [property, messages];
 }
@@ -252,10 +254,11 @@ function applyRuleActions(rules, property) {
  * Rule to emit a message for the property.
  * @param {Object} rules The rules to execute.
  * @param {Property} property The property that was acted upon.
- * @param {string[]} messages The existing messages for the property.
  * @returns {string[]} The updated messages for the property.
  */
-function applyRuleMessage(rules, property, messages) {
+function applyRuleMessage(rules, property) {
+
+  let messages = [];
 
   if (constants.KEY_MESSAGE in rules) {
     let messageKey = rules[constants.KEY_MESSAGE];
@@ -276,12 +279,12 @@ function applyRuleMessage(rules, property, messages) {
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string[]} messages The messages for the property.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleWhenBlock(rules, action, property, oldValue, 
-  messages, recursion) {
+function applyRuleWhenBlock(rules, action, property, oldValue, recursion) {
+
+  let messages = [];
 
   for (let trigger of Object.keys(rules)) {
 
@@ -358,12 +361,16 @@ function applyRuleWhenValue(rules, action, property, oldValue,
       words[0] == constants.KEY_WHEN &&
       words[2] == constants.KEY_IS) {
 
-    let targetProperty = words[1];
+    let targetPropertyPath = words[1];
     let targetValue = words[3];
 
     // Look at current property value, but also child entities of either
     // property value.
-    if (isCurrentValue(property, '', targetProperty, targetValue, 0)) {
+    let targetProperty = 
+      getProperty.getPropertyByPath(property, targetPropertyPath);
+
+    if (targetProperty != null && 
+        targetProperty.currentValue == targetValue) {
 
       [property, messages] = 
         applyRules(rules, action, property, oldValue, recursion + 1);
@@ -374,64 +381,17 @@ function applyRuleWhenValue(rules, action, property, oldValue,
 }
 
 /**
- * Determines if a property has a specific value.
- * @param {Property} property The current property.
- * @param {string} propertyPrefix The path to the current property.
- * @param {string} targetProperty The property to target.
- * @param {string} targetValue The value to see if the property has currently.
- * @param {number} recursion To prevent infinite loops.
- * @returns {bool} True if the target property has the target value.
- */
-function isCurrentValue(property, propertyPrefix, targetProperty, 
-  targetValue, recursion) {
-
-  // property can be:
-  //  property
-  //  property.childEntity.childProperty
-  //  property.childEntity.childProperty.[..].childProperty
-
-  if (recursion >= constants.MAX_RECURSION) {
-    log.warn(errors.MAX_RECURSION);
-    return false;
-  }
-
-  let currentPropertyName = propertyPrefix + property.name;
-  if (currentPropertyName.endsWith(targetProperty) && 
-      property.currentValue == targetValue) {
-    return true;
-  } else {
-    for (let value of Object.keys(property.values)) {
-      for (let childEntity of property.values[value].childEntities) {
-
-        let prefix = childEntity.path + constants.PATH_SEP + 
-          childEntity.name + constants.PATH_SEP;
-
-        for (let propertyName of Object.keys(childEntity.properties)) {
-          let property = childEntity.properties[propertyName];
-          if (isCurrentValue(property, prefix, 
-              targetProperty, targetValue, recursion + 1)) {
-            return true;
-          }
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-/**
  * Conditional rule (for block) with contents to execute if true.
  * @param {Object} rules The rules to execute.
  * @param {Action} action The action that triggered the rule execution.
  * @param {Property} property The property that was acted upon.
  * @param {string} oldValue The previous value for the property.
- * @param {string[]} messages The messages for the property.
  * @param {number} recursion To prevent infinite loops.
  * @returns {[Property, string[]]} The updated property and messages to output.
  */
-function applyRuleForBlock(rules, action, property, oldValue, 
-  messages, recursion) {
+function applyRuleForBlock(rules, action, property, oldValue, recursion) {
+
+  let messages = [];
 
   for (let trigger of Object.keys(rules)) {
 
@@ -441,79 +401,27 @@ function applyRuleForBlock(rules, action, property, oldValue,
     if (words.length == 2 &&
         words[0] == constants.KEY_FOR) {
 
-        let targetProperty = words[1];
+        let targetPropertyPath = words[1];
         let targetRules = rules[trigger];
         let executeMessages = [];
 
-        [property, executeMessages] = 
-          executeRulesForChildProperty(property, '', targetRules,
-            targetProperty, action, recursion);
+        // Get the property.
+        let targetProperty = 
+          getProperty.getPropertyByPath(property, targetPropertyPath);
+
+        // Apply rules.
+        if (targetProperty != null) {
+
+          [targetProperty, executeMessages] = 
+            applyRules(targetRules, action, targetProperty, 
+              targetProperty.currentValue, recursion);
+
+          property = 
+            setProperty.setPropertyByPath(
+              property, targetPropertyPath, targetProperty);
+        }
         
         messages = messages.concat(executeMessages);
-    }
-  }
-
-  return [property, messages];
-}
-
-/**
- * Execute rules for specified child property.
- * @param {Property} property The current property.
- * @param {string} propertyPrefix The path to the current property.
- * @param {Object} targetRules The rules to execute on the target property.
- * @param {string} targetProperty The property to target.
- * @param {string} action The action that took place on the parent property.
- * @param {number} recursion To prevent infinite loops.
- * @returns {bool} True if the target property has the target value.
- */
-function executeRulesForChildProperty(property, 
-  propertyPrefix, targetRules, targetProperty, action, recursion)
-{
-  // property can be:
-  //  property
-  //  property.childEntity.childProperty
-  //  property.childEntity.childProperty.[..].childProperty
-
-  let messages = [];
-  
-  if (recursion >= constants.MAX_RECURSION) {
-    log.warn(errors.MAX_RECURSION);
-    return [property, messages];
-  }
-
-  let currentPropertyName = propertyPrefix + property.name;
-  if (currentPropertyName.endsWith(targetProperty) && 
-      property.currentValue == targetValue) {
-    
-      [property, messages] = 
-        applyRules(targetRules, action, property, property.currentValue, 
-          recursion + 1);
-
-  } else {
-    for (let value of Object.keys(property.values)) {
-      for (let childEntityIndex in property.values[value].childEntities) {
-
-        let childEntity = 
-          property.values[value].childEntities[childEntityIndex];
-        
-        let prefix = childEntity.path + constants.PATH_SEP + 
-          childEntity.name + constants.PATH_SEP;
-
-        for (let propertyName of Object.keys(childEntity.properties)) {
-
-          let childProperty = childEntity.properties[propertyName];
-          let childMessages = [];
-
-          [childProperty, childMessages] = executeRulesForChildProperty(
-            childProperty, prefix, targetRules, targetProperty, action, 
-            recursion + 1);
-          
-          messages = messages.concat(childMessages);
-          childEntity.properties[propertyName] = childProperty;
-        }
-
-        property.values[value].childEntities[childEntityIndex] = childEntity;
-      }
     }
   }
 
