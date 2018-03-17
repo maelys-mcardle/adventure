@@ -23,3 +23,19 @@ You are in the laser hair removal salon.
 An imposing figure sits at the desk. Behind her is a television that appears
 to have a large crack running through the screen. The overhead lights are off,
 which is rather unexpected.
+
+## mallWashrooms: washrooms entrance
+
+You are in the hallway to the shopping center's washrooms.
+
+## mallMensWashroom: men's washrooms
+
+You enter the washrooms. Your heart sinks being here, but it's the
+washroom where you're least likely to be harassed. 
+
+The washroom is filty. If you go pee here you're going to want to hover 
+above the toilet.
+
+## mallWomensWashroom: women's washrooms
+
+You enter the washroom. It's clean.

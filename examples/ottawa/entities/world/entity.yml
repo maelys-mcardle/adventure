@@ -6,8 +6,10 @@ location:
       disable: [start]
   entities:
     bank:
-      - events.bank
+      - people.bankpedestrians
     shopGayCoffee:
       - people.barrista
     mallLaserHairRemoval:
       - people.badhairremoval
+    mallWomensWashroom:
+      - people.washroom

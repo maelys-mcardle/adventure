@@ -44,6 +44,11 @@ graph location {
 
     mallMain -- mallFoodCourt
     mallMain -- mallLaserHairRemoval
+    mallMain -- mallWashrooms
     mallFoodCourt -- mallLaserHairRemoval
+    mallFoodCourt -- mallWashrooms
+
+    mallWashrooms -- mallMensWashroom
+    mallWashrooms -- mallWomensWashroom
   }
 }
