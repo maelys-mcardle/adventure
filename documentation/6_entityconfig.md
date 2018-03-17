@@ -599,4 +599,3 @@ when <value.childEntityPath.childProperty.childValue
 In the previous section, it was shown how to run code based on the value of
 a child property using the `when` keyword. It is also possible to set the
 value and other properties of a child property using the `for` keyword.
-

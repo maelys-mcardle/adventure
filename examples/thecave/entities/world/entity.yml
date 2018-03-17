@@ -1,0 +1,13 @@
+location:
+  value: shack
+  actions: [walk]
+  entities:
+    cave:
+      - world.cave
+    shack:
+      - objects.torch
+  rules:
+    shack:
+      when shack.objects.torch.state is possessed:
+        for cave.world.cave.visible:
+          value: true

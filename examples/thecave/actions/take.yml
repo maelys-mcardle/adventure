@@ -1,0 +1,10 @@
+action: change
+templates:
+  - take the @entity
+  - take @entity
+synonyms:
+  take:
+    - grab
+    - pick up
+    - steal
+    - borrow
