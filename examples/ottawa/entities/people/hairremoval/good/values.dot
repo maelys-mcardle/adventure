@@ -1,0 +1,3 @@
+digraph session {
+  unpurchased -> purchased -> removal
+}

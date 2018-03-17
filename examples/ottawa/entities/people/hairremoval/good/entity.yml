@@ -1,0 +1,6 @@
+session:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [do]

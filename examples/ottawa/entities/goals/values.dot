@@ -1,0 +1,11 @@
+digraph coffee {
+  inProgress -> completed
+}
+
+digraph laserHairRemoval {
+  inProgress -> completed
+}
+
+digraph potluck {
+  inProgress -> completed
+}

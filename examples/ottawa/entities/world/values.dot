@@ -36,6 +36,8 @@ graph location {
 
   subgraph shops {
     bank -- shopGayCoffee
+    dalhousie -- shopLaserHairRemoval
+    dalhousie -- shopHipsterCoffee
   }
 
   subgraph mall {

@@ -75,9 +75,12 @@ function getPropertyByPathRecursive(property, propertyPrefix,
 
         for (let propertyName of Object.keys(childEntity.properties)) {
           let childProperty = childEntity.properties[propertyName];
-          if (getPropertyByPathRecursive(childProperty, prefix, 
-              targetProperty, recursion + 1) != null) {
-            return childProperty;
+          let matchingProperty = 
+            getPropertyByPathRecursive(childProperty, prefix, 
+              targetProperty, recursion + 1);
+            
+          if (matchingProperty != null) {
+            return matchingProperty;
           }
         }
       }

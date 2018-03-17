@@ -24,6 +24,8 @@ She asks you to fill out forms, which you do, as its your first time here.
 The forms ask for what medication you're taking, to which you put spironolactone
 and estradiol.
 
+The price seems a lot higher than they advertised, but you pay up anyways.
+
 ## purchased -> removal
 
 The imposing figure asks you to wait in the chair. You do.
@@ -42,6 +44,6 @@ say nothing. You've spent a small fortune on this laser hair removal session,
 you just want this to be done with.
 
 She finally gets around to start the session. No prep, just the laser amped 
-up against your face.
+up against your face. It hurts like hell.
 
 This is the worst laser hair removal session you've ever had.

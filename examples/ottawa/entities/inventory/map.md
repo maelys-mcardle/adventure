@@ -26,3 +26,8 @@ Centretown and the Byward Market / Sandy Hill are connected by Somerset, as
 well as Wellington, which becomes Rideau.
 
 Your apartment is on Cooper.
+
+There are coffee shops on Bank and Dalhousie.
+
+There is a laser hair removal places on Dalhousie as well as inside
+the mall that's on Rideau.

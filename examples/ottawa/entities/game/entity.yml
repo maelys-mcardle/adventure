@@ -1,5 +1,11 @@
 game:
   entities:
-    display:
+    game:
       - world
       - inventory
+      - goals
+  rules:
+    game:
+      when shopGayCoffee.people.barrista.coffee is purchased:
+        for goals.coffee:
+          value: completed

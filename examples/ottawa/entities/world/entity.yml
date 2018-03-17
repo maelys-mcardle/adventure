@@ -1,6 +1,6 @@
 location:
   actions: [walk]
-  value: start
+  value: shopGayCoffee
   rules:
     aptBedroom:
       disable: [start]
@@ -9,7 +9,9 @@ location:
       - people.bankpedestrians
     shopGayCoffee:
       - people.barrista
+    shopHipsterCoffee:
+      - people.barrista
     mallLaserHairRemoval:
-      - people.badhairremoval
+      - people.hairremoval.bad
     mallWomensWashroom:
       - people.washroom
