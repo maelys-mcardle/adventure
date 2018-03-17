@@ -1,6 +1,6 @@
 location:
   value: shack
-  actions: [walk]
+  actions: [describe, walk]
   entities:
     cave:
       - world.cave

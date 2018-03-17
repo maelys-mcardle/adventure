@@ -1,0 +1,11 @@
+action: describe
+templates:
+  - describe @property
+  - describe at @property
+  - describe the @property
+  - describe at the @property
+synonyms:
+  describe:
+    - look
+    - inspect
+    - examine
