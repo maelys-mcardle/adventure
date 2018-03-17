@@ -1,0 +1,3 @@
+graph isVisible {
+  false -- true
+}

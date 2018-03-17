@@ -1,4 +1,4 @@
-# visible
+# isVisible
 
 ## false
 

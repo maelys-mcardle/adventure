@@ -3,11 +3,11 @@ location:
   actions: [describe, walk]
   entities:
     cave:
-      - world.cave
+      - locations.cave
     shack:
       - objects.torch
   rules:
     shack:
       when shack.objects.torch.state is possessed:
-        for cave.world.cave.visible:
+        for cave.locations.cave.isVisible:
           value: true

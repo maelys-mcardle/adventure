@@ -599,3 +599,80 @@ when <value.childEntityPath.childProperty.childValue
 In the previous section, it was shown how to run code based on the value of
 a child property using the `when` keyword. It is also possible to set the
 value and other properties of a child property using the `for` keyword.
+
+Take a story with the following structure:
+
+```
+  story/
+    |- actions/
+    |     |- describe.yml
+    |     |- take.yml
+    |     |- walk.yml
+    |
+    |- entities/
+    |     |- locations/
+    |     |    |- cave/
+    |     |         |- entity.yml
+    |     |         |- text.md
+    |     |         |- values.dot
+    |     |
+    |     |- objects/
+    |     |    |- torch/
+    |     |         |- entity.yml
+    |     |         |- text.md
+    |     |         |- values.dot
+    |     |
+    |     |- world/
+    |          |- entity.yml
+    |          |- text.md
+    |          |- values.dot
+    |     
+    |- story.yml
+```
+
+With the following `entity.yml` file for the `world` entity:
+
+```yml
+location:
+  value: shack
+  actions: [describe, walk]
+  entities:
+    cave:
+      - locations.cave
+    shack:
+      - objects.torch
+  rules:
+    shack:
+      when shack.objects.torch.state is possessed:
+        for cave.locations.cave.isVisible:
+          value: true
+```
+  
+In particular, note this section:
+
+```yml
+rules:
+  shack:
+    when shack.objects.torch.state is possessed:
+      for cave.locations.cave.isVisible:
+        value: true
+```
+
+In this simple world is a shack and a dark cave. In the shack is a torch. 
+The above says *when* the torch object is taken, then make the cave visible. 
+
+The `value: true` here is applied to the `locations.cave` entity, and not the 
+`world` entity. Everything beneath the `for` block is applied to the property
+specified by the trigger that comes right after the `for` keyword.
+
+The naming convention for the `for` trigger is the same as the `when` trigger.
+All the following examples would be valid:
+
+* `for entrance.objects.door.door:`
+* `for objects.door.door:`
+* `for door.door:`
+* `for door:`
+
+You can do everything in a `for` block you normally can: change a property's
+value with `value`, disable values with `disable`, change actions with `action`,
+etc.
