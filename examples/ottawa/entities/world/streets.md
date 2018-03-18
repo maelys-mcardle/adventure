@@ -131,9 +131,6 @@ Africa. There are amazing inexpensive restaurants in buildings whose exterior
 has been largely ignored. There's a pharmacy that was shut down for an opiod
 theft organized by the pharmacist that owned it.
 
-There are always street youth panhandling, and the same group of older 
-regulars who approach people waiting at the bus stops for money.
-
 Further to the west this road becomes Wellington Street.
 
 ### somerset: Somerset Street
