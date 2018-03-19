@@ -1,13 +1,13 @@
 map:
   value: hidden
-  actions: [remember]
+  actions: [phone]
   rules:
     visible:
       value: hidden
 
 todo:
   value: hidden
-  actions: [remember]
+  actions: [phone]
   rules:
     visible:
       value: hidden

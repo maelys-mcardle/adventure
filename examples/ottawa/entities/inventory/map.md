@@ -1,4 +1,4 @@
-# map: city map
+# map
 
 ## hidden
 

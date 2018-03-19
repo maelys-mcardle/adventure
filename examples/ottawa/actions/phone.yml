@@ -1,0 +1,10 @@
+action: change
+templates:
+  - Look at the @property on phone.
+  - Look at @property on phone.
+  - Look at @property.
+  - Look at the @property.
+  - Look @property.
+  - Remember @property.
+default:
+  value: visible
