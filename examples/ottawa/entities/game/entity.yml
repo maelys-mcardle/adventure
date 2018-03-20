@@ -18,4 +18,8 @@ game:
       when hairremoval.good.session is purchased:
         for goals.laserHairRemoval:
           value: completed
+      when goals.coffee is completed:
+        when goals.laserHairRemoval is completed:
+          when goals.potluck is completed:
+            message: allGoalsCompleted
       
