@@ -10,4 +10,6 @@ events:
     4:
       value: 5
     5:
+      value: 6
+    6:
       value: 1

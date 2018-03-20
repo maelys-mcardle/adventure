@@ -18,6 +18,9 @@ game:
       when hairremoval.good.session is purchased:
         for goals.laserHairRemoval:
           value: completed
+      when location is potluckApartment:
+        for goals.potluck:
+          value: completed
       when goals.coffee is completed:
         when goals.laserHairRemoval is completed:
           when goals.potluck is completed:

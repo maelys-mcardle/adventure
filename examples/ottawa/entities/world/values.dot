@@ -53,4 +53,11 @@ graph location {
     mallWashrooms -- mallMensWashroom
     mallWashrooms -- mallWomensWashroom
   }
+
+  subgraph potluck {
+    bronson -- potluckApartment
+
+    potluckApartment -- potluckWashroom
+    potluckApartment -- potluckKitchen
+  }
 }

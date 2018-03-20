@@ -19,8 +19,6 @@ for them; they're by business owners who think LGBT means cute gay couples.
 
 The cross-walks are painted rainbow colours at the intersection with Somerset.
 
-There is a grocery store on this street.
-
 ### bronson: Bronson Street
 
 You are on Bronson Street.
