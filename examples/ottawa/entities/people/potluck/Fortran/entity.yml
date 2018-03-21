@@ -1,0 +1,14 @@
+conversation:
+  value: idle
+  actions: [speak]
+  disable: [howWasPuppy]
+  rules:
+    hello:
+      value: idle
+    howAreYou:
+      value: idle
+      enable: [howWasPuppy]
+    howWasPuppy:
+      value: idle
+    whatAreYouDrawing:
+      value: idle

@@ -22,7 +22,7 @@ well too."
 
 ## helpWithMove: I'll help you move
 
-You tell Finn you'll help them move.
+You tell Finn you'll help them move. She smiles.
 
 "Oh great! Thanks, I'll message you in a week."
 
