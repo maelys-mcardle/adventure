@@ -1,0 +1,12 @@
+conversation:
+  value: idle
+  actions: [speak]
+  rules:
+    hello:
+      value: idle
+    howAreYou:
+      value: idle
+    howIsWork:
+      value: idle
+    howIsSchool:
+      value: idle

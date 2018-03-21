@@ -1,0 +1,6 @@
+digraph conversation {
+  idle -> hello
+  idle -> howAreYou
+  idle -> howIsWork
+  idle -> howIsSchool
+}
