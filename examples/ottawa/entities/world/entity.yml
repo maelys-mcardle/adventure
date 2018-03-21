@@ -22,5 +22,5 @@ location:
     mallWomensWashroom:
       - people.washroom
     potluckApartment:
-      - people.potluck.storm
-      - people.potluck.finn
+      - people.potluck.Storm
+      - people.potluck.Finn
