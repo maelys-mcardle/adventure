@@ -7,6 +7,8 @@ location:
   entities:
     bank:
       - people.bank
+    george:
+      - people.george
     rideau:
       - people.rideau
     shopGayCoffee:
