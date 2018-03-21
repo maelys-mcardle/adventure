@@ -56,8 +56,12 @@ graph location {
 
   subgraph potluck {
     bronson -- potluckApartment
-
     potluckApartment -- potluckWashroom
     potluckApartment -- potluckKitchen
+  }
+
+  subgraph parliament {
+    wellington -- parliamentHill
+    parliamentHill -- parliamentBuildings
   }
 }
