@@ -23,3 +23,4 @@ location:
       - people.washroom
     potluckApartment:
       - people.potluck.storm
+      - people.potluck.finn

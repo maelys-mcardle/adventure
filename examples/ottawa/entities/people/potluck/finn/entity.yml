@@ -1,0 +1,16 @@
+conversation:
+  value: idle
+  actions: [speak]
+  disable: [helpWithMove]
+  rules:
+    hello:
+      value: idle
+    howAreYou:
+      value: idle
+      enable: [helpWithMove]
+    howIsPoetry:
+      value: idle
+    howWasConsult:
+      value: idle
+    helpWithMove:
+      value: idle

@@ -1,10 +1,12 @@
 action: change
 templates:
   - Say to @entity "@value"
+  - Say @entity "@value"
   - Say "@value"
 synonyms:
   Say:
     - Speak
     - Shout
+    - Ask
     - Tell
     - Yell
