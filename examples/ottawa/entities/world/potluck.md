@@ -10,6 +10,8 @@ is going, complaining about their prof who painfully and incorrectly covered
 trans stuff, laughing at averse experiences being queer in Ottawa, vegan dishes 
 that have been baked, places that have been hiked.
 
+Your friends Finn, Storm and Fortran are here.
+
 ## potluckKitchen: kitchen
 
 You are in the kitchen. It is packed with people.
