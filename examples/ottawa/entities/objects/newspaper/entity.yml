@@ -1,0 +1,6 @@
+newspaper:
+  value: inNewspaperBox
+  actions: [read]
+  rules:
+    reading:
+      value: inNewspaperBox

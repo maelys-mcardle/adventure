@@ -1,0 +1,8 @@
+action: change
+templates:
+  - Read @entity.
+  - Read the @entity.
+  - Read at @entity.
+synonyms:
+  Read:
+    - Look

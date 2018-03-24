@@ -6,10 +6,15 @@ location:
       disable: [start]
   entities:
     bank:
+      - objects.newspaper
       - people.bank
+    elgin:
+      - objects.newspaper
     george:
+      - objects.newspaper
       - people.george
     rideau:
+      - objects.newspaper
       - people.rideau
     shopGayCoffee:
       - people.barrista
