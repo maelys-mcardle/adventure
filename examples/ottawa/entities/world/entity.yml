@@ -8,6 +8,8 @@ location:
     bank:
       - objects.newspaper
       - people.bank
+    clarence:
+      - people.clarence
     elgin:
       - objects.newspaper
     george:
