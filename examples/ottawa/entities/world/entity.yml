@@ -26,6 +26,8 @@ location:
       - people.hairremoval.good
     mallClothing:
       - people.clothing
+    mallGenericCoffee:
+      - people.barrista
     mallLaserHairRemoval:
       - people.hairremoval.bad
     mallWomensWashroom:

@@ -29,6 +29,14 @@ which is rather unexpected.
 You are in the clothing store. The clothes here are on the more affordable
 side of things and they have larger sizes.
 
+## mallGenericCoffee: coffee shop
+
+You are in the mall's coffee shop, which is just off of the food court.
+
+It has its own seating area, with a faux rustic design made to look like
+you're inside of an old barn. The seats aren't that comfortable. Windows
+in the coffee shop onto Dalhousie Street.
+
 ## mallWashrooms: washrooms entrance
 
 You are in the hallway to the shopping center's washrooms.

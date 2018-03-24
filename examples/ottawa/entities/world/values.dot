@@ -48,6 +48,7 @@ graph location {
     mallMain -- mallLaserHairRemoval
     mallMain -- mallClothing
     mallMain -- mallWashrooms
+    mallFoodCourt -- mallGenericCoffee
     mallFoodCourt -- mallClothing
     mallFoodCourt -- mallLaserHairRemoval
     mallFoodCourt -- mallWashrooms

@@ -12,6 +12,9 @@ game:
       when shopHipsterCoffee.people.barrista.coffee is purchased:
         for goals.coffee:
           value: completed
+      when mallGenericCoffee.people.barrista.coffee is purchased:
+        for goals.coffee:
+          value: completed
       when hairremoval.bad.session is purchased:
         for goals.laserHairRemoval:
           value: completed
