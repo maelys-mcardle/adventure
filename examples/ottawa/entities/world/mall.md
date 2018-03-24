@@ -29,6 +29,15 @@ which is rather unexpected.
 You are in the clothing store. The clothes here are on the more affordable
 side of things and they have larger sizes.
 
+## mallSports: sports shop
+
+You are in the sports shop. It's small, it's mostly athletic clothes or
+sporty-style everyday wear. The sales associate offers you help, and
+has no qualms about recommending women's wear that would fit your style.
+
+Everything in here is super pricey. You can't afford to buy many things
+here, though you're inclined to do so.
+
 ## mallGenericCoffee: coffee shop
 
 You are in the mall's coffee shop, which is just off of the food court.

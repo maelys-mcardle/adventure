@@ -45,11 +45,14 @@ graph location {
     dalhousie -- mallMain
 
     mallMain -- mallFoodCourt
+    mallMain -- mallGenericCoffee
     mallMain -- mallLaserHairRemoval
     mallMain -- mallClothing
+    mallMain -- mallSports
     mallMain -- mallWashrooms
     mallFoodCourt -- mallGenericCoffee
     mallFoodCourt -- mallClothing
+    mallFoodCourt -- mallSports
     mallFoodCourt -- mallLaserHairRemoval
     mallFoodCourt -- mallWashrooms
 
