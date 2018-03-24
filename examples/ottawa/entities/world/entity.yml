@@ -12,6 +12,7 @@ location:
       - people.clarence
     elgin:
       - objects.newspaper
+      - people.elgin
     george:
       - objects.newspaper
       - people.george
