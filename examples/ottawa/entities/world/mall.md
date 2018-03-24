@@ -24,6 +24,11 @@ An imposing figure sits at the desk. Behind her is a television that appears
 to have a large crack running through the screen. The overhead lights are off,
 which is rather unexpected.
 
+## mallClothing: clothing store
+
+You are in the clothing store. The clothes here are on the more affordable
+side of things and they have larger sizes.
+
 ## mallWashrooms: washrooms entrance
 
 You are in the hallway to the shopping center's washrooms.

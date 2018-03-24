@@ -24,6 +24,8 @@ location:
       - people.barrista
     shopLaserHairRemoval:
       - people.hairremoval.good
+    mallClothing:
+      - people.clothing
     mallLaserHairRemoval:
       - people.hairremoval.bad
     mallWomensWashroom:

@@ -1,0 +1,5 @@
+events:
+  value: 1
+  rules:
+    1:
+      value: 2
