@@ -25,3 +25,5 @@ location:
       - people.potluck.Storm
       - people.potluck.Finn
       - people.potluck.Fortran
+    potluckKitchen:
+      - people.potluck.Alice

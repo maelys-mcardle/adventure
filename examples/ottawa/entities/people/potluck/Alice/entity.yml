@@ -1,0 +1,14 @@
+conversation:
+  value: idle
+  actions: [speak]
+  rules:
+    hello:
+      value: idle
+    howAreYou:
+      value: idle
+    howIsWork:
+      value: idle
+    howIsChurch:
+      value: idle
+    whatAreYouMaking:
+      value: idle
