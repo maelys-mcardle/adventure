@@ -31,7 +31,7 @@ sucks. I'm doing okay but it's stressful."
 
 You ask Alice about church.
 
-"It's good! I go to an Anglican church downtown. It uses traditional
+"It's good! I go to an Anglican church on King Edward. It uses traditional
 liturgy, but like, we also sing to Bob Dylan? And like there's a bunch
 of other trans people there? And the older people are super cool? It's
 like another family for me now."
