@@ -1,0 +1,26 @@
+beer:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [drink]
+    unpurchased:
+      actions: [buy]
+
+ceasar:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [drink]
+    unpurchased:
+      actions: [buy]
+
+shot:
+  value: unpurchased
+  actions: [buy]
+  rules:
+    purchased:
+      actions: [drink]
+    unpurchased:
+      actions: [buy]

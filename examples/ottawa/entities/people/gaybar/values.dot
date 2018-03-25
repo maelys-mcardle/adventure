@@ -1,0 +1,11 @@
+graph beer {
+  unpurchased -- purchased
+}
+
+graph ceasar {
+  unpurchased -- purchased
+}
+
+graph shot {
+  unpurchased -- purchased
+}

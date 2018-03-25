@@ -21,6 +21,8 @@ location:
       - people.rideau
     somerset:
       - people.somerset
+    shopGayBar:
+      - people.gaybar
     shopGayCoffee:
       - people.barrista
     shopHipsterCoffee:

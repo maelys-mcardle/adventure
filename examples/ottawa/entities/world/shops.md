@@ -28,3 +28,14 @@ You are in the laser hair removal salon.
 A person at the desk greets you, and talks to her colleague. The place
 is brightly lit and super clean.
 
+## shopGayBar: gay bar
+
+You are in the gay bar.
+
+This place is all older cis gay men. Young gay people don't tend to go to 
+bars anymore; acceptance has made safe spaces like these obsolete. Not that 
+it's safe for trans people; your friends have been harassed in this bar.
+
+Still, you sit down by the bar.
+
+## shopFeministSex: feminist sex shop
