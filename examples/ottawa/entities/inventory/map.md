@@ -2,11 +2,11 @@
 
 ## hidden
 
-You have a mental map of the city.
+You have a map of the city on your phone.
 
 ## visible
 
-You draw on your mental map of the city.
+You pull up the map app on your phone.
 
 The Ottawa you spend most of your life in is divided into three neighbourhoods.
 You have Centretown on the west, and the Byward Market / Sandy Hill on the east.

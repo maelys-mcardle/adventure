@@ -2,7 +2,7 @@
 
 ## hidden
 
-You have a to-do list.
+You have a to-do list on your phone.
 
 ## visible
 
