@@ -19,6 +19,8 @@ location:
     rideau:
       - objects.newspaper
       - people.rideau
+    somerset:
+      - people.somerset
     shopGayCoffee:
       - people.barrista
     shopHipsterCoffee:

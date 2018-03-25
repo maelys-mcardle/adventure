@@ -27,3 +27,4 @@ You are in the laser hair removal salon.
 
 A person at the desk greets you, and talks to her colleague. The place
 is brightly lit and super clean.
+

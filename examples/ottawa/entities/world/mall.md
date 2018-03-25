@@ -34,6 +34,8 @@ side of things and they have larger sizes.
 You are in the sports shop. It's small, it's mostly athletic clothes or
 sporty-style everyday wear. The sales associate offers you help, and
 has no qualms about recommending women's wear that would fit your style.
+They keep calling you "sir". They think you're a man wanting to wear women's
+clothes.
 
 Everything in here is super pricey. You can't afford to buy many things
 here, though you're inclined to do so.
