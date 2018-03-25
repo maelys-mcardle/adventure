@@ -21,6 +21,8 @@ location:
       - people.rideau
     somerset:
       - people.somerset
+    shopFeministSex:
+      - objects.zine
     shopGayBar:
       - people.gaybar
     shopGayCoffee:

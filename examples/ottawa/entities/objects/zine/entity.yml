@@ -1,0 +1,6 @@
+zine:
+  value: onDisplay
+  actions: [read]
+  rules:
+    reading:
+      value: onDisplay

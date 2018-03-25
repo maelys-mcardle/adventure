@@ -39,3 +39,17 @@ it's safe for trans people; your friends have been harassed in this bar.
 Still, you sit down by the bar.
 
 ## shopFeministSex: feminist sex shop
+
+You are in the feminist sex shop. Or book shop. You're not sure
+what it goes by.
+
+On one wall is an impressive selection of books. Anything from parenting
+for gay and trans parents, to sex education resources for teens, to YA
+literature about trans people actually written by trans authors. There's a
+display of local zines.
+
+On the other wall is an impressive selection of good quality sex toys. 
+The best vibrators in Ottawa are here. On the third wall is a selection
+of dildos, packers, binders, breast forms and gaffs. A youth is in the
+store, shopping for their first binder. The sales assistant is going through
+the various options.
